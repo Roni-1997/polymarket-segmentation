@@ -1,12 +1,21 @@
 """Aggregate ../data/hip4_trades.jsonl into per-wallet rollup."""
-import json, sys
+import json
 from collections import defaultdict
 
-OUTCOME_NAMES = {
-    100: "Fallback", 101: "CPI<4.3%", 102: "CPI=4.3%", 103: "CPI>4.3%",
-    104: "FedRate", 110: "UCL", 111: "BTC75668", 112: "RecFallback",
-    113: "RecNamed0", 114: "RecNamed1", 115: "RecNamed2",
-}
+from common import DATA_DIR, hl_info, write_json
+
+
+def load_outcome_names():
+    meta = hl_info({"type": "outcomeMeta"}, timeout=20)
+    if not isinstance(meta, dict):
+        return {}
+    return {
+        int(o["outcome"]): (o.get("name") or f"#{o['outcome']}")
+        for o in meta.get("outcomes", [])
+    }
+
+
+OUTCOME_NAMES = load_outcome_names()
 
 def coin_to_market(coin):
     if not coin.startswith("#"): return coin
@@ -19,10 +28,10 @@ def coin_to_market(coin):
 
 trades = []
 seen_tid = set()
-for line in open("../data/hip4_trades.jsonl"):
+for line in (DATA_DIR / "hip4_trades.jsonl").open():
     try:
         t = json.loads(line)
-        tid = t.get("tid")
+        tid = t.get("tid") or json.dumps(t, sort_keys=True)
         if tid in seen_tid:
             continue
         seen_tid.add(tid)
@@ -105,11 +114,10 @@ for a, s in sorted_w:
         "trades_per_market": dict(s["trades_per_market"]),
         "first_seen_ms": s["first_seen"], "last_seen_ms": s["last_seen"],
     })
-with open("../data/hip4_ws_wallets.json", "w") as f:
-    json.dump({
-        "trade_count": len(trades),
-        "wallet_count": len(wallet_stats),
-        "total_notional": total_notional,
-        "wallets": out
-    }, f, indent=2)
-print("\nSaved ../data/hip4_ws_wallets.json")
+write_json(DATA_DIR / "hip4_ws_wallets.json", {
+    "trade_count": len(trades),
+    "wallet_count": len(wallet_stats),
+    "total_notional": total_notional,
+    "wallets": out
+})
+print(f"\nSaved {DATA_DIR / 'hip4_ws_wallets.json'}")

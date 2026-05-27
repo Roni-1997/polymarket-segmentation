@@ -1,6 +1,14 @@
-import json, subprocess, time
+import json
+import subprocess
+import time
 
-addrs = open("../data/hip4_addrs.txt").read().strip().split(",")
+from common import DATA_DIR, write_json
+
+addrs = [
+    a.strip().lower()
+    for a in (DATA_DIR / "hip4_addrs.txt").read_text().split(",")
+    if a.strip()
+]
 RPCS = ["https://polygon.drpc.org", "https://1rpc.io/matic", "https://polygon-bor-rpc.publicnode.com"]
 
 def get_nonce(addr):
@@ -30,9 +38,9 @@ for i, addr in enumerate(addrs, 1):
     print(f"{i:>2}. {addr} nonce={str(nonce):>6} via {rpc_short:<22}  {marker}")
     time.sleep(0.7)
     if i % 5 == 0:
-        json.dump(results, open("../data/hip4_polygon_check.json","w"), indent=2)
+        write_json(DATA_DIR / "hip4_polygon_check.json", results)
 
-json.dump(results, open("../data/hip4_polygon_check.json","w"), indent=2)
+write_json(DATA_DIR / "hip4_polygon_check.json", results)
 
 active = [r for r in results if r["polygon_nonce"] and r["polygon_nonce"] > 0]
 zero = [r for r in results if r["polygon_nonce"] == 0]

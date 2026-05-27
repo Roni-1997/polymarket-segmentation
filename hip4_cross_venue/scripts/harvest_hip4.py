@@ -1,32 +1,28 @@
-import json, subprocess
+from __future__ import annotations
+
 from collections import defaultdict
 
-outcomes = [
-    (100, "Fallback", ["Yes","No"]),
-    (101, "CPI<4.3%", ["Yes","No"]),
-    (102, "CPI=4.3%", ["Yes","No"]),
-    (103, "CPI>4.3%", ["Yes","No"]),
-    (104, "FedRate", ["Change","NoChange"]),
-    (110, "UCL", ["PSG","Arsenal"]),
-    (111, "BTC75668", ["Yes","No"]),
-    (112, "RecFallback", ["Yes","No"]),
-    (113, "RecNamed0", ["Yes","No"]),
-    (114, "RecNamed1", ["Yes","No"]),
-    (115, "RecNamed2", ["Yes","No"]),
-]
+from common import DATA_DIR, hl_info, write_json
+
+
+def load_outcomes():
+    meta = hl_info({"type": "outcomeMeta"}, timeout=20)
+    if not isinstance(meta, dict):
+        raise RuntimeError("failed to fetch Hyperliquid outcomeMeta")
+    outcomes = []
+    for outcome in meta.get("outcomes", []):
+        oid = int(outcome["outcome"])
+        name = outcome.get("name") or f"#{oid}"
+        sides = [s.get("name") or str(i) for i, s in enumerate(outcome.get("sideSpecs", []))]
+        outcomes.append((oid, name, sides))
+    return outcomes
 
 trades_per_coin = {}
-for oid, name, sides in outcomes:
+for oid, name, sides in load_outcomes():
     for side_idx, side_name in enumerate(sides):
         coin = f"#{oid*10 + side_idx}"
         try:
-            r = subprocess.run(
-                ["curl", "-s", "-X", "POST", "https://api.hyperliquid.xyz/info",
-                 "-H", "Content-Type: application/json",
-                 "-d", '{"type":"recentTrades","coin":"' + coin + '"}'],
-                capture_output=True, text=True, timeout=10
-            )
-            data = json.loads(r.stdout) if r.stdout.strip() else None
+            data = hl_info({"type": "recentTrades", "coin": coin}, timeout=10)
             if data:
                 trades_per_coin[coin] = (name, side_name, data)
         except Exception:
@@ -77,14 +73,13 @@ print()
 print(f"Wallets >1 trade: {sum(1 for _,s in wallet_stats.items() if s['trades']>1)}")
 print(f"Wallets =1 trade: {sum(1 for _,s in wallet_stats.items() if s['trades']==1)}")
 
-with open("../data/hip4_wallet_snapshot.json", "w") as f:
-    out = []
-    for addr, s in sorted_wallets:
-        out.append({
-            "address": addr, "trades": s["trades"], "notional": s["notional"],
-            "markets": list(s["markets"]),
-            "as_first": s["as_first"], "as_second": s["as_second"],
-            "trades_per_market": dict(s["trades_per_market"]),
-        })
-    json.dump({"all_trades": all_trades, "wallets": out}, f, indent=2)
-print("\nSaved ../data/hip4_wallet_snapshot.json")
+out = []
+for addr, s in sorted_wallets:
+    out.append({
+        "address": addr, "trades": s["trades"], "notional": s["notional"],
+        "markets": list(s["markets"]),
+        "as_first": s["as_first"], "as_second": s["as_second"],
+        "trades_per_market": dict(s["trades_per_market"]),
+    })
+write_json(DATA_DIR / "hip4_wallet_snapshot.json", {"all_trades": all_trades, "wallets": out})
+print(f"\nSaved {DATA_DIR / 'hip4_wallet_snapshot.json'}")

@@ -1,8 +1,10 @@
-import json, csv
+import csv
+
+from common import DATA_DIR, RESULTS_DIR, read_json, polymarket_volume_musd
 
 # Load Polymarket wallets
-poly_wallets = {}  # addr -> (cohort, rank, vol_musd, maker_share, n_fills, n_unique_markets, fills_per_day, lp_rewards)
-with open("../../results/top20_per_cohort_30d.csv") as f:
+poly_wallets = {}
+with (RESULTS_DIR / "top20_per_cohort_30d.csv").open() as f:
     reader = csv.DictReader(f)
     for row in reader:
         addr = row["wallet"].lower()
@@ -10,7 +12,7 @@ with open("../../results/top20_per_cohort_30d.csv") as f:
 
 # Add LP reward recipients separately
 poly_lp = {}
-with open("../../results/lp_rewards_top25.csv") as f:
+with (RESULTS_DIR / "lp_rewards_top25.csv").open() as f:
     reader = csv.DictReader(f)
     for row in reader:
         poly_lp[row["wallet"].lower()] = float(row["lp_rewards_usd"])
@@ -20,12 +22,12 @@ print(f"Polymarket LP-reward top-25 wallets: {len(poly_lp)}")
 print()
 
 # Load HIP-4 wallets (full snapshot of 127)
-hip4_snap = json.load(open("../data/hip4_ws_wallets.json"))
+hip4_snap = read_json(DATA_DIR / "hip4_ws_wallets.json")
 hip4_wallets = {w["addr"].lower(): w for w in hip4_snap["wallets"]}
 print(f"HIP-4 wallets observed (WS sample, top 127): {len(hip4_wallets)}")
 
 # Load HIP-4 top-50 classified
-hip4_classified = {p["addr"].lower(): p for p in json.load(open("../data/hip4_top50_classified.json"))}
+hip4_classified = {p["addr"].lower(): p for p in read_json(DATA_DIR / "hip4_top50_classified.json")}
 print(f"HIP-4 wallets with 7d classification: {len(hip4_classified)}")
 print()
 
@@ -41,7 +43,7 @@ for a in overlap_polysnap_hip4:
     hc = hip4_classified.get(a)
     tag = hc["tag"] if hc else "(not in top-50 classification)"
     print(f"  {a}")
-    print(f"    POLY: cohort={pw['cohort']:<14} rank={pw['rank']:>2}  vol=${float(pw['vol_musd'])*1e6:>14,.0f} mkr={pw['maker_share']:>5}  n_fills={pw['n_fills']:>8} n_mkts={pw['n_unique_markets']:>5}  fpd={pw['fills_per_day']:>7}  lp=${float(pw['lp_rewards_usd']):>9,.0f}")
+    print(f"    POLY: cohort={pw['cohort']:<14} rank={pw['rank']:>2}  touched_vol=${polymarket_volume_musd(pw)*1e6:>14,.0f} mkr={pw['maker_share']:>5}  n_fills={pw['n_fills']:>8} n_mkts={pw['n_unique_markets']:>5}  fpd={pw['fills_per_day']:>7}  lp=${float(pw['lp_rewards_usd']):>9,.0f}")
     print(f"    HIP4: tag={tag:<20} fills(WS sample)={hw['trades']:>4} 7d_$={hc['hip4_notional'] if hc else '?'}  7d_perp$={hc['perp_notional'] if hc else '?'}")
     print()
 
