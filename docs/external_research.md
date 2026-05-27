@@ -16,6 +16,7 @@ numbers agree or diverge.
 | Sports is the largest category by volume (30%) | filarm Polymarket Activity dashboard, datadashboards Polymarket Overview | Sports surged in 2025–2026, esports especially | ✓ |
 | Whales are ~1.6% of touched volume | [Chainalysis Théo cluster reporting](https://www.chainalysis.com/) | 11 wallets identified as Théo cluster | ✗ Whales much smaller share of volume than "Théo moves the market" narrative implies |
 | Active-mixed cohort dropped 14.7% → 6.0% in 6 months | n/a — novel finding | n/a | ⊕ Unique to this analysis. Possible cause: capital migrated to Kalshi (per Paradigm's note that Kalshi overtook Polymarket in Q1 2026) |
+| 0/100 top Polymarket wallets active on HIP-4; 0/25 LP-reward recipients on HIP-4 | [hip4_cross_venue/](../hip4_cross_venue/) (sister analysis) | n/a | ⊕ Novel cross-venue finding. The Polymarket pro-MM cohort is NOT migrating to Hyperliquid. HIP-4 maker cohort came from the HL-perps audience instead. |
 
 Legend: ✓ matches, △ partial / directional, ✗ contradicts folklore, ⊕ novel claim.
 
