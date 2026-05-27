@@ -15,6 +15,7 @@ CSVs from the audited query versions, re-executed against Dune on
 | `lp_rewards_concentration.csv` | `08_lp_rewards_concentration.sql` | Top-N concentration (3 / 10 / 20 / 50 / 100). |
 | `other_tags_top30.csv` | `03_other_category_probe.sql` | What's leaking into the "Other" bucket. |
 | `tags_top30.csv` | `02_tags_probe.sql` | Most common market tags. |
+| `cohort_x_category_drilldown_30d.csv` | `09_cohort_x_category_drilldown.sql` | Long-format: per (cohort, category) wallet count, touched and single-counted volume, fills, avg trade size. |
 
 ## Conventions
 
