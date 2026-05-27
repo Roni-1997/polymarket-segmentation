@@ -2,7 +2,7 @@
   {
     "rank": 1,
     "addr": "0x8f2ad2ef22204d83d6a2b425ede2a7f15f3b1645",
-    "tag": "perp-only-crossover",
+    "tag": "no-visible-HIP4-fills",
     "hip4_total": 0,
     "hip4_mkr": 0,
     "hip4_tkr": 0,
@@ -12,12 +12,13 @@
     "avg_ticket": 0.0,
     "perp_total": 2000,
     "perp_notional": 8481.0,
-    "perp_hedge_ratio": 8480.9
+    "perp_hedge_ratio": 8480.9,
+    "api_error": false
   },
   {
     "rank": 2,
     "addr": "0xf957e361399ca0592d6f550f41449f0005814ef0",
-    "tag": "perp-only-crossover",
+    "tag": "no-visible-HIP4-fills",
     "hip4_total": 0,
     "hip4_mkr": 0,
     "hip4_tkr": 0,
@@ -27,14 +28,15 @@
     "avg_ticket": 0.0,
     "perp_total": 2000,
     "perp_notional": 86973.0,
-    "perp_hedge_ratio": 86973.4
+    "perp_hedge_ratio": 86973.4,
+    "api_error": false
   },
   {
     "rank": 3,
     "addr": "0xe5dfc1970021fa328ab00319e20ebd175588c799",
     "tag": "MM-hedger",
-    "hip4_total": 96,
-    "hip4_mkr": 95,
+    "hip4_total": 97,
+    "hip4_mkr": 96,
     "hip4_tkr": 1,
     "mkr_pct": 99.0,
     "hip4_notional": 74.0,
@@ -42,7 +44,8 @@
     "avg_ticket": 0.8,
     "perp_total": 22,
     "perp_notional": 3103.0,
-    "perp_hedge_ratio": 42.0
+    "perp_hedge_ratio": 41.9,
+    "api_error": false
   },
   {
     "rank": 4,
@@ -57,7 +60,8 @@
     "avg_ticket": 19.2,
     "perp_total": 1228,
     "perp_notional": 359148.0,
-    "perp_hedge_ratio": 24.2
+    "perp_hedge_ratio": 24.2,
+    "api_error": false
   },
   {
     "rank": 5,
@@ -72,27 +76,29 @@
     "avg_ticket": 12.3,
     "perp_total": 41,
     "perp_notional": 1285.0,
-    "perp_hedge_ratio": 0.6
+    "perp_hedge_ratio": 0.6,
+    "api_error": false
   },
   {
     "rank": 6,
     "addr": "0x95c16466ea54608c4d1ffb931441a08476cfb3f2",
     "tag": "HFT-sweeper",
-    "hip4_total": 1614,
-    "hip4_mkr": 90,
-    "hip4_tkr": 1524,
+    "hip4_total": 1734,
+    "hip4_mkr": 97,
+    "hip4_tkr": 1637,
     "mkr_pct": 6.0,
-    "hip4_notional": 106209.0,
+    "hip4_notional": 110643.0,
     "hip4_mkts": 14,
-    "avg_ticket": 65.8,
+    "avg_ticket": 63.8,
     "perp_total": 23,
     "perp_notional": 71978.0,
-    "perp_hedge_ratio": 0.7
+    "perp_hedge_ratio": 0.7,
+    "api_error": false
   },
   {
     "rank": 7,
     "addr": "0x3e781befd071c59d820725f70ce109298f750706",
-    "tag": "perp-only-crossover",
+    "tag": "no-visible-HIP4-fills",
     "hip4_total": 0,
     "hip4_mkr": 0,
     "hip4_tkr": 0,
@@ -102,52 +108,56 @@
     "avg_ticket": 0.0,
     "perp_total": 2000,
     "perp_notional": 186100.0,
-    "perp_hedge_ratio": 186100.4
+    "perp_hedge_ratio": 186100.4,
+    "api_error": false
   },
   {
     "rank": 8,
     "addr": "0x3550dd33e3e6af5cd76822526af8cac37ba1d865",
     "tag": "MM-hedger",
-    "hip4_total": 235,
-    "hip4_mkr": 229,
+    "hip4_total": 236,
+    "hip4_mkr": 230,
     "hip4_tkr": 6,
     "mkr_pct": 97.0,
-    "hip4_notional": 2358.0,
+    "hip4_notional": 2373.0,
     "hip4_mkts": 15,
-    "avg_ticket": 10.0,
-    "perp_total": 1159,
-    "perp_notional": 79749.0,
-    "perp_hedge_ratio": 33.8
+    "avg_ticket": 10.1,
+    "perp_total": 1158,
+    "perp_notional": 94770.0,
+    "perp_hedge_ratio": 39.9,
+    "api_error": false
   },
   {
     "rank": 9,
     "addr": "0xcaef5b46df8077a07ddb2e1be56e768d8c81f6e0",
     "tag": "HFT-sweeper",
-    "hip4_total": 522,
+    "hip4_total": 534,
     "hip4_mkr": 36,
-    "hip4_tkr": 486,
+    "hip4_tkr": 498,
     "mkr_pct": 7.0,
-    "hip4_notional": 18000.0,
+    "hip4_notional": 18256.0,
     "hip4_mkts": 13,
-    "avg_ticket": 34.5,
-    "perp_total": 1478,
-    "perp_notional": 96318.0,
-    "perp_hedge_ratio": 5.4
+    "avg_ticket": 34.2,
+    "perp_total": 1466,
+    "perp_notional": 96083.0,
+    "perp_hedge_ratio": 5.3,
+    "api_error": false
   },
   {
     "rank": 10,
     "addr": "0x017e019d6344b47854635ee87f728831260c87b5",
     "tag": "MM-unhedged",
-    "hip4_total": 130,
-    "hip4_mkr": 130,
+    "hip4_total": 132,
+    "hip4_mkr": 132,
     "hip4_tkr": 0,
     "mkr_pct": 100.0,
-    "hip4_notional": 688.0,
+    "hip4_notional": 695.0,
     "hip4_mkts": 6,
     "avg_ticket": 5.3,
     "perp_total": 2,
     "perp_notional": 16.0,
-    "perp_hedge_ratio": 0.0
+    "perp_hedge_ratio": 0.0,
+    "api_error": false
   },
   {
     "rank": 11,
@@ -162,7 +172,8 @@
     "avg_ticket": 12.9,
     "perp_total": 0,
     "perp_notional": 0,
-    "perp_hedge_ratio": 0.0
+    "perp_hedge_ratio": 0.0,
+    "api_error": false
   },
   {
     "rank": 12,
@@ -177,7 +188,8 @@
     "avg_ticket": 253.2,
     "perp_total": 46,
     "perp_notional": 13358.0,
-    "perp_hedge_ratio": 1.9
+    "perp_hedge_ratio": 1.9,
+    "api_error": false
   },
   {
     "rank": 13,
@@ -192,7 +204,8 @@
     "avg_ticket": 19.2,
     "perp_total": 2,
     "perp_notional": 13.0,
-    "perp_hedge_ratio": 0.0
+    "perp_hedge_ratio": 0.0,
+    "api_error": false
   },
   {
     "rank": 14,
@@ -207,7 +220,8 @@
     "avg_ticket": 46.8,
     "perp_total": 8,
     "perp_notional": 5307.0,
-    "perp_hedge_ratio": 2.9
+    "perp_hedge_ratio": 2.9,
+    "api_error": false
   },
   {
     "rank": 15,
@@ -222,7 +236,8 @@
     "avg_ticket": 113.6,
     "perp_total": 1724,
     "perp_notional": 203026.0,
-    "perp_hedge_ratio": 6.5
+    "perp_hedge_ratio": 6.5,
+    "api_error": false
   },
   {
     "rank": 16,
@@ -237,7 +252,8 @@
     "avg_ticket": 21.1,
     "perp_total": 64,
     "perp_notional": 152620.0,
-    "perp_hedge_ratio": 515.5
+    "perp_hedge_ratio": 515.5,
+    "api_error": false
   },
   {
     "rank": 17,
@@ -252,7 +268,8 @@
     "avg_ticket": 16.1,
     "perp_total": 143,
     "perp_notional": 43992.0,
-    "perp_hedge_ratio": 85.3
+    "perp_hedge_ratio": 85.3,
+    "api_error": false
   },
   {
     "rank": 18,
@@ -267,7 +284,8 @@
     "avg_ticket": 25.8,
     "perp_total": 83,
     "perp_notional": 16147.0,
-    "perp_hedge_ratio": 28.4
+    "perp_hedge_ratio": 28.4,
+    "api_error": false
   },
   {
     "rank": 19,
@@ -282,27 +300,29 @@
     "avg_ticket": 3.8,
     "perp_total": 2,
     "perp_notional": 88.0,
-    "perp_hedge_ratio": 1.3
+    "perp_hedge_ratio": 1.3,
+    "api_error": false
   },
   {
     "rank": 20,
     "addr": "0xa67fdce246f7d442bdbb3d9e286d4d5a59bdc8b7",
     "tag": "Retail-directional",
-    "hip4_total": 9,
+    "hip4_total": 16,
     "hip4_mkr": 0,
-    "hip4_tkr": 9,
+    "hip4_tkr": 16,
     "mkr_pct": 0.0,
-    "hip4_notional": 374.0,
+    "hip4_notional": 788.0,
     "hip4_mkts": 1,
-    "avg_ticket": 41.6,
+    "avg_ticket": 49.2,
     "perp_total": 11,
     "perp_notional": 66.0,
-    "perp_hedge_ratio": 0.2
+    "perp_hedge_ratio": 0.1,
+    "api_error": false
   },
   {
     "rank": 21,
     "addr": "0x477d6e891ee44022b5c63d5fc547685c7486185c",
-    "tag": "perp-only-crossover",
+    "tag": "no-visible-HIP4-fills",
     "hip4_total": 0,
     "hip4_mkr": 0,
     "hip4_tkr": 0,
@@ -311,28 +331,30 @@
     "hip4_mkts": 0,
     "avg_ticket": 0.0,
     "perp_total": 2000,
-    "perp_notional": 110054.0,
-    "perp_hedge_ratio": 110054.0
+    "perp_notional": 107404.0,
+    "perp_hedge_ratio": 107403.9,
+    "api_error": false
   },
   {
     "rank": 22,
     "addr": "0x72d0b1f98fd9cdd4e46976edd86857b0266a62ea",
     "tag": "Mostly-maker",
     "hip4_total": 2000,
-    "hip4_mkr": 322,
-    "hip4_tkr": 1678,
+    "hip4_mkr": 324,
+    "hip4_tkr": 1676,
     "mkr_pct": 16.0,
-    "hip4_notional": 35715.0,
+    "hip4_notional": 39480.0,
     "hip4_mkts": 2,
-    "avg_ticket": 17.9,
+    "avg_ticket": 19.7,
     "perp_total": 0,
     "perp_notional": 0,
-    "perp_hedge_ratio": 0.0
+    "perp_hedge_ratio": 0.0,
+    "api_error": false
   },
   {
     "rank": 23,
     "addr": "0xd053e13157b4f76827fb919c3c8a02eed734b0b3",
-    "tag": "perp-only-crossover",
+    "tag": "no-visible-HIP4-fills",
     "hip4_total": 0,
     "hip4_mkr": 0,
     "hip4_tkr": 0,
@@ -341,8 +363,9 @@
     "hip4_mkts": 0,
     "avg_ticket": 0.0,
     "perp_total": 2000,
-    "perp_notional": 130740.0,
-    "perp_hedge_ratio": 130740.5
+    "perp_notional": 131017.0,
+    "perp_hedge_ratio": 131016.8,
+    "api_error": false
   },
   {
     "rank": 24,
@@ -355,9 +378,10 @@
     "hip4_notional": 4065.0,
     "hip4_mkts": 4,
     "avg_ticket": 123.2,
-    "perp_total": 136,
-    "perp_notional": 553383.0,
-    "perp_hedge_ratio": 136.1
+    "perp_total": 138,
+    "perp_notional": 563463.0,
+    "perp_hedge_ratio": 138.6,
+    "api_error": false
   },
   {
     "rank": 25,
@@ -372,7 +396,8 @@
     "avg_ticket": 8.6,
     "perp_total": 1993,
     "perp_notional": 788407.0,
-    "perp_hedge_ratio": 13036.3
+    "perp_hedge_ratio": 13036.3,
+    "api_error": false
   },
   {
     "rank": 26,
@@ -387,7 +412,8 @@
     "avg_ticket": 21.0,
     "perp_total": 46,
     "perp_notional": 16674.0,
-    "perp_hedge_ratio": 88.4
+    "perp_hedge_ratio": 88.4,
+    "api_error": false
   },
   {
     "rank": 27,
@@ -402,7 +428,8 @@
     "avg_ticket": 24.6,
     "perp_total": 47,
     "perp_notional": 145490.0,
-    "perp_hedge_ratio": 493.5
+    "perp_hedge_ratio": 493.5,
+    "api_error": false
   },
   {
     "rank": 28,
@@ -417,12 +444,13 @@
     "avg_ticket": 11.1,
     "perp_total": 17,
     "perp_notional": 676.0,
-    "perp_hedge_ratio": 6.7
+    "perp_hedge_ratio": 6.7,
+    "api_error": false
   },
   {
     "rank": 29,
     "addr": "0x15fd0c1807a791100461893f4bc3e43d5022d5ae",
-    "tag": "perp-only-crossover",
+    "tag": "no-visible-HIP4-fills",
     "hip4_total": 0,
     "hip4_mkr": 0,
     "hip4_tkr": 0,
@@ -431,8 +459,9 @@
     "hip4_mkts": 0,
     "avg_ticket": 0.0,
     "perp_total": 2000,
-    "perp_notional": 119214.0,
-    "perp_hedge_ratio": 119213.9
+    "perp_notional": 120122.0,
+    "perp_hedge_ratio": 120122.4,
+    "api_error": false
   },
   {
     "rank": 30,
@@ -447,7 +476,8 @@
     "avg_ticket": 24.6,
     "perp_total": 44,
     "perp_notional": 144780.0,
-    "perp_hedge_ratio": 490.9
+    "perp_hedge_ratio": 490.9,
+    "api_error": false
   },
   {
     "rank": 31,
@@ -462,7 +492,8 @@
     "avg_ticket": 28.8,
     "perp_total": 63,
     "perp_notional": 161286.0,
-    "perp_hedge_ratio": 559.7
+    "perp_hedge_ratio": 559.7,
+    "api_error": false
   },
   {
     "rank": 32,
@@ -477,7 +508,8 @@
     "avg_ticket": 6.5,
     "perp_total": 251,
     "perp_notional": 38975.0,
-    "perp_hedge_ratio": 335.1
+    "perp_hedge_ratio": 335.1,
+    "api_error": false
   },
   {
     "rank": 33,
@@ -492,37 +524,40 @@
     "avg_ticket": 15.3,
     "perp_total": 34,
     "perp_notional": 718.0,
-    "perp_hedge_ratio": 1.2
+    "perp_hedge_ratio": 1.2,
+    "api_error": false
   },
   {
     "rank": 34,
     "addr": "0xd501ccbdb70ce518b2da68c685045fa54458ec35",
     "tag": "Mostly-maker",
-    "hip4_total": 101,
-    "hip4_mkr": 89,
+    "hip4_total": 105,
+    "hip4_mkr": 93,
     "hip4_tkr": 12,
-    "mkr_pct": 88.0,
-    "hip4_notional": 56310.0,
+    "mkr_pct": 89.0,
+    "hip4_notional": 56837.0,
     "hip4_mkts": 5,
-    "avg_ticket": 557.5,
+    "avg_ticket": 541.3,
     "perp_total": 41,
     "perp_notional": 112190.0,
-    "perp_hedge_ratio": 2.0
+    "perp_hedge_ratio": 2.0,
+    "api_error": false
   },
   {
     "rank": 35,
     "addr": "0x69cdee059a750b584473e3370be6a4555ac837ec",
     "tag": "Aggressive-taker",
-    "hip4_total": 178,
+    "hip4_total": 182,
     "hip4_mkr": 0,
-    "hip4_tkr": 178,
+    "hip4_tkr": 182,
     "mkr_pct": 0.0,
-    "hip4_notional": 5852.0,
+    "hip4_notional": 5937.0,
     "hip4_mkts": 9,
-    "avg_ticket": 32.9,
-    "perp_total": 879,
-    "perp_notional": 92376.0,
-    "perp_hedge_ratio": 15.8
+    "avg_ticket": 32.6,
+    "perp_total": 860,
+    "perp_notional": 91720.0,
+    "perp_hedge_ratio": 15.4,
+    "api_error": false
   },
   {
     "rank": 36,
@@ -537,7 +572,8 @@
     "avg_ticket": 36.0,
     "perp_total": 41,
     "perp_notional": 1870.0,
-    "perp_hedge_ratio": 2.5
+    "perp_hedge_ratio": 2.5,
+    "api_error": false
   },
   {
     "rank": 37,
@@ -552,7 +588,8 @@
     "avg_ticket": 4.6,
     "perp_total": 15,
     "perp_notional": 4137.0,
-    "perp_hedge_ratio": 181.8
+    "perp_hedge_ratio": 181.8,
+    "api_error": false
   },
   {
     "rank": 38,
@@ -567,12 +604,13 @@
     "avg_ticket": 22.7,
     "perp_total": 265,
     "perp_notional": 261815.0,
-    "perp_hedge_ratio": 137.6
+    "perp_hedge_ratio": 137.6,
+    "api_error": false
   },
   {
     "rank": 39,
     "addr": "0x9fa8e99c08f4a11569f31752162c6394bd978a15",
-    "tag": "perp-only-crossover",
+    "tag": "no-visible-HIP4-fills",
     "hip4_total": 0,
     "hip4_mkr": 0,
     "hip4_tkr": 0,
@@ -581,13 +619,14 @@
     "hip4_mkts": 0,
     "avg_ticket": 0.0,
     "perp_total": 2000,
-    "perp_notional": 83818.0,
-    "perp_hedge_ratio": 83818.5
+    "perp_notional": 83523.0,
+    "perp_hedge_ratio": 83523.3,
+    "api_error": false
   },
   {
     "rank": 40,
     "addr": "0xdb94780fd8d9675805691e15c3ea32bd3a1f4736",
-    "tag": "perp-only-crossover",
+    "tag": "no-visible-HIP4-fills",
     "hip4_total": 0,
     "hip4_mkr": 0,
     "hip4_tkr": 0,
@@ -596,13 +635,14 @@
     "hip4_mkts": 0,
     "avg_ticket": 0.0,
     "perp_total": 2000,
-    "perp_notional": 85633.0,
-    "perp_hedge_ratio": 85633.3
+    "perp_notional": 84526.0,
+    "perp_hedge_ratio": 84526.1,
+    "api_error": false
   },
   {
     "rank": 41,
     "addr": "0xc240b36ba012f581cff075829db6b94bcf78ffc7",
-    "tag": "perp-only-crossover",
+    "tag": "no-visible-HIP4-fills",
     "hip4_total": 0,
     "hip4_mkr": 0,
     "hip4_tkr": 0,
@@ -611,8 +651,9 @@
     "hip4_mkts": 0,
     "avg_ticket": 0.0,
     "perp_total": 2000,
-    "perp_notional": 28845.0,
-    "perp_hedge_ratio": 28845.4
+    "perp_notional": 28800.0,
+    "perp_hedge_ratio": 28799.5,
+    "api_error": false
   },
   {
     "rank": 42,
@@ -625,9 +666,10 @@
     "hip4_notional": 1369.0,
     "hip4_mkts": 4,
     "avg_ticket": 21.1,
-    "perp_total": 1922,
-    "perp_notional": 250259.0,
-    "perp_hedge_ratio": 182.8
+    "perp_total": 1903,
+    "perp_notional": 246879.0,
+    "perp_hedge_ratio": 180.3,
+    "api_error": false
   },
   {
     "rank": 43,
@@ -642,7 +684,8 @@
     "avg_ticket": 100.0,
     "perp_total": 19,
     "perp_notional": 4432.0,
-    "perp_hedge_ratio": 4.9
+    "perp_hedge_ratio": 4.9,
+    "api_error": false
   },
   {
     "rank": 44,
@@ -657,7 +700,8 @@
     "avg_ticket": 30.6,
     "perp_total": 0,
     "perp_notional": 0,
-    "perp_hedge_ratio": 0.0
+    "perp_hedge_ratio": 0.0,
+    "api_error": false
   },
   {
     "rank": 45,
@@ -672,7 +716,8 @@
     "avg_ticket": 118.3,
     "perp_total": 16,
     "perp_notional": 5387.0,
-    "perp_hedge_ratio": 5.1
+    "perp_hedge_ratio": 5.1,
+    "api_error": false
   },
   {
     "rank": 46,
@@ -687,22 +732,24 @@
     "avg_ticket": 30.4,
     "perp_total": 3,
     "perp_notional": 305.0,
-    "perp_hedge_ratio": 1.4
+    "perp_hedge_ratio": 1.4,
+    "api_error": false
   },
   {
     "rank": 47,
     "addr": "0x64f91d59b45565f62fe87aa51b418588f299939f",
     "tag": "MM-hedger",
-    "hip4_total": 3,
-    "hip4_mkr": 3,
+    "hip4_total": 4,
+    "hip4_mkr": 4,
     "hip4_tkr": 0,
     "mkr_pct": 100.0,
-    "hip4_notional": 7.0,
+    "hip4_notional": 10.0,
     "hip4_mkts": 1,
-    "avg_ticket": 2.5,
+    "avg_ticket": 2.6,
     "perp_total": 1,
     "perp_notional": 999.0,
-    "perp_hedge_ratio": 134.6
+    "perp_hedge_ratio": 95.2,
+    "api_error": false
   },
   {
     "rank": 48,
@@ -715,9 +762,10 @@
     "hip4_notional": 195.0,
     "hip4_mkts": 1,
     "avg_ticket": 11.4,
-    "perp_total": 54,
-    "perp_notional": 19769.0,
-    "perp_hedge_ratio": 101.6
+    "perp_total": 44,
+    "perp_notional": 18646.0,
+    "perp_hedge_ratio": 95.8,
+    "api_error": false
   },
   {
     "rank": 49,
@@ -732,21 +780,23 @@
     "avg_ticket": 8.2,
     "perp_total": 98,
     "perp_notional": 35262.0,
-    "perp_hedge_ratio": 1069.4
+    "perp_hedge_ratio": 1069.4,
+    "api_error": false
   },
   {
     "rank": 50,
     "addr": "0x51d8e3c686b5327b850cfdee80a93f39865634dd",
     "tag": "MM-hedger",
-    "hip4_total": 281,
-    "hip4_mkr": 281,
+    "hip4_total": 286,
+    "hip4_mkr": 286,
     "hip4_tkr": 0,
     "mkr_pct": 100.0,
-    "hip4_notional": 18802.0,
+    "hip4_notional": 18946.0,
     "hip4_mkts": 4,
-    "avg_ticket": 66.9,
+    "avg_ticket": 66.2,
     "perp_total": 587,
     "perp_notional": 219236.0,
-    "perp_hedge_ratio": 11.7
+    "perp_hedge_ratio": 11.6,
+    "api_error": false
   }
 ]

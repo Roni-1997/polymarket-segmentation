@@ -1,37 +1,30 @@
-"""Pull 7d userFillsByTime for top-50 wallets from ../data/hip4_ws_wallets.json and classify."""
-import json, subprocess, time
+"""Pull 7d userFillsByTime for sample-selected top wallets and classify."""
+import time
 from collections import defaultdict, Counter
 
-snap = json.load(open("../data/hip4_ws_wallets.json"))
+from common import DATA_DIR, hl_info, is_hip4_coin, read_json, write_json
+
+snap = read_json(DATA_DIR / "hip4_ws_wallets.json")
 wallets = snap["wallets"]
 
 end_ms = int(time.time() * 1000)
 start_ms = end_ms - 7*24*60*60*1000
 
 def fetch_user_fills(addr):
-    payload = {"type":"userFillsByTime","user":addr,"startTime":start_ms,"endTime":end_ms,"aggregateByTime":False}
-    r = subprocess.run(
-        ["curl","-s","-X","POST","https://api.hyperliquid.xyz/info",
-         "-H","Content-Type: application/json",
-         "-d", json.dumps(payload)],
-        capture_output=True, text=True, timeout=20
+    return hl_info(
+        {"type": "userFillsByTime", "user": addr, "startTime": start_ms, "endTime": end_ms, "aggregateByTime": False},
+        timeout=20,
     )
-    try:
-        return json.loads(r.stdout) if r.stdout.strip() else []
-    except:
-        return []
-
-def is_hip4(coin):
-    return coin.startswith("#") and len(coin) > 1 and coin[1:].isdigit() and int(coin[1:]) >= 1000
 
 profiles = []
 N = 50
 for i, w in enumerate(wallets[:N], 1):
     addr = w["addr"]
     fills = fetch_user_fills(addr)
+    api_error = fills is None
     if not isinstance(fills, list): fills = []
-    hip4 = [f for f in fills if is_hip4(f.get("coin",""))]
-    perp = [f for f in fills if not is_hip4(f.get("coin",""))]
+    hip4 = [f for f in fills if is_hip4_coin(f.get("coin",""))]
+    perp = [f for f in fills if not is_hip4_coin(f.get("coin",""))]
 
     hip4_mkr = sum(1 for f in hip4 if f.get("crossed") == False)
     hip4_tkr = sum(1 for f in hip4 if f.get("crossed") == True)
@@ -47,8 +40,10 @@ for i, w in enumerate(wallets[:N], 1):
     hedge_ratio = perp_notional / max(hip4_notional, 1)
 
     # Classify
-    if hip4_total == 0:
-        tag = "perp-only-crossover"
+    if api_error:
+        tag = "api-error"
+    elif hip4_total == 0:
+        tag = "no-visible-HIP4-fills"
     elif mkr_ratio >= 0.9 and perp_notional > max(hip4_notional, 100) * 0.3:
         tag = "MM-hedger"
     elif mkr_ratio >= 0.9:
@@ -75,6 +70,7 @@ for i, w in enumerate(wallets[:N], 1):
         "avg_ticket": round(hip4_avg_ticket, 1),
         "perp_total": perp_total, "perp_notional": round(perp_notional, 0),
         "perp_hedge_ratio": round(hedge_ratio, 1),
+        "api_error": api_error,
     })
     print(f"{i:>2}. {addr[:10]}.. {tag:<22} hip4={hip4_total:>5} mkr={int(mkr_ratio*100):>3}% mkts={len(hip4_mkts):>2} $={hip4_notional:>10,.0f} perpN=${perp_notional:>10,.0f} hedgeX={hedge_ratio:>5.1f}")
 
@@ -96,8 +92,7 @@ for tag, ct in tag_counts.most_common():
 
 print(f"\nTop 50 cumulative HIP-4 notional (7d): ${total_v:,.0f}")
 print(f"Top 50 cumulative HIP-4 fills (7d):    {total_n:,}")
-print(f"(Venue 7d: $13,226,041 / 181,221 fills — top-50 captures ~{100*total_v/13226041:.1f}% notional, {100*total_n/181221:.1f}% fills)")
+print(f"(Venue 7d: $13,226,041 / 181,221 fills — sample-selected top 50 visible profile is ~{100*total_v/13226041:.1f}% notional, {100*total_n/181221:.1f}% fills)")
 
-with open("../data/hip4_top50_classified.json","w") as f:
-    json.dump(profiles, f, indent=2)
-print("\nSaved ../data/hip4_top50_classified.json")
+write_json(DATA_DIR / "hip4_top50_classified.json", profiles)
+print(f"\nSaved {DATA_DIR / 'hip4_top50_classified.json'}")

@@ -1,40 +1,47 @@
 """Subscribe to HL WebSocket trades for all HIP-4 coins, append to a JSONL file.
 Runs until killed."""
-import asyncio, json, time, sys, os
+import asyncio, json, time, sys
 import websockets
+
+from common import DATA_DIR, hl_info
 
 WS = "wss://api.hyperliquid.xyz/ws"
 
-# All current HIP-4 outcome coin sides (from outcomeMeta as of 2026-05-27)
-OUTCOMES = [100, 101, 102, 103, 104, 110, 111, 112, 113, 114, 115]
-COINS = []
-for o in OUTCOMES:
-    COINS.append(f"#{o*10}")     # side 0
-    COINS.append(f"#{o*10+1}")   # side 1
+def current_hip4_coins():
+    meta = hl_info({"type": "outcomeMeta"}, timeout=20)
+    if not isinstance(meta, dict):
+        raise RuntimeError("failed to fetch Hyperliquid outcomeMeta")
+    coins = []
+    for outcome in meta.get("outcomes", []):
+        oid = int(outcome["outcome"])
+        for side_idx, _side in enumerate(outcome.get("sideSpecs", [])):
+            coins.append(f"#{oid*10 + side_idx}")
+    return coins
 
-OUT = "../data/hip4_trades.jsonl"
-LOG = "../data/hip4_ws.log"
+OUT = DATA_DIR / "hip4_trades.jsonl"
+LOG = DATA_DIR / "hip4_ws.log"
 
 def log(msg):
     line = f"[{time.strftime('%H:%M:%S')}] {msg}\n"
-    with open(LOG, "a") as f:
+    with LOG.open("a") as f:
         f.write(line)
     sys.stdout.write(line)
     sys.stdout.flush()
 
 async def run():
-    log(f"connecting to {WS}, {len(COINS)} coins")
+    coins = current_hip4_coins()
+    log(f"connecting to {WS}, {len(coins)} coins")
     async with websockets.connect(WS, ping_interval=20, ping_timeout=20) as ws:
-        for c in COINS:
+        for c in coins:
             sub = {"method": "subscribe", "subscription": {"type": "trades", "coin": c}}
             await ws.send(json.dumps(sub))
-        log(f"sent {len(COINS)} subscription messages")
+        log(f"sent {len(coins)} subscription messages")
 
         n_trades = 0
         n_other = 0
         start = time.time()
         last_report = start
-        with open(OUT, "a") as f:
+        with OUT.open("a") as f:
             while True:
                 raw = await ws.recv()
                 msg = json.loads(raw)
@@ -55,8 +62,9 @@ async def run():
 
 if __name__ == "__main__":
     # Truncate old file
-    open(OUT, "w").close()
-    open(LOG, "w").close()
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    OUT.write_text("")
+    LOG.write_text("")
     while True:
         try:
             asyncio.run(run())
