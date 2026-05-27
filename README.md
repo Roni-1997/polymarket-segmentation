@@ -7,6 +7,38 @@ Active-retail) and measuring their share of volume by category and over time.
 Built to answer one question for the Verdict (HIP-4 outcome markets on
 Hyperliquid) diligence: **who actually drives volume on Polymarket?**
 
+## How the analysis works
+
+We classify every Polymarket wallet that traded in the trailing 30 days
+into one of 6 behavioral cohorts using two axes:
+
+| | **fast** (≥100 fills/day) | **med** (1–100 fills/day) |
+|---|---|---|
+| **highMkr** (≥70% maker share) | Pro-MM | Mid-MM |
+| **midMkr** (30–70% maker share) | Hybrid-bot | Active-mixed |
+| **lowMkr** (<30% maker share) | HFT-taker | Active-retail |
+
+(A "slow" cadence cell exists in theory but is mathematically empty —
+an "active day" requires a fill, so `fills/active_days ≥ 1` always.)
+
+Wallets are aggregated to **owner level** via
+`polymarket_polygon.users_address_lookup` so one MM running many proxy
+wallets counts as one entity. Known routing contracts (NegRisk adapter
++ CTF Exchange + 2 others) are excluded both before and after
+proxy-to-owner mapping; a behavioral safety net (`n_fills ≤ 5M /
+window`) catches any router we missed.
+
+Volume is reported two ways: **touched** (maker + taker amounts, used
+for participant share) and **single-counted** (touched / 2 — the
+Paradigm-style venue notional, comparable to public volume numbers).
+LP rewards UNION merkle-distributor claims with direct USDC transfers
+from the rewards wallet, deduped by `evt_tx_hash` to avoid
+double-counting. Material LP confirmation requires ≥$1,000 all-time.
+
+Full spec in [docs/methodology.md](docs/methodology.md). Reproducible
+SQL in [queries/](queries/). External research cross-validation in
+[docs/external_research.md](docs/external_research.md).
+
 ## TL;DR — May 2026 data (audited + rerun)
 
 - Real Polymarket volume: **~$103M/day single-counted notional** over
@@ -27,6 +59,47 @@ Hyperliquid) diligence: **who actually drives volume on Polymarket?**
   → HIP-4. Verdict cannot piggyback on Polymarket flywheels.
 - All `results/*.csv` are now from the audited rerun. Numbers match
   the SQL in `queries/`.
+
+### Volume vs headcount — the asymmetry that matters most
+
+Distinct owner counts from Q1 2026 (90d) as a stable reference; trailing
+30d counts are smaller but in the same ratio. Avg trade sizes from the
+trailing 30d drilldown ([cohort_x_category_drilldown_30d.csv](results/cohort_x_category_drilldown_30d.csv)).
+
+| Cohort | Distinct owners (Q1 2026, 90d) | % platform volume (T30d) | Avg trade size (T30d, $/fill) |
+|---|---:|---:|---:|
+| Pro-MM (highMkr_fast) | **8,095** | 31% | $22.70 overall; $7 crypto, $415 geopolitics |
+| HFT-taker (lowMkr_fast) | 40,910 | 21% | $19.10 overall; $554 geopolitics |
+| Hybrid-bot (midMkr_fast) | 11,603 | 17% | $26.73 overall |
+| Active-retail (lowMkr_med) | **849,631** | 16% | $39.54 overall; $110 politics |
+| Mid-MM (highMkr_med) | 160,046 | 9% | $89.16 overall; $552 geopolitics |
+| Active-mixed (midMkr_med) | 183,232 | 6% | $51.85 overall |
+
+**~60,000 professional wallets generate ~78% of volume; ~1.2M retail-tier
+wallets generate ~22%.** Polymarket has retail in the sense of headcount,
+not in the sense of dollars. The diligence question "who drives volume"
+answers itself once you see this asymmetry: design for the professional
+cohort, even though the homepage looks retail-facing.
+
+A few category-level trade-size signals worth flagging:
+
+- **Crypto fills average $7 (Pro-MM) to $33 (Mid-MM)** — the 5m/15m
+  recurring binaries are tiny bets repeated thousands of times. Pro-MM
+  fires 26.8M fills/30d on crypto alone at $7 avg = capital turns over
+  fast, no inventory builds up.
+- **Geopolitics fills average $400–$550 across all cohorts** — chunky,
+  human-driven bets on Iran/Ukraine/world events. Even bots that trade
+  this category trade it at much bigger size.
+- **Politics retail averages $110/fill** — retail in politics is real
+  money, not dust. ~167,000 retail wallets average $110/fill = retail
+  takes politics seriously.
+- **Sports fills $57 (retail) → $91 (Pro-MM)** — pretty flat across
+  cohorts, suggesting standardized sports betting sizes regardless of
+  who's behind the wallet.
+
+Full per-cell breakdown (cohort × category × wallets / fills / avg
+trade size) in
+[results/cohort_x_category_drilldown_30d.csv](results/cohort_x_category_drilldown_30d.csv).
 
 See [docs/findings.md](docs/findings.md) for the full memo.
 
