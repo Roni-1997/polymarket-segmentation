@@ -32,6 +32,7 @@ See [docs/findings.md](docs/findings.md) for the full memo.
 |---|---|
 | [docs/findings.md](docs/findings.md) | Strategic findings and Verdict implications |
 | [docs/methodology.md](docs/methodology.md) | Classifier rules, contract exclusions, caveats |
+| [docs/external_research.md](docs/external_research.md) | External sources (Paradigm, Solidus, Chainalysis, Dune dashboards), cross-validation table, open questions |
 | [queries/](queries/) | Per-query SQL files — one per analysis step, paste into Dune to reproduce |
 | [results/](results/) | CSV dumps of every result table (from the audited rerun) |
 
