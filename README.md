@@ -21,6 +21,10 @@ Hyperliquid) diligence: **who actually drives volume on Polymarket?**
 - Pro-MM cohort top 20 wallets are confirmed against the LP-rewards
   registry (≥$1k threshold) — the behavioral classifier finds the real
   oligopoly.
+- **Zero of the top 100 Polymarket wallets are active on Hyperliquid
+  HIP-4** (see [hip4_cross_venue/](hip4_cross_venue/)). The MM
+  migration path that exists runs HL-perps → HIP-4, not Polymarket
+  → HIP-4. Verdict cannot piggyback on Polymarket flywheels.
 - All `results/*.csv` are now from the audited rerun. Numbers match
   the SQL in `queries/`.
 
@@ -35,6 +39,7 @@ See [docs/findings.md](docs/findings.md) for the full memo.
 | [docs/external_research.md](docs/external_research.md) | External sources (Paradigm, Solidus, Chainalysis, Dune dashboards), cross-validation table, open questions |
 | [queries/](queries/) | Per-query SQL files — one per analysis step, paste into Dune to reproduce |
 | [results/](results/) | CSV dumps of every result table (from the audited rerun) |
+| [hip4_cross_venue/](hip4_cross_venue/) | Bidirectional overlap check between HIP-4 and Polymarket wallets (sister analysis) |
 
 ## How to reproduce
 

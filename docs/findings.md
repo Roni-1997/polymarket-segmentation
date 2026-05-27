@@ -183,3 +183,16 @@ Each cited number above maps to a specific CSV under `results/`:
 
 5. **Avoid overfitting to politics.** Verdict's HIP-4 edge is strongest
    in objective, fast-resolving, hedgeable crypto/financial markets.
+
+6. **Do not assume Polymarket MMs will migrate to HIP-4 organically.**
+   The sister analysis in [hip4_cross_venue/](../hip4_cross_venue/)
+   shows 0/100 top Polymarket wallets and 0/25 LP-reward recipients
+   are active on Hyperliquid HIP-4 25 days after launch. Only 2 of
+   the top 30 Polymarket wallets have any HL perp activity. The
+   cross-venue migration path that exists runs **HL-perps → HIP-4**,
+   not Polymarket → HIP-4. Verdict's MM recruitment plan must target
+   the HL-perps audience directly and recruit Polymarket-style
+   expertise as a separate effort. The structural friction explaining
+   this gap (Polygon vs HL, USDC.e vs USDC, Gnosis-Safe + meta tx vs
+   EOA-direct, UMA vs validator-vote settlement) is unlikely to
+   collapse on its own.
