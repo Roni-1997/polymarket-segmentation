@@ -1,7 +1,7 @@
-cohort,n_wallets,total_vol_musd,maker_vol_musd,taker_vol_musd,pct_of_quarter
-highMkr_fast,8095,6454.1,5557.4,896.7,29.1
-midMkr_fast,11603,4876.1,2600.2,2275.9,22
-lowMkr_fast,40910,3798.8,320.1,3478.8,17.1
-lowMkr_med,849631,3383.8,192.2,3191.6,15.2
-midMkr_med,183233,2217.8,1122.3,1095.5,10
-highMkr_med,160045,1466.7,1271.5,195.2,6.6
+cohort,n_wallets,total_touched_vol_musd,equivalent_single_counted_musd,maker_side_vol_musd,taker_side_vol_musd,pct_of_touched_volume
+highMkr_fast,8095,6454.1,3227.1,5557.4,896.7,29.1
+midMkr_fast,11603,4876.1,2438.1,2600.2,2275.9,22
+lowMkr_fast,40910,3798.8,1899.4,320.1,3478.8,17.1
+lowMkr_med,849631,3383.8,1691.9,192.2,3191.6,15.2
+midMkr_med,183232,2217.8,1108.9,1122.3,1095.5,10
+highMkr_med,160046,1466.7,733.4,1271.5,195.2,6.6

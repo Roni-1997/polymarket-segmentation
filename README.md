@@ -7,21 +7,22 @@ Active-retail) and measuring their share of volume by category and over time.
 Built to answer one question for the Verdict (HIP-4 outcome markets on
 Hyperliquid) diligence: **who actually drives volume on Polymarket?**
 
-## TL;DR — audit status
+## TL;DR — May 2026 data (audited + rerun)
 
-- The SQL classifies actors on a **touched-volume basis**: every fill is
-  counted once for the maker and once for the taker. This is the right
-  denominator for participant share, but it is **2x single-counted venue
-  notional**.
-- The current SQL excludes known routing/system contracts both as raw
-  trade counterparties and again **after proxy-to-owner mapping**. This
-  matters because some system addresses can reappear as mapped owners.
-- LP rewards are deduped across merkle claims and direct USDC transfers.
-  Dust rewards are reported separately from material LP-reward
-  confirmation.
-- Existing files in `results/` are legacy exports from the pre-audit
-  query version. Rerun the SQL before citing exact cohort percentages or
-  dollar volumes.
+- Real Polymarket volume: **~$103M/day single-counted notional** over
+  the trailing 30d — about half the headline number, matching
+  Paradigm's December 2025 double-counting finding.
+- Cohort split by touched volume: **MMs 39.9%, Bots 37.9%, Retail 22.2%**.
+- **Retail share dropped from 33% (Q4 2025) to 22% (May 2026)** —
+  Polymarket is professionalizing rapidly.
+- LP reward concentration: top 3 owners = **20%** of all rewards (not
+  34% as the pre-audit doc said); top 50 = **50%**. There's a 40%
+  long tail across ~111,000 reward-earning owners.
+- Pro-MM cohort top 20 wallets are confirmed against the LP-rewards
+  registry (≥$1k threshold) — the behavioral classifier finds the real
+  oligopoly.
+- All `results/*.csv` are now from the audited rerun. Numbers match
+  the SQL in `queries/`.
 
 See [docs/findings.md](docs/findings.md) for the full memo.
 
@@ -32,7 +33,7 @@ See [docs/findings.md](docs/findings.md) for the full memo.
 | [docs/findings.md](docs/findings.md) | Strategic findings and Verdict implications |
 | [docs/methodology.md](docs/methodology.md) | Classifier rules, contract exclusions, caveats |
 | [queries/](queries/) | Per-query SQL files — one per analysis step, paste into Dune to reproduce |
-| [results/](results/) | Legacy CSV dumps; rerun queries before citing exact numbers |
+| [results/](results/) | CSV dumps of every result table (from the audited rerun) |
 
 ## How to reproduce
 
