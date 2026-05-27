@@ -1,8 +1,12 @@
--- Top 20 wallets per cohort (30d) with LP-rewards-confirmed flag.
+-- Top 20 wallets per cohort (30d) with LP-rewards-observed / confirmed flags.
 -- LP rewards UNION of both sources (merkle distributor + USDC transfers
--- from the rewards distributor wallet). Validates the classifier:
--- Pro-MM top 20 should be ~85% LP-confirmed; HFT-taker top 20 should
--- be ~50% confirmed (they sometimes earn small rebates).
+-- from the rewards distributor wallet), with same-tx direct transfers
+-- excluded to avoid double-counting merkle claims.
+--
+-- Validation interpretation:
+--   lp_rewards_observed = any reward history, including dust.
+--   lp_rewards_confirmed_1k = material LP-reward history. Use this for
+--   MM validation, because dust rewards are not a strong identity signal.
 --
 -- Cost: ~45 credits.
 
@@ -23,12 +27,17 @@ trades AS (
     AND t.maker NOT IN (SELECT addr FROM excluded_contracts)
     AND t.taker NOT IN (SELECT addr FROM excluded_contracts)
 ),
-wallet_sides AS (
+wallet_sides_raw AS (
   SELECT COALESCE(u.owner, t.taker) AS wallet, 'taker' AS side, t.amount AS notional, t.block_time, t.condition_id
   FROM trades t LEFT JOIN polymarket_polygon.users_address_lookup u ON u.polymarket_wallet = t.taker
   UNION ALL
   SELECT COALESCE(u.owner, t.maker) AS wallet, 'maker' AS side, t.amount AS notional, t.block_time, t.condition_id
   FROM trades t LEFT JOIN polymarket_polygon.users_address_lookup u ON u.polymarket_wallet = t.maker
+),
+wallet_sides AS (
+  SELECT *
+  FROM wallet_sides_raw
+  WHERE wallet NOT IN (SELECT addr FROM excluded_contracts)
 ),
 wallet_features AS (
   SELECT wallet,
@@ -39,7 +48,7 @@ wallet_features AS (
     SUM(CASE WHEN side='maker' THEN notional ELSE 0 END) AS maker_vol
   FROM wallet_sides
   GROUP BY 1
-  HAVING COUNT(DISTINCT condition_id) <= 50000
+  HAVING COUNT(*) <= 5000000
 ),
 cohorts AS (
   SELECT wallet, total_vol, maker_vol, n_fills, n_active_days, n_unique_markets,
@@ -57,15 +66,27 @@ cohorts AS (
     END AS cadence_band
   FROM wallet_features
 ),
--- LP rewards UNION — both sources matter; merkle alone misses ~50% of Tier-1 MMs
-lp_rewards_raw AS (
-  SELECT tokenReceiver AS recipient, amount/1e6 AS amt
+-- LP rewards UNION — both sources matter; merkle alone misses older direct
+-- payouts, but raw transfers can overlap merkle claims.
+merkle_rewards AS (
+  SELECT evt_tx_hash, tokenReceiver AS recipient, amount/1e6 AS amt
   FROM polymarket_usdc_merkle_distributor_polygon.MerkleDistributor_evt_Claimed
+),
+direct_rewards AS (
+  SELECT tr.evt_tx_hash, tr."to" AS recipient, tr.value/1e6 AS amt
+  FROM erc20_polygon.evt_Transfer tr
+  WHERE tr."from" = from_hex('c288480574783bd7615170660d71753378159c47')
+    AND tr.contract_address = from_hex('2791bca1f2de4661ed88a30c99a7a9449aa84174')
+    AND NOT EXISTS (
+      SELECT 1
+      FROM merkle_rewards mr
+      WHERE mr.evt_tx_hash = tr.evt_tx_hash
+    )
+),
+lp_rewards_raw AS (
+  SELECT recipient, amt FROM merkle_rewards
   UNION ALL
-  SELECT "to" AS recipient, value/1e6 AS amt
-  FROM erc20_polygon.evt_Transfer
-  WHERE "from" = from_hex('c288480574783BD7615170660d71753378159c47')
-    AND contract_address = from_hex('2791bca1f2de4661ed88a30c99a7a9449aa84174')
+  SELECT recipient, amt FROM direct_rewards
 ),
 mm_confirmed AS (
   SELECT COALESCE(u.owner, r.recipient) AS wallet, SUM(r.amt) AS rewards_usd
@@ -82,12 +103,14 @@ SELECT
   r.maker_band || '_' || r.cadence_band AS cohort,
   r.rnk AS rank,
   CONCAT('0x', LOWER(to_hex(r.wallet))) AS wallet,
-  ROUND(r.total_vol/1e6, 2) AS vol_musd,
+  ROUND(r.total_vol/1e6, 2) AS touched_vol_musd,
   ROUND(r.maker_share, 3) AS maker_share,
   r.n_fills,
   r.n_unique_markets,
   CAST(ROUND(r.fills_per_day, 0) AS INTEGER) AS fills_per_day,
-  CAST(ROUND(COALESCE(m.rewards_usd, 0), 0) AS BIGINT) AS lp_rewards_usd
+  CAST(ROUND(COALESCE(m.rewards_usd, 0), 0) AS BIGINT) AS lp_rewards_usd,
+  COALESCE(m.rewards_usd, 0) > 0 AS lp_rewards_observed,
+  COALESCE(m.rewards_usd, 0) >= 1000 AS lp_rewards_confirmed_1k
 FROM ranked r
 LEFT JOIN mm_confirmed m ON m.wallet = r.wallet
 WHERE r.rnk <= 20

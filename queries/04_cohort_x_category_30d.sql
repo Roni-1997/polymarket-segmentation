@@ -7,8 +7,10 @@
 --      by 2-5x).
 --
 -- Output: one row per (cohort), columns by category, ordered by total
--- volume. Re-aggregate categories with column sums for a category-only
--- view; collapse cohorts to MM/HFT/Retail to compare to original memo.
+-- touched volume. Touched volume counts both maker and taker sides. Divide
+-- by 2 only when comparing to single-counted venue notional.
+-- Re-aggregate categories with column sums for a category-only view; collapse
+-- cohorts to MM/HFT/Retail to compare to original memo.
 --
 -- Cost: ~30 credits on Dune free tier. Runs in ~60-90 sec.
 
@@ -31,13 +33,14 @@ trades_cat AS (
   SELECT t.block_time, t.taker, t.maker, t.amount, t.condition_id,
     CASE
       WHEN mc.tags LIKE 'Crypto%' THEN 'crypto'
-      WHEN mc.tags LIKE 'Sports%' THEN 'sports'
+      WHEN mc.tags LIKE 'Sports%' OR mc.tags LIKE 'Soccer%' OR mc.tags LIKE 'Football%'
+        OR mc.tags LIKE 'football%' THEN 'sports'
       WHEN mc.tags LIKE 'Politic%' OR mc.tags LIKE 'Trump%' OR mc.tags LIKE 'Elections%' THEN 'politics'
       WHEN mc.tags LIKE 'Pop Culture%' OR mc.tags LIKE 'Culture%' OR mc.tags LIKE 'Entertain%'
         OR mc.tags LIKE 'Awards%' OR mc.tags LIKE 'MrBeast%' OR mc.tags LIKE 'YouTube%'
         OR mc.tags LIKE 'Movies%' OR mc.tags LIKE 'Music%' OR mc.tags LIKE 'box office%'
         OR mc.tags LIKE 'Celebrities%' OR mc.tags LIKE 'SpaceX%' OR mc.tags LIKE 'Breaking News%'
-        OR mc.tags LIKE 'Prediction Markets%' OR mc.tags LIKE 'football%' THEN 'culture'
+        OR mc.tags LIKE 'Prediction Markets%' THEN 'culture'
       WHEN mc.tags LIKE 'Business%' OR mc.tags LIKE 'Econ%' OR mc.tags LIKE 'Fed%'
         OR mc.tags LIKE 'Trade Wars%' OR mc.tags LIKE 'Macro%' OR mc.tags LIKE 'Finance%'
         OR mc.tags LIKE 'Stocks%' OR mc.tags LIKE 'Markets%'
@@ -59,12 +62,17 @@ trades_cat AS (
     AND t.maker NOT IN (SELECT addr FROM excluded_contracts)
     AND t.taker NOT IN (SELECT addr FROM excluded_contracts)
 ),
-wallet_sides AS (
+wallet_sides_raw AS (
   SELECT COALESCE(u.owner, t.taker) AS wallet, 'taker' AS side, t.amount AS notional, t.block_time, t.condition_id, t.category
   FROM trades_cat t LEFT JOIN polymarket_polygon.users_address_lookup u ON u.polymarket_wallet = t.taker
   UNION ALL
   SELECT COALESCE(u.owner, t.maker) AS wallet, 'maker' AS side, t.amount AS notional, t.block_time, t.condition_id, t.category
   FROM trades_cat t LEFT JOIN polymarket_polygon.users_address_lookup u ON u.polymarket_wallet = t.maker
+),
+wallet_sides AS (
+  SELECT *
+  FROM wallet_sides_raw
+  WHERE wallet NOT IN (SELECT addr FROM excluded_contracts)
 ),
 wallet_features AS (
   SELECT wallet,
@@ -75,7 +83,7 @@ wallet_features AS (
     SUM(CASE WHEN side='maker' THEN notional ELSE 0 END) AS maker_vol
   FROM wallet_sides
   GROUP BY 1
-  HAVING COUNT(DISTINCT condition_id) <= 50000  -- safety net for unidentified routers
+  HAVING COUNT(*) <= 5000000  -- safety net for unidentified routers
 ),
 cohorts AS (
   SELECT wallet,
@@ -104,16 +112,17 @@ coh_cat AS (
   GROUP BY 1, 2
 )
 SELECT cohort,
-  ROUND(SUM(CASE WHEN category='sports'      THEN vol ELSE 0 END)/1e6, 1) AS sports_musd,
-  ROUND(SUM(CASE WHEN category='politics'    THEN vol ELSE 0 END)/1e6, 1) AS politics_musd,
-  ROUND(SUM(CASE WHEN category='crypto'      THEN vol ELSE 0 END)/1e6, 1) AS crypto_musd,
-  ROUND(SUM(CASE WHEN category='finance'     THEN vol ELSE 0 END)/1e6, 1) AS finance_musd,
-  ROUND(SUM(CASE WHEN category='culture'     THEN vol ELSE 0 END)/1e6, 1) AS culture_musd,
-  ROUND(SUM(CASE WHEN category='geopolitics' THEN vol ELSE 0 END)/1e6, 1) AS geopol_musd,
-  ROUND(SUM(CASE WHEN category='weather'     THEN vol ELSE 0 END)/1e6, 1) AS weather_musd,
-  ROUND(SUM(CASE WHEN category='tech'        THEN vol ELSE 0 END)/1e6, 1) AS tech_musd,
-  ROUND(SUM(CASE WHEN category='other'       THEN vol ELSE 0 END)/1e6, 1) AS other_musd,
-  ROUND(SUM(vol)/1e6, 1) AS total_musd
+  ROUND(SUM(CASE WHEN category='sports'      THEN vol ELSE 0 END)/1e6, 1) AS sports_touched_musd,
+  ROUND(SUM(CASE WHEN category='politics'    THEN vol ELSE 0 END)/1e6, 1) AS politics_touched_musd,
+  ROUND(SUM(CASE WHEN category='crypto'      THEN vol ELSE 0 END)/1e6, 1) AS crypto_touched_musd,
+  ROUND(SUM(CASE WHEN category='finance'     THEN vol ELSE 0 END)/1e6, 1) AS finance_touched_musd,
+  ROUND(SUM(CASE WHEN category='culture'     THEN vol ELSE 0 END)/1e6, 1) AS culture_touched_musd,
+  ROUND(SUM(CASE WHEN category='geopolitics' THEN vol ELSE 0 END)/1e6, 1) AS geopol_touched_musd,
+  ROUND(SUM(CASE WHEN category='weather'     THEN vol ELSE 0 END)/1e6, 1) AS weather_touched_musd,
+  ROUND(SUM(CASE WHEN category='tech'        THEN vol ELSE 0 END)/1e6, 1) AS tech_touched_musd,
+  ROUND(SUM(CASE WHEN category='other'       THEN vol ELSE 0 END)/1e6, 1) AS other_touched_musd,
+  ROUND(SUM(vol)/1e6, 1) AS total_touched_musd,
+  ROUND(SUM(vol)/2e6, 1) AS equivalent_single_counted_musd
 FROM coh_cat
 GROUP BY 1
-ORDER BY total_musd DESC;
+ORDER BY total_touched_musd DESC;

@@ -6,6 +6,9 @@
 -- timeout on 90-day windows. To get category breakdown for a quarter,
 -- you'd need to chunk further (45d or 30d) and combine.
 --
+-- Output volume is touched volume: maker-side + taker-side volume. Divide
+-- by 2 only when comparing to single-counted venue notional.
+--
 -- Cost: ~12 credits.
 
 WITH params AS (
@@ -29,12 +32,17 @@ trades AS (
     AND t.maker NOT IN (SELECT addr FROM excluded_contracts)
     AND t.taker NOT IN (SELECT addr FROM excluded_contracts)
 ),
-wallet_sides AS (
+wallet_sides_raw AS (
   SELECT COALESCE(u.owner, t.taker) AS wallet, 'taker' AS side, t.amount AS notional, t.block_time
   FROM trades t LEFT JOIN polymarket_polygon.users_address_lookup u ON u.polymarket_wallet = t.taker
   UNION ALL
   SELECT COALESCE(u.owner, t.maker) AS wallet, 'maker' AS side, t.amount AS notional, t.block_time
   FROM trades t LEFT JOIN polymarket_polygon.users_address_lookup u ON u.polymarket_wallet = t.maker
+),
+wallet_sides AS (
+  SELECT *
+  FROM wallet_sides_raw
+  WHERE wallet NOT IN (SELECT addr FROM excluded_contracts)
 ),
 wallet_features AS (
   SELECT wallet,
@@ -63,10 +71,11 @@ cohorts AS (
 SELECT
   maker_band || '_' || cadence_band AS cohort,
   COUNT(*) AS n_wallets,
-  ROUND(SUM(total_vol)/1e6, 1) AS total_vol_musd,
-  ROUND(SUM(maker_vol)/1e6, 1) AS maker_vol_musd,
-  ROUND(SUM(total_vol - maker_vol)/1e6, 1) AS taker_vol_musd,
-  ROUND(SUM(total_vol) / SUM(SUM(total_vol)) OVER () * 100, 1) AS pct_of_quarter
+  ROUND(SUM(total_vol)/1e6, 1) AS total_touched_vol_musd,
+  ROUND(SUM(total_vol)/2e6, 1) AS equivalent_single_counted_musd,
+  ROUND(SUM(maker_vol)/1e6, 1) AS maker_side_vol_musd,
+  ROUND(SUM(total_vol - maker_vol)/1e6, 1) AS taker_side_vol_musd,
+  ROUND(SUM(total_vol) / SUM(SUM(total_vol)) OVER () * 100, 1) AS pct_of_touched_volume
 FROM cohorts
 GROUP BY 1
-ORDER BY total_vol_musd DESC;
+ORDER BY total_touched_vol_musd DESC;
