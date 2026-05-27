@@ -1,0 +1,26 @@
+# Secrets — NEVER commit
+.env
+.env.*
+*.key
+*api-key*
+*api_key*
+DUNE_API_KEY*
+
+# Local tmp
+/tmp/
+*.tmp
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Editor
+.vscode/
+.idea/
+*.swp

@@ -1,0 +1,7 @@
+cohort,n_wallets,total_vol_musd,maker_vol_musd,taker_vol_musd,pct_of_quarter
+highMkr_fast,2327,2398.9,2032.8,366,23.2
+midMkr_fast,2773,2355.6,1253.7,1101.9,22.8
+lowMkr_med,627062,1859.1,128.2,1730.9,18
+midMkr_med,131945,1517.5,766.2,751.3,14.7
+lowMkr_fast,5095,1192.3,114,1078.2,11.5
+highMkr_med,96048,1003.7,860.7,143,9.7
