@@ -16,14 +16,37 @@ polymarket_polygon.market_trades (raw fills)
     ├─► aggregate per (wallet, window) → wallet_features
     │       │ COUNT(*), SUM(notional), maker_vol, n_active_days,
     │       │ n_unique_markets
+    │       │ exclude system wallets again after owner mapping
     │       │ HAVING n_fills ≤ 5,000,000 (safety net for missed contracts)
     │
     ├─► classify into 9-cell grid (maker_band × cadence_band) → cohorts
     │
     ├─► JOIN market_details for category → wallet_cat_vol
     │
-    └─► output: cohort × category × volume
+    └─► output: cohort × category × touched volume
 ```
+
+## Volume convention
+
+The cohort queries intentionally fan every fill into two rows: one maker
+row and one taker row. The resulting `total_vol` / `total_touched_musd`
+is **touched volume**, not single-counted venue notional.
+
+Use touched volume for participant shares:
+
+```
+segment touched volume / total touched volume
+```
+
+Use single-counted notional for venue volume:
+
+```
+equivalent single-counted notional = touched volume / 2
+```
+
+This distinction is load-bearing. MMs that take liquidity still count as
+MM flow once their wallet is classified as an MM, but absolute dollar
+volume must not be compared to public venue volume until divided by 2.
 
 ## Wallet aggregation: owner level, not proxy level
 
@@ -39,6 +62,10 @@ This DOES NOT cluster across multiple owner EOAs run by the same firm
 require manual address clustering, which is out of scope.
 
 ## Cohort classification (9-cell grid)
+
+The current main classifier is a maker-share × cadence grid. It does not
+yet create a separate complete-set-arber cohort. Add split/merge features
+from Conditional Tokens events before making arber-share claims.
 
 ```
                     cadence_band (n_fills / n_active_days)
@@ -77,9 +104,10 @@ into Pro-MM.
 
 ## Contract exclusion
 
-NegRisk multi-outcome markets route through adapter contracts.
-The contract address appears as one side of OrderFilled events, inflating
-"HFT-taker" volume by ~$3B/month. Excluded:
+NegRisk multi-outcome markets route through adapter contracts. System
+addresses can appear either as raw maker/taker addresses or, after
+`users_address_lookup`, as owner addresses. We therefore exclude them in
+both places.
 
 | Address | What it is |
 |---|---|
@@ -88,13 +116,13 @@ The contract address appears as one side of OrderFilled events, inflating
 | `0x4bfb41d5b3570defd03c39a9a4d8de6bd8b8982e` | CTF Exchange contract |
 | `0xc5d563a36ae78145c45a50134d48a1215220f80a` | Suspected router (106k fills/day, 0% maker) |
 
-**Safety net**: `HAVING COUNT(*) <= 5,000,000` per quarter at the
-wallet_features step. Catches any router with >55k fills/day average
-that we haven't enumerated.
+**Safety net**: `HAVING COUNT(*) <= 5,000,000` per analysis window at
+the `wallet_features` step. Catches any missed system actor with extreme
+fill count.
 
-This drops total platform volume by ~50% from the headline number,
-matching Paradigm's December 2025 finding that Polymarket's
-OrderFilled-based volume is ~2× overstated.
+Do not infer the venue's true notional reduction directly from this
+filter. The cohort outputs are touched volume; compare to headline venue
+volume only after converting to single-counted notional.
 
 ## Category mapping (regex on `market_details.tags`)
 
@@ -104,36 +132,42 @@ high-level category. Match patterns:
 | Category | Patterns |
 |---|---|
 | crypto | `Crypto%` |
-| sports | `Sports%` |
+| sports | `Sports%`, `Soccer%`, `Football%`, `football%` |
 | politics | `Politic%`, `Trump%`, `Elections%` |
-| culture | `Pop Culture%`, `Culture%`, `Entertain%`, `Awards%`, `MrBeast%`, `YouTube%`, `Movies%`, `Music%`, `box office%`, `Celebrities%`, `SpaceX%`, `Breaking News%`, `Prediction Markets%`, `football%` |
+| culture | `Pop Culture%`, `Culture%`, `Entertain%`, `Awards%`, `MrBeast%`, `YouTube%`, `Movies%`, `Music%`, `box office%`, `Celebrities%`, `SpaceX%`, `Breaking News%`, `Prediction Markets%` |
 | finance | `Business%`, `Econ%`, `Fed%`, `Trade Wars%`, `Macro%`, `Finance%`, `Stocks%`, `Markets%`, `Oil%`, `Inflation%`, `interest rates%` |
 | geopolitics | `Geopolit%`, `World%`, `Middle East%`, `War%`, `Iran%`, `Ukraine%`, `Russia%`, `China%`, `Venezuela%`, `Syria%`, `Gaza%`, `world affairs%`, `strike%`, `Brazil%`, `UK%` |
 | weather | `Weather%` |
 | tech | `AI%`, `Science%`, `Tech%` |
 | other | everything else (including null tags) |
 
-The "other" bucket still holds ~35% of volume, almost entirely
-markets with NULL tags — typically the recurring high-frequency
-crypto/sports markets that lost their tag metadata at some point.
-Resolving this would require an external market-to-tag registry.
+The "other" bucket can still be large, mostly because some recurring
+high-frequency crypto/sports markets have NULL tags. Resolving this would
+require an external market-to-tag registry.
 
 ## LP rewards ground truth
 
-Two sources, UNION'd:
+Two sources, UNION'd after deduplication:
 
 1. `polymarket_usdc_merkle_distributor_polygon.MerkleDistributor_evt_Claimed`
    — merkle airdrop claims (the canonical rewards mechanism).
 2. `erc20_polygon.evt_Transfer` where `"from" = 0xc28848...` (the rewards
    distributor wallet) and `contract_address = USDC` — older direct-transfer
-   path.
+   path. Transfers in the same transaction as a merkle claim are excluded
+   to avoid double-counting claim payouts.
 
 Aggregated per owner via `users_address_lookup` (rewards go to proxy
 wallets; the owner is the firm).
 
-**Validation result**: Pro-MM cohort top 20 — 17/20 are LP-confirmed.
-Mid-MM 14/20. Hybrid-bot 14/20. The behavioral classifier independently
-identifies the same wallets the rewards data confirms as MMs.
+Use two reward flags:
+
+| Flag | Meaning |
+|---|---|
+| `lp_rewards_observed` | Any reward history, including dust |
+| `lp_rewards_confirmed_1k` | At least $1,000 in rewards; stronger MM-program evidence |
+
+Dust rewards are not enough to call a wallet an MM. Use
+`lp_rewards_confirmed_1k` for validation claims.
 
 ## Schema gotchas encountered
 
