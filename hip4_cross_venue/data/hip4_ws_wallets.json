@@ -1,0 +1,2306 @@
+{
+  "trade_count": 548,
+  "wallet_count": 127,
+  "total_notional": 16877.0,
+  "wallets": [
+    {
+      "addr": "0x8f2ad2ef22204d83d6a2b425ede2a7f15f3b1645",
+      "trades": 88,
+      "notional": 440.0000000000001,
+      "markets": [
+        "RecNamed1/1",
+        "CPI=4.3%/0",
+        "RecNamed2/0",
+        "CPI<4.3%/1",
+        "CPI<4.3%/0",
+        "CPI>4.3%/0",
+        "RecNamed0/0",
+        "CPI=4.3%/1",
+        "RecNamed0/1",
+        "RecNamed2/1",
+        "CPI>4.3%/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 44,
+      "as_second": 44,
+      "trades_per_market": {
+        "CPI<4.3%/0": 15,
+        "CPI<4.3%/1": 15,
+        "CPI=4.3%/0": 7,
+        "CPI=4.3%/1": 7,
+        "CPI>4.3%/0": 7,
+        "CPI>4.3%/1": 7,
+        "RecNamed0/0": 3,
+        "RecNamed0/1": 3,
+        "RecNamed1/0": 1,
+        "RecNamed1/1": 1,
+        "RecNamed2/0": 11,
+        "RecNamed2/1": 11
+      },
+      "first_seen_ms": 1779871790016,
+      "last_seen_ms": 1779905903279
+    },
+    {
+      "addr": "0xf957e361399ca0592d6f550f41449f0005814ef0",
+      "trades": 66,
+      "notional": 1179.0000000000002,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed0/0",
+        "BTC75668/0",
+        "RecNamed0/1",
+        "BTC75668/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 33,
+      "as_second": 33,
+      "trades_per_market": {
+        "BTC75668/0": 14,
+        "BTC75668/1": 14,
+        "RecNamed0/0": 8,
+        "RecNamed0/1": 8,
+        "RecNamed1/0": 11,
+        "RecNamed1/1": 11
+      },
+      "first_seen_ms": 1779904850473,
+      "last_seen_ms": 1779911859085
+    },
+    {
+      "addr": "0xe5dfc1970021fa328ab00319e20ebd175588c799",
+      "trades": 46,
+      "notional": 1438.0,
+      "markets": [
+        "RecNamed2/1",
+        "RecNamed2/0"
+      ],
+      "as_first": 23,
+      "as_second": 23,
+      "trades_per_market": {
+        "RecNamed2/0": 23,
+        "RecNamed2/1": 23
+      },
+      "first_seen_ms": 1779902935036,
+      "last_seen_ms": 1779910933700
+    },
+    {
+      "addr": "0xc57c395e36d14ae6012e027b297407f7ab1167c7",
+      "trades": 38,
+      "notional": 1011.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed2/0",
+        "RecNamed0/0",
+        "BTC75668/0",
+        "RecNamed0/1",
+        "BTC75668/1",
+        "RecNamed2/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 19,
+      "as_second": 19,
+      "trades_per_market": {
+        "BTC75668/0": 6,
+        "BTC75668/1": 6,
+        "RecNamed0/0": 5,
+        "RecNamed0/1": 5,
+        "RecNamed1/0": 5,
+        "RecNamed1/1": 5,
+        "RecNamed2/0": 3,
+        "RecNamed2/1": 3
+      },
+      "first_seen_ms": 1779902474519,
+      "last_seen_ms": 1779911623417
+    },
+    {
+      "addr": "0xb565c0883d58cfc6009f1802dddef9f792332501",
+      "trades": 32,
+      "notional": 300.0000000000001,
+      "markets": [
+        "CPI=4.3%/1",
+        "CPI=4.3%/0"
+      ],
+      "as_first": 16,
+      "as_second": 16,
+      "trades_per_market": {
+        "CPI=4.3%/0": 16,
+        "CPI=4.3%/1": 16
+      },
+      "first_seen_ms": 1779889930624,
+      "last_seen_ms": 1779896683004
+    },
+    {
+      "addr": "0x95c16466ea54608c4d1ffb931441a08476cfb3f2",
+      "trades": 30,
+      "notional": 1565.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed2/0",
+        "RecNamed0/0",
+        "RecNamed0/1",
+        "RecNamed2/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 15,
+      "as_second": 15,
+      "trades_per_market": {
+        "RecNamed0/0": 9,
+        "RecNamed0/1": 9,
+        "RecNamed1/0": 2,
+        "RecNamed1/1": 2,
+        "RecNamed2/0": 4,
+        "RecNamed2/1": 4
+      },
+      "first_seen_ms": 1779905360133,
+      "last_seen_ms": 1779910933700
+    },
+    {
+      "addr": "0x3e781befd071c59d820725f70ce109298f750706",
+      "trades": 28,
+      "notional": 679.0,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 14,
+      "as_second": 14,
+      "trades_per_market": {
+        "UCL/0": 14,
+        "UCL/1": 14
+      },
+      "first_seen_ms": 1779902366089,
+      "last_seen_ms": 1779909227900
+    },
+    {
+      "addr": "0x3550dd33e3e6af5cd76822526af8cac37ba1d865",
+      "trades": 26,
+      "notional": 287.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed0/0",
+        "UCL/0",
+        "RecNamed0/1",
+        "UCL/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 13,
+      "as_second": 13,
+      "trades_per_market": {
+        "UCL/0": 1,
+        "UCL/1": 1,
+        "RecNamed0/0": 11,
+        "RecNamed0/1": 11,
+        "RecNamed1/0": 1,
+        "RecNamed1/1": 1
+      },
+      "first_seen_ms": 1779904528370,
+      "last_seen_ms": 1779910306845
+    },
+    {
+      "addr": "0xcaef5b46df8077a07ddb2e1be56e768d8c81f6e0",
+      "trades": 24,
+      "notional": 1033.9999999999998,
+      "markets": [
+        "RecNamed2/1",
+        "RecNamed0/0",
+        "RecNamed2/0",
+        "RecNamed0/1"
+      ],
+      "as_first": 12,
+      "as_second": 12,
+      "trades_per_market": {
+        "RecNamed0/0": 4,
+        "RecNamed0/1": 4,
+        "RecNamed2/0": 8,
+        "RecNamed2/1": 8
+      },
+      "first_seen_ms": 1779904566642,
+      "last_seen_ms": 1779909260041
+    },
+    {
+      "addr": "0x017e019d6344b47854635ee87f728831260c87b5",
+      "trades": 22,
+      "notional": 425.0000000000001,
+      "markets": [
+        "RecNamed2/1",
+        "CPI>4.3%/0",
+        "CPI>4.3%/1",
+        "RecNamed2/0"
+      ],
+      "as_first": 11,
+      "as_second": 11,
+      "trades_per_market": {
+        "CPI>4.3%/0": 10,
+        "CPI>4.3%/1": 10,
+        "RecNamed2/0": 1,
+        "RecNamed2/1": 1
+      },
+      "first_seen_ms": 1779874978033,
+      "last_seen_ms": 1779907889973
+    },
+    {
+      "addr": "0xf39334f850d98243d8c617dbf904bbf2a1133924",
+      "trades": 22,
+      "notional": 272.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed0/0",
+        "RecNamed0/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 11,
+      "as_second": 11,
+      "trades_per_market": {
+        "RecNamed0/0": 4,
+        "RecNamed0/1": 4,
+        "RecNamed1/0": 7,
+        "RecNamed1/1": 7
+      },
+      "first_seen_ms": 1779906116692,
+      "last_seen_ms": 1779908781124
+    },
+    {
+      "addr": "0x639520cfffa19179b32b839aef8c7e2b751816c5",
+      "trades": 20,
+      "notional": 2620.9999999999995,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 10,
+      "as_second": 10,
+      "trades_per_market": {
+        "FedRate/0": 10,
+        "FedRate/1": 10
+      },
+      "first_seen_ms": 1779887121158,
+      "last_seen_ms": 1779893760659
+    },
+    {
+      "addr": "0x5ac1b6f6eec98dd9469266eefeaca04798945f15",
+      "trades": 18,
+      "notional": 247.00000000000006,
+      "markets": [
+        "CPI>4.3%/0",
+        "CPI>4.3%/1"
+      ],
+      "as_first": 9,
+      "as_second": 9,
+      "trades_per_market": {
+        "CPI>4.3%/0": 9,
+        "CPI>4.3%/1": 9
+      },
+      "first_seen_ms": 1779907857874,
+      "last_seen_ms": 1779910155196
+    },
+    {
+      "addr": "0xf6afb4d9573126e1de617ea6e9f60751b642bbcd",
+      "trades": 18,
+      "notional": 776.9999999999999,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 9,
+      "as_second": 9,
+      "trades_per_market": {
+        "UCL/0": 9,
+        "UCL/1": 9
+      },
+      "first_seen_ms": 1779904528370,
+      "last_seen_ms": 1779904528370
+    },
+    {
+      "addr": "0xa17f5c11aa82798658754a5a563141c535441a79",
+      "trades": 16,
+      "notional": 231.0,
+      "markets": [
+        "RecNamed2/0",
+        "CPI<4.3%/1",
+        "CPI<4.3%/0",
+        "CPI>4.3%/0",
+        "RecNamed2/1",
+        "CPI>4.3%/1"
+      ],
+      "as_first": 8,
+      "as_second": 8,
+      "trades_per_market": {
+        "CPI<4.3%/0": 5,
+        "CPI<4.3%/1": 5,
+        "CPI>4.3%/0": 2,
+        "CPI>4.3%/1": 2,
+        "RecNamed2/0": 1,
+        "RecNamed2/1": 1
+      },
+      "first_seen_ms": 1779873473045,
+      "last_seen_ms": 1779903156440
+    },
+    {
+      "addr": "0xf7ead3beb35f90df555f8cb1b10cfec286cc8af5",
+      "trades": 16,
+      "notional": 117.0,
+      "markets": [
+        "CPI<4.3%/0",
+        "CPI<4.3%/1"
+      ],
+      "as_first": 8,
+      "as_second": 8,
+      "trades_per_market": {
+        "CPI<4.3%/0": 8,
+        "CPI<4.3%/1": 8
+      },
+      "first_seen_ms": 1779890228305,
+      "last_seen_ms": 1779901081735
+    },
+    {
+      "addr": "0xdb77d93a976081cd2c97914b72d27f9b053c843f",
+      "trades": 16,
+      "notional": 154.0,
+      "markets": [
+        "CPI=4.3%/0",
+        "CPI=4.3%/1",
+        "UCL/0",
+        "FedRate/0",
+        "FedRate/1",
+        "UCL/1"
+      ],
+      "as_first": 8,
+      "as_second": 8,
+      "trades_per_market": {
+        "CPI=4.3%/0": 3,
+        "CPI=4.3%/1": 3,
+        "FedRate/0": 2,
+        "FedRate/1": 2,
+        "UCL/0": 3,
+        "UCL/1": 3
+      },
+      "first_seen_ms": 1779904701829,
+      "last_seen_ms": 1779908963156
+    },
+    {
+      "addr": "0x78eb1125787b82c89bd8afb46f4330c70b7dc471",
+      "trades": 16,
+      "notional": 420.0000000000001,
+      "markets": [
+        "CPI=4.3%/1",
+        "CPI=4.3%/0",
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 8,
+      "as_second": 8,
+      "trades_per_market": {
+        "CPI=4.3%/0": 2,
+        "CPI=4.3%/1": 2,
+        "UCL/0": 6,
+        "UCL/1": 6
+      },
+      "first_seen_ms": 1779906986649,
+      "last_seen_ms": 1779907007031
+    },
+    {
+      "addr": "0xfe3a32434dc67aeabf01ebbbca205fc79d893c9b",
+      "trades": 16,
+      "notional": 68.0,
+      "markets": [
+        "CPI>4.3%/0",
+        "CPI>4.3%/1"
+      ],
+      "as_first": 8,
+      "as_second": 8,
+      "trades_per_market": {
+        "CPI>4.3%/0": 8,
+        "CPI>4.3%/1": 8
+      },
+      "first_seen_ms": 1779875190038,
+      "last_seen_ms": 1779910155196
+    },
+    {
+      "addr": "0xa67fdce246f7d442bdbb3d9e286d4d5a59bdc8b7",
+      "trades": 16,
+      "notional": 376.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 8,
+      "as_second": 8,
+      "trades_per_market": {
+        "FedRate/0": 8,
+        "FedRate/1": 8
+      },
+      "first_seen_ms": 1779908914831,
+      "last_seen_ms": 1779911011540
+    },
+    {
+      "addr": "0x477d6e891ee44022b5c63d5fc547685c7486185c",
+      "trades": 16,
+      "notional": 577.0000000000001,
+      "markets": [
+        "BTC75668/0",
+        "BTC75668/1"
+      ],
+      "as_first": 8,
+      "as_second": 8,
+      "trades_per_market": {
+        "BTC75668/0": 8,
+        "BTC75668/1": 8
+      },
+      "first_seen_ms": 1779911504543,
+      "last_seen_ms": 1779911813895
+    },
+    {
+      "addr": "0x72d0b1f98fd9cdd4e46976edd86857b0266a62ea",
+      "trades": 16,
+      "notional": 245.00000000000003,
+      "markets": [
+        "BTC75668/0",
+        "BTC75668/1"
+      ],
+      "as_first": 8,
+      "as_second": 8,
+      "trades_per_market": {
+        "BTC75668/0": 8,
+        "BTC75668/1": 8
+      },
+      "first_seen_ms": 1779911535242,
+      "last_seen_ms": 1779911775632
+    },
+    {
+      "addr": "0xd053e13157b4f76827fb919c3c8a02eed734b0b3",
+      "trades": 16,
+      "notional": 277.00000000000006,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 8,
+      "as_second": 8,
+      "trades_per_market": {
+        "RecNamed1/0": 8,
+        "RecNamed1/1": 8
+      },
+      "first_seen_ms": 1779909509949,
+      "last_seen_ms": 1779910298540
+    },
+    {
+      "addr": "0x1c1511b650f24fd7a7c3c7ad05b835f5363f8695",
+      "trades": 14,
+      "notional": 980.0,
+      "markets": [
+        "CPI=4.3%/1",
+        "CPI=4.3%/0"
+      ],
+      "as_first": 7,
+      "as_second": 7,
+      "trades_per_market": {
+        "CPI=4.3%/0": 7,
+        "CPI=4.3%/1": 7
+      },
+      "first_seen_ms": 1779889930624,
+      "last_seen_ms": 1779889945615
+    },
+    {
+      "addr": "0x9ff2650389420617f6ddef53a4c038a65e3775b7",
+      "trades": 14,
+      "notional": 327.0,
+      "markets": [
+        "CPI=4.3%/1",
+        "CPI=4.3%/0"
+      ],
+      "as_first": 7,
+      "as_second": 7,
+      "trades_per_market": {
+        "CPI=4.3%/0": 7,
+        "CPI=4.3%/1": 7
+      },
+      "first_seen_ms": 1779889930624,
+      "last_seen_ms": 1779890336721
+    },
+    {
+      "addr": "0x0606f126f03ee5f51f168fbe9be39ea5370a9bee",
+      "trades": 14,
+      "notional": 289.0,
+      "markets": [
+        "CPI=4.3%/1",
+        "CPI=4.3%/0"
+      ],
+      "as_first": 7,
+      "as_second": 7,
+      "trades_per_market": {
+        "CPI=4.3%/0": 7,
+        "CPI=4.3%/1": 7
+      },
+      "first_seen_ms": 1779889945615,
+      "last_seen_ms": 1779909946639
+    },
+    {
+      "addr": "0xd32c02b6e897b0a75c0fd9dd0d529c739a0430a5",
+      "trades": 12,
+      "notional": 71.0,
+      "markets": [
+        "CPI<4.3%/0",
+        "CPI<4.3%/1"
+      ],
+      "as_first": 6,
+      "as_second": 6,
+      "trades_per_market": {
+        "CPI<4.3%/0": 6,
+        "CPI<4.3%/1": 6
+      },
+      "first_seen_ms": 1779871790016,
+      "last_seen_ms": 1779873473045
+    },
+    {
+      "addr": "0x38c2b9325e8b080058c31f44a13a56464a6a0fc2",
+      "trades": 12,
+      "notional": 1485.9999999999998,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 6,
+      "as_second": 6,
+      "trades_per_market": {
+        "FedRate/0": 6,
+        "FedRate/1": 6
+      },
+      "first_seen_ms": 1779894415503,
+      "last_seen_ms": 1779894437696
+    },
+    {
+      "addr": "0x15fd0c1807a791100461893f4bc3e43d5022d5ae",
+      "trades": 12,
+      "notional": 600.0,
+      "markets": [
+        "BTC75668/0",
+        "BTC75668/1"
+      ],
+      "as_first": 6,
+      "as_second": 6,
+      "trades_per_market": {
+        "BTC75668/0": 6,
+        "BTC75668/1": 6
+      },
+      "first_seen_ms": 1779911680497,
+      "last_seen_ms": 1779911859085
+    },
+    {
+      "addr": "0x5f0ef9ca677a3df3b89060b13593ec528ae91f9e",
+      "trades": 10,
+      "notional": 117.0,
+      "markets": [
+        "CPI<4.3%/0",
+        "CPI<4.3%/1"
+      ],
+      "as_first": 5,
+      "as_second": 5,
+      "trades_per_market": {
+        "CPI<4.3%/0": 5,
+        "CPI<4.3%/1": 5
+      },
+      "first_seen_ms": 1779873473045,
+      "last_seen_ms": 1779874975174
+    },
+    {
+      "addr": "0x9d8ca8a9ff83e706b15ba20bc8722a7bf3742160",
+      "trades": 10,
+      "notional": 117.0,
+      "markets": [
+        "CPI<4.3%/0",
+        "CPI<4.3%/1"
+      ],
+      "as_first": 5,
+      "as_second": 5,
+      "trades_per_market": {
+        "CPI<4.3%/0": 5,
+        "CPI<4.3%/1": 5
+      },
+      "first_seen_ms": 1779874975174,
+      "last_seen_ms": 1779890227767
+    },
+    {
+      "addr": "0x57174ba8ac5cfcf8339d0cadf1b16a51122e0572",
+      "trades": 10,
+      "notional": 85.0,
+      "markets": [
+        "CPI<4.3%/0",
+        "CPI>4.3%/0",
+        "CPI<4.3%/1",
+        "CPI>4.3%/1"
+      ],
+      "as_first": 5,
+      "as_second": 5,
+      "trades_per_market": {
+        "CPI<4.3%/0": 1,
+        "CPI<4.3%/1": 1,
+        "CPI>4.3%/0": 4,
+        "CPI>4.3%/1": 4
+      },
+      "first_seen_ms": 1779875968694,
+      "last_seen_ms": 1779890326093
+    },
+    {
+      "addr": "0x58907a1b3a45b6b228a5f8127eb1277c0e533c44",
+      "trades": 10,
+      "notional": 147.0,
+      "markets": [
+        "CPI=4.3%/0",
+        "CPI<4.3%/1",
+        "CPI<4.3%/0",
+        "CPI>4.3%/0",
+        "CPI=4.3%/1",
+        "CPI>4.3%/1"
+      ],
+      "as_first": 5,
+      "as_second": 5,
+      "trades_per_market": {
+        "CPI<4.3%/0": 2,
+        "CPI<4.3%/1": 2,
+        "CPI=4.3%/0": 2,
+        "CPI=4.3%/1": 2,
+        "CPI>4.3%/0": 1,
+        "CPI>4.3%/1": 1
+      },
+      "first_seen_ms": 1779887865666,
+      "last_seen_ms": 1779890320758
+    },
+    {
+      "addr": "0xd501ccbdb70ce518b2da68c685045fa54458ec35",
+      "trades": 10,
+      "notional": 2382.0,
+      "markets": [
+        "CPI=4.3%/1",
+        "CPI=4.3%/0",
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 5,
+      "as_second": 5,
+      "trades_per_market": {
+        "CPI=4.3%/0": 1,
+        "CPI=4.3%/1": 1,
+        "FedRate/0": 4,
+        "FedRate/1": 4
+      },
+      "first_seen_ms": 1779889945615,
+      "last_seen_ms": 1779911003063
+    },
+    {
+      "addr": "0x69cdee059a750b584473e3370be6a4555ac837ec",
+      "trades": 10,
+      "notional": 76.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed0/0",
+        "RecNamed0/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 5,
+      "as_second": 5,
+      "trades_per_market": {
+        "RecNamed0/0": 2,
+        "RecNamed0/1": 2,
+        "RecNamed1/0": 3,
+        "RecNamed1/1": 3
+      },
+      "first_seen_ms": 1779905594412,
+      "last_seen_ms": 1779910508912
+    },
+    {
+      "addr": "0xf47d3b1f4773ebd91c0c6544d47a77c0d334d0e0",
+      "trades": 10,
+      "notional": 270.0,
+      "markets": [
+        "RecNamed2/1",
+        "RecNamed0/0",
+        "RecNamed2/0",
+        "RecNamed0/1"
+      ],
+      "as_first": 5,
+      "as_second": 5,
+      "trades_per_market": {
+        "RecNamed0/0": 4,
+        "RecNamed0/1": 4,
+        "RecNamed2/0": 1,
+        "RecNamed2/1": 1
+      },
+      "first_seen_ms": 1779908746842,
+      "last_seen_ms": 1779911036622
+    },
+    {
+      "addr": "0x8854b22e4f00f4ba5f141fa983e95a8c025f7e3e",
+      "trades": 8,
+      "notional": 62.0,
+      "markets": [
+        "CPI>4.3%/0",
+        "CPI>4.3%/1"
+      ],
+      "as_first": 4,
+      "as_second": 4,
+      "trades_per_market": {
+        "CPI>4.3%/0": 4,
+        "CPI>4.3%/1": 4
+      },
+      "first_seen_ms": 1779907903056,
+      "last_seen_ms": 1779907948374
+    },
+    {
+      "addr": "0xcd2d8965a1d3cb529b2e4c3af6c558676e362739",
+      "trades": 8,
+      "notional": 154.0,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 4,
+      "as_second": 4,
+      "trades_per_market": {
+        "UCL/0": 4,
+        "UCL/1": 4
+      },
+      "first_seen_ms": 1779904528370,
+      "last_seen_ms": 1779906986649
+    },
+    {
+      "addr": "0x9fa8e99c08f4a11569f31752162c6394bd978a15",
+      "trades": 8,
+      "notional": 315.0,
+      "markets": [
+        "BTC75668/0",
+        "BTC75668/1"
+      ],
+      "as_first": 4,
+      "as_second": 4,
+      "trades_per_market": {
+        "BTC75668/0": 4,
+        "BTC75668/1": 4
+      },
+      "first_seen_ms": 1779911504798,
+      "last_seen_ms": 1779911537254
+    },
+    {
+      "addr": "0xdb94780fd8d9675805691e15c3ea32bd3a1f4736",
+      "trades": 8,
+      "notional": 351.0,
+      "markets": [
+        "BTC75668/0",
+        "BTC75668/1"
+      ],
+      "as_first": 4,
+      "as_second": 4,
+      "trades_per_market": {
+        "BTC75668/0": 4,
+        "BTC75668/1": 4
+      },
+      "first_seen_ms": 1779911615236,
+      "last_seen_ms": 1779911726986
+    },
+    {
+      "addr": "0xc240b36ba012f581cff075829db6b94bcf78ffc7",
+      "trades": 8,
+      "notional": 344.0,
+      "markets": [
+        "BTC75668/0",
+        "BTC75668/1"
+      ],
+      "as_first": 4,
+      "as_second": 4,
+      "trades_per_market": {
+        "BTC75668/0": 4,
+        "BTC75668/1": 4
+      },
+      "first_seen_ms": 1779911680497,
+      "last_seen_ms": 1779911859085
+    },
+    {
+      "addr": "0xa0ff771de32b3fac426e1ff02facb0f40ec9c7ee",
+      "trades": 8,
+      "notional": 69.0,
+      "markets": [
+        "RecNamed0/0",
+        "RecNamed0/1"
+      ],
+      "as_first": 4,
+      "as_second": 4,
+      "trades_per_market": {
+        "RecNamed0/0": 4,
+        "RecNamed0/1": 4
+      },
+      "first_seen_ms": 1779908781124,
+      "last_seen_ms": 1779908781124
+    },
+    {
+      "addr": "0xe109becd3c6024782a8a30c1d1419e1bd7165336",
+      "trades": 6,
+      "notional": 87.0,
+      "markets": [
+        "CPI<4.3%/0",
+        "CPI<4.3%/1"
+      ],
+      "as_first": 3,
+      "as_second": 3,
+      "trades_per_market": {
+        "CPI<4.3%/0": 3,
+        "CPI<4.3%/1": 3
+      },
+      "first_seen_ms": 1779887865666,
+      "last_seen_ms": 1779887865666
+    },
+    {
+      "addr": "0x96cd0764a5210c92e3c8f51df6666f61f7b6a4cb",
+      "trades": 6,
+      "notional": 1492.0,
+      "markets": [
+        "CPI=4.3%/1",
+        "CPI=4.3%/0",
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 3,
+      "as_second": 3,
+      "trades_per_market": {
+        "CPI=4.3%/0": 2,
+        "CPI=4.3%/1": 2,
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779896637191,
+      "last_seen_ms": 1779896683004
+    },
+    {
+      "addr": "0xcb6e8772e5009107c531f66e278be5090b9cb629",
+      "trades": 6,
+      "notional": 483.0,
+      "markets": [
+        "CPI>4.3%/0",
+        "CPI>4.3%/1",
+        "FedRate/0",
+        "FedRate/1"
+      ],
+      "as_first": 3,
+      "as_second": 3,
+      "trades_per_market": {
+        "CPI>4.3%/0": 2,
+        "CPI>4.3%/1": 2,
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779887398496,
+      "last_seen_ms": 1779887849020
+    },
+    {
+      "addr": "0xe5e81625caa2257a0a67e79628f8c61703f5071b",
+      "trades": 6,
+      "notional": 100.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 3,
+      "as_second": 3,
+      "trades_per_market": {
+        "FedRate/0": 3,
+        "FedRate/1": 3
+      },
+      "first_seen_ms": 1779908914831,
+      "last_seen_ms": 1779909254823
+    },
+    {
+      "addr": "0x64f91d59b45565f62fe87aa51b418588f299939f",
+      "trades": 6,
+      "notional": 225.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 3,
+      "as_second": 3,
+      "trades_per_market": {
+        "FedRate/0": 3,
+        "FedRate/1": 3
+      },
+      "first_seen_ms": 1779910318113,
+      "last_seen_ms": 1779911011540
+    },
+    {
+      "addr": "0xe26cd4338c746d13f3bc2ba6dd6b6001807b258b",
+      "trades": 6,
+      "notional": 41.99999999999999,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 3,
+      "as_second": 3,
+      "trades_per_market": {
+        "UCL/0": 3,
+        "UCL/1": 3
+      },
+      "first_seen_ms": 1779904528370,
+      "last_seen_ms": 1779906996651
+    },
+    {
+      "addr": "0x412fe28eddf938ec0316cf464816a767fa483717",
+      "trades": 6,
+      "notional": 52.99999999999999,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 3,
+      "as_second": 3,
+      "trades_per_market": {
+        "UCL/0": 3,
+        "UCL/1": 3
+      },
+      "first_seen_ms": 1779907259880,
+      "last_seen_ms": 1779909227900
+    },
+    {
+      "addr": "0x51d8e3c686b5327b850cfdee80a93f39865634dd",
+      "trades": 6,
+      "notional": 375.0,
+      "markets": [
+        "BTC75668/0",
+        "BTC75668/1"
+      ],
+      "as_first": 3,
+      "as_second": 3,
+      "trades_per_market": {
+        "BTC75668/0": 3,
+        "BTC75668/1": 3
+      },
+      "first_seen_ms": 1779911504543,
+      "last_seen_ms": 1779911505603
+    },
+    {
+      "addr": "0xbddddde9cbad653f8f07d6d3fc9998fc0dd9fe26",
+      "trades": 6,
+      "notional": 85.0,
+      "markets": [
+        "BTC75668/0",
+        "BTC75668/1"
+      ],
+      "as_first": 3,
+      "as_second": 3,
+      "trades_per_market": {
+        "BTC75668/0": 3,
+        "BTC75668/1": 3
+      },
+      "first_seen_ms": 1779911551579,
+      "last_seen_ms": 1779911775963
+    },
+    {
+      "addr": "0x53a6e85c016eddb5d26f2071e69eb79d4cb641ae",
+      "trades": 6,
+      "notional": 133.0,
+      "markets": [
+        "BTC75668/0",
+        "BTC75668/1"
+      ],
+      "as_first": 3,
+      "as_second": 3,
+      "trades_per_market": {
+        "BTC75668/0": 3,
+        "BTC75668/1": 3
+      },
+      "first_seen_ms": 1779911590724,
+      "last_seen_ms": 1779911623417
+    },
+    {
+      "addr": "0x8a4d5ab20b1168e61859a4009463369738bfe368",
+      "trades": 6,
+      "notional": 172.0,
+      "markets": [
+        "BTC75668/0",
+        "BTC75668/1"
+      ],
+      "as_first": 3,
+      "as_second": 3,
+      "trades_per_market": {
+        "BTC75668/0": 3,
+        "BTC75668/1": 3
+      },
+      "first_seen_ms": 1779911687180,
+      "last_seen_ms": 1779911729914
+    },
+    {
+      "addr": "0x5908fae63aa61ad70141e5e94b72df62f6589d43",
+      "trades": 6,
+      "notional": 146.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed0/0",
+        "RecNamed0/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 3,
+      "as_second": 3,
+      "trades_per_market": {
+        "RecNamed0/0": 1,
+        "RecNamed0/1": 1,
+        "RecNamed1/0": 2,
+        "RecNamed1/1": 2
+      },
+      "first_seen_ms": 1779909260041,
+      "last_seen_ms": 1779909291377
+    },
+    {
+      "addr": "0x482bb8c52cf518f978d9e7bb00844db2bf60464b",
+      "trades": 6,
+      "notional": 138.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 3,
+      "as_second": 3,
+      "trades_per_market": {
+        "RecNamed1/0": 3,
+        "RecNamed1/1": 3
+      },
+      "first_seen_ms": 1779906891100,
+      "last_seen_ms": 1779906891100
+    },
+    {
+      "addr": "0xcfa66a727a42a4f287aab24235f9daa6d3367fbc",
+      "trades": 6,
+      "notional": 559.9999999999999,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 3,
+      "as_second": 3,
+      "trades_per_market": {
+        "RecNamed1/0": 3,
+        "RecNamed1/1": 3
+      },
+      "first_seen_ms": 1779910302846,
+      "last_seen_ms": 1779910304658
+    },
+    {
+      "addr": "0x7f1f2ee6921a3271670794b914feb323611c4ff5",
+      "trades": 6,
+      "notional": 329.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed2/1",
+        "RecNamed2/0",
+        "RecNamed1/0"
+      ],
+      "as_first": 3,
+      "as_second": 3,
+      "trades_per_market": {
+        "RecNamed1/0": 1,
+        "RecNamed1/1": 1,
+        "RecNamed2/0": 2,
+        "RecNamed2/1": 2
+      },
+      "first_seen_ms": 1779900053462,
+      "last_seen_ms": 1779910302846
+    },
+    {
+      "addr": "0x61791aee9e4821cdfc87397d2166fc2773b48bd4",
+      "trades": 4,
+      "notional": 39.0,
+      "markets": [
+        "CPI<4.3%/0",
+        "CPI<4.3%/1"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "CPI<4.3%/0": 2,
+        "CPI<4.3%/1": 2
+      },
+      "first_seen_ms": 1779874280912,
+      "last_seen_ms": 1779874280912
+    },
+    {
+      "addr": "0xe4b47a48e6b1a730ca8799027a47c45b352ae1c9",
+      "trades": 4,
+      "notional": 50.00000000000001,
+      "markets": [
+        "CPI<4.3%/0",
+        "CPI<4.3%/1"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "CPI<4.3%/0": 2,
+        "CPI<4.3%/1": 2
+      },
+      "first_seen_ms": 1779874280912,
+      "last_seen_ms": 1779887865666
+    },
+    {
+      "addr": "0x7bfee91193d9df2ac0bfe90191d40f23c773c060",
+      "trades": 4,
+      "notional": 61.0,
+      "markets": [
+        "UCL/0",
+        "CPI<4.3%/0",
+        "CPI<4.3%/1",
+        "UCL/1"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "CPI<4.3%/0": 1,
+        "CPI<4.3%/1": 1,
+        "UCL/0": 1,
+        "UCL/1": 1
+      },
+      "first_seen_ms": 1779887865666,
+      "last_seen_ms": 1779906986649
+    },
+    {
+      "addr": "0x73548e2f55eeddd2b3218934a918f3a147b17739",
+      "trades": 4,
+      "notional": 27.0,
+      "markets": [
+        "CPI<4.3%/0",
+        "CPI<4.3%/1"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "CPI<4.3%/0": 2,
+        "CPI<4.3%/1": 2
+      },
+      "first_seen_ms": 1779901081735,
+      "last_seen_ms": 1779901081735
+    },
+    {
+      "addr": "0x3ef4193970b7d5f407496061766256c7ddb44e74",
+      "trades": 4,
+      "notional": 45.0,
+      "markets": [
+        "CPI=4.3%/1",
+        "CPI=4.3%/0"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "CPI=4.3%/0": 2,
+        "CPI=4.3%/1": 2
+      },
+      "first_seen_ms": 1779909946639,
+      "last_seen_ms": 1779909946639
+    },
+    {
+      "addr": "0x546e4ffd19065076a6e22676ecea7e7aec21c9f4",
+      "trades": 4,
+      "notional": 74.0,
+      "markets": [
+        "CPI>4.3%/0",
+        "CPI>4.3%/1"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "CPI>4.3%/0": 2,
+        "CPI>4.3%/1": 2
+      },
+      "first_seen_ms": 1779874978033,
+      "last_seen_ms": 1779875184022
+    },
+    {
+      "addr": "0x921f3af23bf6ac7e142fbd7370411f7fb1601b1d",
+      "trades": 4,
+      "notional": 50.0,
+      "markets": [
+        "CPI>4.3%/0",
+        "CPI>4.3%/1"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "CPI>4.3%/0": 2,
+        "CPI>4.3%/1": 2
+      },
+      "first_seen_ms": 1779875184022,
+      "last_seen_ms": 1779875190038
+    },
+    {
+      "addr": "0xf94d1cfd380bbaa0d7ca33e00700e7e6be836ab1",
+      "trades": 4,
+      "notional": 204.0,
+      "markets": [
+        "CPI>4.3%/0",
+        "CPI>4.3%/1"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "CPI>4.3%/0": 2,
+        "CPI>4.3%/1": 2
+      },
+      "first_seen_ms": 1779887849020,
+      "last_seen_ms": 1779892404995
+    },
+    {
+      "addr": "0x437b557d5ff316999d19e501c5e0bdb3bf2509d1",
+      "trades": 4,
+      "notional": 24.0,
+      "markets": [
+        "CPI>4.3%/0",
+        "CPI>4.3%/1",
+        "FedRate/0",
+        "FedRate/1"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "CPI>4.3%/0": 1,
+        "CPI>4.3%/1": 1,
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779893747695,
+      "last_seen_ms": 1779893858281
+    },
+    {
+      "addr": "0x170f6131a759e30a5e834dc65872ac33420c7f25",
+      "trades": 4,
+      "notional": 100.0,
+      "markets": [
+        "CPI>4.3%/0",
+        "CPI>4.3%/1"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "CPI>4.3%/0": 2,
+        "CPI>4.3%/1": 2
+      },
+      "first_seen_ms": 1779907167633,
+      "last_seen_ms": 1779907173811
+    },
+    {
+      "addr": "0xbddad97a12a071a614dd911c0809fb8c05d76900",
+      "trades": 4,
+      "notional": 22.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "FedRate/0": 2,
+        "FedRate/1": 2
+      },
+      "first_seen_ms": 1779893400863,
+      "last_seen_ms": 1779893424714
+    },
+    {
+      "addr": "0xf1e8f807dc77c51d6bd69611bd4923e1d4cfedac",
+      "trades": 4,
+      "notional": 200.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "FedRate/0": 2,
+        "FedRate/1": 2
+      },
+      "first_seen_ms": 1779893424714,
+      "last_seen_ms": 1779894415503
+    },
+    {
+      "addr": "0xb1169c6daac76bacaf0d8f87641fc38fbabe569f",
+      "trades": 4,
+      "notional": 985.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "FedRate/0": 2,
+        "FedRate/1": 2
+      },
+      "first_seen_ms": 1779894415503,
+      "last_seen_ms": 1779894437696
+    },
+    {
+      "addr": "0x217d452b93dd9d369d4242c744da5484e59db312",
+      "trades": 4,
+      "notional": 126.0,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "UCL/0": 2,
+        "UCL/1": 2
+      },
+      "first_seen_ms": 1779904528370,
+      "last_seen_ms": 1779907259880
+    },
+    {
+      "addr": "0x8374d32332e369112199c5c92c8694ee4788842b",
+      "trades": 4,
+      "notional": 44.0,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "UCL/0": 2,
+        "UCL/1": 2
+      },
+      "first_seen_ms": 1779905673829,
+      "last_seen_ms": 1779905731035
+    },
+    {
+      "addr": "0xe66fbc8be19bd6b60a7fdc743a1019435ee0a04f",
+      "trades": 4,
+      "notional": 86.0,
+      "markets": [
+        "RecNamed0/1",
+        "UCL/0",
+        "RecNamed0/0",
+        "UCL/1"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "UCL/0": 1,
+        "UCL/1": 1,
+        "RecNamed0/0": 1,
+        "RecNamed0/1": 1
+      },
+      "first_seen_ms": 1779906685956,
+      "last_seen_ms": 1779906827045
+    },
+    {
+      "addr": "0x2dafae51dfa8a773a47074324ceec1f8881aeda3",
+      "trades": 4,
+      "notional": 38.0,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "UCL/0": 2,
+        "UCL/1": 2
+      },
+      "first_seen_ms": 1779907248951,
+      "last_seen_ms": 1779909192840
+    },
+    {
+      "addr": "0x44d40d58810ac643e35d4434f4a2e186a73e335f",
+      "trades": 4,
+      "notional": 117.99999999999999,
+      "markets": [
+        "BTC75668/0",
+        "BTC75668/1"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "BTC75668/0": 2,
+        "BTC75668/1": 2
+      },
+      "first_seen_ms": 1779911729914,
+      "last_seen_ms": 1779911859085
+    },
+    {
+      "addr": "0x8678992985fb0c70578199565ab6a3025f6349ec",
+      "trades": 4,
+      "notional": 115.0,
+      "markets": [
+        "RecNamed0/0",
+        "RecNamed0/1"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "RecNamed0/0": 2,
+        "RecNamed0/1": 2
+      },
+      "first_seen_ms": 1779905790923,
+      "last_seen_ms": 1779905829034
+    },
+    {
+      "addr": "0xd3c40f79a22e3a6c96412973df5cba0d8ad9e89b",
+      "trades": 4,
+      "notional": 25.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "RecNamed1/0": 2,
+        "RecNamed1/1": 2
+      },
+      "first_seen_ms": 1779905981949,
+      "last_seen_ms": 1779906116692
+    },
+    {
+      "addr": "0x3d21beabfff63aaef19b65fd0e4790b5ecc495bd",
+      "trades": 4,
+      "notional": 15.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "RecNamed1/0": 2,
+        "RecNamed1/1": 2
+      },
+      "first_seen_ms": 1779906116692,
+      "last_seen_ms": 1779906116692
+    },
+    {
+      "addr": "0x18bf9fdeb494dd4cc5a1908a38c8a363a3ddfef3",
+      "trades": 4,
+      "notional": 40.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "RecNamed1/0": 2,
+        "RecNamed1/1": 2
+      },
+      "first_seen_ms": 1779906628659,
+      "last_seen_ms": 1779906891100
+    },
+    {
+      "addr": "0xf72a5435de308f84ebe8df6f73b725ec9bab519c",
+      "trades": 4,
+      "notional": 32.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "RecNamed1/0": 2,
+        "RecNamed1/1": 2
+      },
+      "first_seen_ms": 1779909197380,
+      "last_seen_ms": 1779909291377
+    },
+    {
+      "addr": "0x4cae1fc903e7936ac5cca31ae9cc2214859f746a",
+      "trades": 4,
+      "notional": 200.0,
+      "markets": [
+        "RecNamed2/1",
+        "RecNamed2/0"
+      ],
+      "as_first": 2,
+      "as_second": 2,
+      "trades_per_market": {
+        "RecNamed2/0": 2,
+        "RecNamed2/1": 2
+      },
+      "first_seen_ms": 1779902474519,
+      "last_seen_ms": 1779902474519
+    },
+    {
+      "addr": "0x1e52a9e8d772511575b0ff16cc19b1f06cb930c7",
+      "trades": 2,
+      "notional": 2.0,
+      "markets": [
+        "CPI<4.3%/0",
+        "CPI<4.3%/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "CPI<4.3%/0": 1,
+        "CPI<4.3%/1": 1
+      },
+      "first_seen_ms": 1779874280912,
+      "last_seen_ms": 1779874280912
+    },
+    {
+      "addr": "0x5d856f28ecc4385eca4adcd64c40fc69ba602a39",
+      "trades": 2,
+      "notional": 26.0,
+      "markets": [
+        "CPI<4.3%/0",
+        "CPI<4.3%/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "CPI<4.3%/0": 1,
+        "CPI<4.3%/1": 1
+      },
+      "first_seen_ms": 1779877562539,
+      "last_seen_ms": 1779877562539
+    },
+    {
+      "addr": "0x8d7a001cfc096c3c6b747fb9d56ddfafdce27524",
+      "trades": 2,
+      "notional": 4.0,
+      "markets": [
+        "CPI<4.3%/0",
+        "CPI<4.3%/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "CPI<4.3%/0": 1,
+        "CPI<4.3%/1": 1
+      },
+      "first_seen_ms": 1779901081735,
+      "last_seen_ms": 1779901081735
+    },
+    {
+      "addr": "0xeeb65f75d90d502db49d3cd91ebe6efb2f9694d1",
+      "trades": 2,
+      "notional": 21.0,
+      "markets": [
+        "CPI=4.3%/1",
+        "CPI=4.3%/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "CPI=4.3%/0": 1,
+        "CPI=4.3%/1": 1
+      },
+      "first_seen_ms": 1779889930624,
+      "last_seen_ms": 1779889930624
+    },
+    {
+      "addr": "0x1f9657a7f31808338c2fe93fe6b590ce693d588d",
+      "trades": 2,
+      "notional": 19.0,
+      "markets": [
+        "CPI=4.3%/1",
+        "CPI=4.3%/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "CPI=4.3%/0": 1,
+        "CPI=4.3%/1": 1
+      },
+      "first_seen_ms": 1779889945615,
+      "last_seen_ms": 1779889945615
+    },
+    {
+      "addr": "0xf180c693883b055b14e2ebeeceac78592b580a22",
+      "trades": 2,
+      "notional": 13.0,
+      "markets": [
+        "CPI=4.3%/1",
+        "CPI=4.3%/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "CPI=4.3%/0": 1,
+        "CPI=4.3%/1": 1
+      },
+      "first_seen_ms": 1779896683004,
+      "last_seen_ms": 1779896683004
+    },
+    {
+      "addr": "0xd32980db665c4099701fdb66960ecbca801e97f1",
+      "trades": 2,
+      "notional": 16.0,
+      "markets": [
+        "CPI=4.3%/1",
+        "CPI=4.3%/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "CPI=4.3%/0": 1,
+        "CPI=4.3%/1": 1
+      },
+      "first_seen_ms": 1779909946639,
+      "last_seen_ms": 1779909946639
+    },
+    {
+      "addr": "0xd3e625d2867d9986b8ec85018b1ac6a02650b736",
+      "trades": 2,
+      "notional": 1.0,
+      "markets": [
+        "CPI>4.3%/0",
+        "CPI>4.3%/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "CPI>4.3%/0": 1,
+        "CPI>4.3%/1": 1
+      },
+      "first_seen_ms": 1779885210637,
+      "last_seen_ms": 1779885210637
+    },
+    {
+      "addr": "0xdc6e251c82e1f1ae93a219822f7b39b445028cb7",
+      "trades": 2,
+      "notional": 88.0,
+      "markets": [
+        "CPI>4.3%/0",
+        "CPI>4.3%/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "CPI>4.3%/0": 1,
+        "CPI>4.3%/1": 1
+      },
+      "first_seen_ms": 1779885239002,
+      "last_seen_ms": 1779885239002
+    },
+    {
+      "addr": "0x8844126ca5defee105ae50e5089933768ccf9999",
+      "trades": 2,
+      "notional": 104.0,
+      "markets": [
+        "CPI>4.3%/0",
+        "CPI>4.3%/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "CPI>4.3%/0": 1,
+        "CPI>4.3%/1": 1
+      },
+      "first_seen_ms": 1779892404995,
+      "last_seen_ms": 1779892404995
+    },
+    {
+      "addr": "0xb78e9de0697de707bc45d6a8086757b1a7251ce9",
+      "trades": 2,
+      "notional": 15.0,
+      "markets": [
+        "CPI>4.3%/0",
+        "CPI>4.3%/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "CPI>4.3%/0": 1,
+        "CPI>4.3%/1": 1
+      },
+      "first_seen_ms": 1779907889973,
+      "last_seen_ms": 1779907889973
+    },
+    {
+      "addr": "0xe900a8109fbe9a7c3fdfff3997405008544eeca2",
+      "trades": 2,
+      "notional": 1140.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779887121158,
+      "last_seen_ms": 1779887121158
+    },
+    {
+      "addr": "0x9ef093b38b50d4f129cfb1a6181ecf14a3433c12",
+      "trades": 2,
+      "notional": 515.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779887640966,
+      "last_seen_ms": 1779887640966
+    },
+    {
+      "addr": "0xe212b690b470b4ca3bae3731fce3dc99f374d1ba",
+      "trades": 2,
+      "notional": 36.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779888613526,
+      "last_seen_ms": 1779888613526
+    },
+    {
+      "addr": "0x5ae4ac6b40e073442a63b9c27facce184fed0109",
+      "trades": 2,
+      "notional": 515.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779888851914,
+      "last_seen_ms": 1779888851914
+    },
+    {
+      "addr": "0x0763962645aff07ce44cc93d8afd511b0b7cb09c",
+      "trades": 2,
+      "notional": 11.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779889605309,
+      "last_seen_ms": 1779889605309
+    },
+    {
+      "addr": "0x14eb0c97e0f7c7b21aa993c079d39e5a56513354",
+      "trades": 2,
+      "notional": 11.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779889605309,
+      "last_seen_ms": 1779889605309
+    },
+    {
+      "addr": "0x60de17b69d70c5e1f27255fa734e1fe9f43fb5ee",
+      "trades": 2,
+      "notional": 11.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779892285871,
+      "last_seen_ms": 1779892285871
+    },
+    {
+      "addr": "0x124de59950edc575d47aa9d2b8a08ec72e93300f",
+      "trades": 2,
+      "notional": 11.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779892446422,
+      "last_seen_ms": 1779892446422
+    },
+    {
+      "addr": "0xbeaa0a653c0d44b0aad06611ee14debf2d6b44be",
+      "trades": 2,
+      "notional": 11.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779893760659,
+      "last_seen_ms": 1779893760659
+    },
+    {
+      "addr": "0xf5a99033499d8290e430d6de8d573334f9b17dbc",
+      "trades": 2,
+      "notional": 11.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779894415503,
+      "last_seen_ms": 1779894415503
+    },
+    {
+      "addr": "0xb759ca70078a4329c6c10600b18447ac3f7e0d7b",
+      "trades": 2,
+      "notional": 25.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779894437696,
+      "last_seen_ms": 1779894437696
+    },
+    {
+      "addr": "0x3c53f304dcd45ca7e77472f2b818c1d28b7afe0b",
+      "trades": 2,
+      "notional": 11.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779904791821,
+      "last_seen_ms": 1779904791821
+    },
+    {
+      "addr": "0x08fb5afdffa64deca0146995c33d77cf491125d7",
+      "trades": 2,
+      "notional": 78.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779909254823,
+      "last_seen_ms": 1779909254823
+    },
+    {
+      "addr": "0x12045c1cc410461b24e4293dd05e2a6c47ebb584",
+      "trades": 2,
+      "notional": 11.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779909312034,
+      "last_seen_ms": 1779909312034
+    },
+    {
+      "addr": "0xd099ea6a29b827cc06f85c8935b3a1bbd3b29cb0",
+      "trades": 2,
+      "notional": 11.0,
+      "markets": [
+        "FedRate/1",
+        "FedRate/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "FedRate/0": 1,
+        "FedRate/1": 1
+      },
+      "first_seen_ms": 1779910605894,
+      "last_seen_ms": 1779910605894
+    },
+    {
+      "addr": "0x83edba88cb46f4b1dddd94458c2f952f24e95c45",
+      "trades": 2,
+      "notional": 19.0,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "UCL/0": 1,
+        "UCL/1": 1
+      },
+      "first_seen_ms": 1779902366089,
+      "last_seen_ms": 1779902366089
+    },
+    {
+      "addr": "0xbee54ea37c0a2a55b33b01bc978ada8ab89541cc",
+      "trades": 2,
+      "notional": 19.0,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "UCL/0": 1,
+        "UCL/1": 1
+      },
+      "first_seen_ms": 1779903092234,
+      "last_seen_ms": 1779903092234
+    },
+    {
+      "addr": "0x98b7a46a33d60f71522115ab7e2ec8f0fc294038",
+      "trades": 2,
+      "notional": 48.0,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "UCL/0": 1,
+        "UCL/1": 1
+      },
+      "first_seen_ms": 1779904245942,
+      "last_seen_ms": 1779904245942
+    },
+    {
+      "addr": "0x0720baf330ade2e0a9264f5d2ab569d49c3b11a9",
+      "trades": 2,
+      "notional": 30.0,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "UCL/0": 1,
+        "UCL/1": 1
+      },
+      "first_seen_ms": 1779904528370,
+      "last_seen_ms": 1779904528370
+    },
+    {
+      "addr": "0x43977ddc6791af9e7b6cea54bc22de6b8c5a4575",
+      "trades": 2,
+      "notional": 105.0,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "UCL/0": 1,
+        "UCL/1": 1
+      },
+      "first_seen_ms": 1779904528370,
+      "last_seen_ms": 1779904528370
+    },
+    {
+      "addr": "0xaa312eb19552f924dfc47bfefe47f35a902fc595",
+      "trades": 2,
+      "notional": 86.0,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "UCL/0": 1,
+        "UCL/1": 1
+      },
+      "first_seen_ms": 1779904528370,
+      "last_seen_ms": 1779904528370
+    },
+    {
+      "addr": "0xd29bdffed8aa908491cf17aaba83d0b2a47ba116",
+      "trades": 2,
+      "notional": 149.0,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "UCL/0": 1,
+        "UCL/1": 1
+      },
+      "first_seen_ms": 1779904528370,
+      "last_seen_ms": 1779904528370
+    },
+    {
+      "addr": "0x59adb8f4489b0835309366d2f65f4334ae1dbc3c",
+      "trades": 2,
+      "notional": 25.0,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "UCL/0": 1,
+        "UCL/1": 1
+      },
+      "first_seen_ms": 1779906583273,
+      "last_seen_ms": 1779906583273
+    },
+    {
+      "addr": "0x5ea218795bedb8393298b75a3ae4e9301a0b6153",
+      "trades": 2,
+      "notional": 20.0,
+      "markets": [
+        "UCL/0",
+        "UCL/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "UCL/0": 1,
+        "UCL/1": 1
+      },
+      "first_seen_ms": 1779909192840,
+      "last_seen_ms": 1779909192840
+    },
+    {
+      "addr": "0xaddc680878f96b93189f700d17f4a9bfcf80ff54",
+      "trades": 2,
+      "notional": 34.0,
+      "markets": [
+        "RecNamed0/0",
+        "RecNamed0/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "RecNamed0/0": 1,
+        "RecNamed0/1": 1
+      },
+      "first_seen_ms": 1779905921253,
+      "last_seen_ms": 1779905921253
+    },
+    {
+      "addr": "0x8c7e608207992ee30bbc089c9692f51656e2ccdb",
+      "trades": 2,
+      "notional": 84.0,
+      "markets": [
+        "RecNamed0/0",
+        "RecNamed0/1"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "RecNamed0/0": 1,
+        "RecNamed0/1": 1
+      },
+      "first_seen_ms": 1779910306845,
+      "last_seen_ms": 1779910306845
+    },
+    {
+      "addr": "0xbd1572904ef0be1ade8709a4561fa3adf8b5f749",
+      "trades": 2,
+      "notional": 10.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "RecNamed1/0": 1,
+        "RecNamed1/1": 1
+      },
+      "first_seen_ms": 1779905903279,
+      "last_seen_ms": 1779905903279
+    },
+    {
+      "addr": "0x0433767f856e0281abd4343134786ae50ba90e64",
+      "trades": 2,
+      "notional": 16.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "RecNamed1/0": 1,
+        "RecNamed1/1": 1
+      },
+      "first_seen_ms": 1779907574715,
+      "last_seen_ms": 1779907574715
+    },
+    {
+      "addr": "0xddc6f3ae5e7deabdc5fe8b00ea8ab4c5f8647d73",
+      "trades": 2,
+      "notional": 60.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "RecNamed1/0": 1,
+        "RecNamed1/1": 1
+      },
+      "first_seen_ms": 1779909122976,
+      "last_seen_ms": 1779909122976
+    },
+    {
+      "addr": "0xba67831f4f4a9e730ea7f82574874bd084709c1d",
+      "trades": 2,
+      "notional": 60.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "RecNamed1/0": 1,
+        "RecNamed1/1": 1
+      },
+      "first_seen_ms": 1779909122976,
+      "last_seen_ms": 1779909122976
+    },
+    {
+      "addr": "0x27a6bba53133bfff766a5c1fab45d696a91b7d83",
+      "trades": 2,
+      "notional": 13.0,
+      "markets": [
+        "RecNamed1/1",
+        "RecNamed1/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "RecNamed1/0": 1,
+        "RecNamed1/1": 1
+      },
+      "first_seen_ms": 1779910293380,
+      "last_seen_ms": 1779910293380
+    },
+    {
+      "addr": "0xc2e8240273184010e9b8d3785d9e59f2d92adef6",
+      "trades": 2,
+      "notional": 43.0,
+      "markets": [
+        "RecNamed2/1",
+        "RecNamed2/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "RecNamed2/0": 1,
+        "RecNamed2/1": 1
+      },
+      "first_seen_ms": 1779904549261,
+      "last_seen_ms": 1779904549261
+    },
+    {
+      "addr": "0x85a8598195f21cd353474744eb76e356864a2fb3",
+      "trades": 2,
+      "notional": 6.0,
+      "markets": [
+        "RecNamed2/1",
+        "RecNamed2/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "RecNamed2/0": 1,
+        "RecNamed2/1": 1
+      },
+      "first_seen_ms": 1779905366587,
+      "last_seen_ms": 1779905366587
+    },
+    {
+      "addr": "0x816b44612a1f1c7189b0bbd6ed51e1d66f8ab90d",
+      "trades": 2,
+      "notional": 30.000000000000004,
+      "markets": [
+        "RecNamed2/1",
+        "RecNamed2/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "RecNamed2/0": 1,
+        "RecNamed2/1": 1
+      },
+      "first_seen_ms": 1779909660667,
+      "last_seen_ms": 1779909660667
+    },
+    {
+      "addr": "0x3332cfabc165e10776a5b5d2963a245a3938ece1",
+      "trades": 2,
+      "notional": 58.0,
+      "markets": [
+        "RecNamed2/1",
+        "RecNamed2/0"
+      ],
+      "as_first": 1,
+      "as_second": 1,
+      "trades_per_market": {
+        "RecNamed2/0": 1,
+        "RecNamed2/1": 1
+      },
+      "first_seen_ms": 1779911036622,
+      "last_seen_ms": 1779911036622
+    }
+  ]
+}
