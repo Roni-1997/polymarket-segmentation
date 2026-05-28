@@ -88,7 +88,7 @@ sample-selected top 50, not a venue-wide top 50.
 
 | Tag | # wallets | $ notional (top-50) | Vol share within top-50 | Fill share |
 |---|---:|---:|---:|---:|
-| HFT-sweeper (3 distinct operators) | 3 | $160,241 | **48.9%** | 35.2% |
+| Fast-sweeper (3 distinct operators) | 3 | $160,241 | **48.9%** | 35.2% |
 | Mostly-maker | 4 | $100,390 | 30.7% | 32.2% |
 | MM-hedger (HL-native delta arb) | 12 | $44,068 | 13.5% | 20.6% |
 | Browser-retail (multi-market taker) | 8 | $8,653 | 2.6% | 2.6% |

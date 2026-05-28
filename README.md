@@ -68,7 +68,7 @@ stylistic order-type choice rather than a strategic role.
 
 **7 cohorts total.** Labels are intentionally behavioral, not identity:
 "Fast-taker" describes observed cadence + low maker share, not formally
-latency-classified HFT. "Retail" is the only cohort where headcount
+latency-classified trading. "Retail" is the only cohort where headcount
 dominates — by volume it's the smallest.
 
 **Threshold rationale:**
@@ -349,7 +349,7 @@ For sizing comparisons. Total per category = sum across cohorts.
 
 ### Per-category headline reads
 
-- **Crypto** — bot-extreme: 75% from fast bots (Pro-MM 32% + Fast-taker 26% + Hybrid-bot 17%). Retail effectively absent (5%). Most automated category.
+- **Crypto** — highest automation: 75% from fast cohorts (Pro-MM 32% + Fast-taker 26% + Hybrid-bot 17%). Retail share is 5%.
 - **Politics** — most retail-heavy AND most balanced cohort spread. Retail 13% (highest), but Sys-taker is biggest single cohort (18%). Real money: ~$110 avg retail trade.
 - **Sports** — bot-dominated (Pro-MM 33% + Hybrid-bot 22% + Fast-taker 21% = 77%). Hybrid-bot share highest of any category — NegRisk basket arb works here.
 - **Finance** — most balanced mix. Mid-MM at 13% is second-highest across categories — small MMs like slow-resolving markets.
@@ -447,12 +447,13 @@ T30d $102M (mild reversion).
    The professionalization isn't just "bots replacing retail" — MM
    capital is also scaling up faster than the rest of the venue.
 
-3. **Polymarket is operating WAY below the structural retail floor.**
+3. **Polymarket is materially below the structural retail-flow range.**
    Healthy markets typically need ~20% uninformed flow for MMs to
    earn the spread profitably. Polymarket is at 5.3% retail flow.
    Either the Systematic-taker / Systematic-mixed cohorts are
-   uninformed-ENOUGH to function as retail-substitute, OR MMs are
-   quietly losing money. Worth investigating: PnL-by-cohort analysis
+   sufficiently uninformed to function as retail substitutes, or MM
+   economics depend on rebates and inventory management more than spread
+   capture alone. Worth investigating: PnL-by-cohort analysis
    (see next steps).
 
 ---
@@ -594,7 +595,7 @@ For programmatic execution via Dune MCP, see
    `CURRENT_TIMESTAMP` windows, so reruns will drift unless you pin
    the `params` CTE timestamps.
 
-3. **MM/HFT/Retail labels are imperfect.** The classifier forces
+3. **MM/Fast-taker/Retail labels are imperfect.** The classifier forces
    discrete buckets via first-match rule order; real wallets near
    threshold boundaries (60–70% maker share) are arbitrary. Numbers
    shift ±5pp with threshold changes. Treat as directional.

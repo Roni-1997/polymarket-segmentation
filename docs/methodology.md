@@ -89,8 +89,8 @@ Collapsing them simplifies the framework to **7 cohorts**.
 **Important framing:** these are observed trading behaviors over the
 measurement window, not user identities. A wallet labeled `Retail` may
 be a casual bettor, a wealth-tier directional trader, or a hedger.
-A wallet labeled `Fast-taker` may be HFT-like in behavior but is not
-formally latency-classified. We don't claim identity.
+A wallet labeled `Fast-taker` may be automated or tool-assisted, but is
+not formally latency-classified. We don't claim identity.
 
 ## Why these thresholds
 
@@ -216,12 +216,8 @@ We drove the analysis via the Dune MCP server exposed at
 Key tools used: `createAndExecuteQuery`, `updateDuneQuery`,
 `executeQueryById`, `getExecutionResults`, `searchTables`, `searchDocs`.
 
-```bash
-# Register MCP for Claude Code:
-claude mcp add --scope user --transport http dune \
-  https://api.dune.com/mcp/v1 \
-  --header "x-dune-api-key: <YOUR_KEY>"
-```
+Configure your MCP client with the Dune MCP URL and an
+`x-dune-api-key: <YOUR_KEY>` header. Do not commit local API keys.
 
 Tool arg-naming inconsistency: `executeQueryById` wants `query_id`
 (snake_case); `getExecutionResults` wants `executionId` (camelCase);

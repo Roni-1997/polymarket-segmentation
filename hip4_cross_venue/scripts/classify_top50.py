@@ -49,7 +49,7 @@ for i, w in enumerate(wallets[:N], 1):
     elif mkr_ratio >= 0.9:
         tag = "MM-unhedged"
     elif mkr_ratio <= 0.1 and hip4_total >= 200 and len(hip4_mkts) >= 5:
-        tag = "HFT-sweeper"
+        tag = "Fast-sweeper"
     elif mkr_ratio <= 0.1 and hip4_total >= 50:
         tag = "Aggressive-taker"
     elif mkr_ratio <= 0.1 and len(hip4_mkts) >= 3:
