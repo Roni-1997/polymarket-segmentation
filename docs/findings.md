@@ -78,6 +78,79 @@ peak. Likely drivers: NCAA + crypto rally + post-inauguration markets.
 
 ---
 
+## Category breakdown — where the dollars actually go
+
+The "Polymarket is a politics venue" narrative is outdated. Politics is
+only 16% of platform volume. Sports is nearly 2× larger.
+
+### Categories ranked by size (single-counted notional, 30d)
+
+| Category | $M / 30d | % of platform | $M / day | Texture |
+|---|---:|---:|---:|---|
+| Other (null-tagged) | 1,100 | **35.4%** | 37 | Mostly recurring crypto/sports markets that lost their tags somewhere |
+| Sports | 921 | **29.7%** | 31 | NBA + NFL + esports (Dota, CS2, LoL, Valorant) + soccer |
+| Politics | 500 | 16.1% | 17 | Trump, elections, geopolitical politics |
+| Crypto | 297 | 9.6% | 10 | 5m / 15m / 1h Up-or-Down recurring binaries |
+| Geopolitics | 165 | 5.3% | 5.5 | Iran, Ukraine, Russia, world affairs, Gaza |
+| Finance | 42 | 1.3% | 1.4 | Fed, inflation, interest rates, oil |
+| Weather | 41 | 1.3% | 1.4 | (newer category) |
+| Culture | 33 | 1.1% | 1.1 | Awards, MrBeast, movies, music, celebrities |
+| Tech | 5 | 0.2% | 0.2 | AI, science, tech outcomes |
+| **Total** | **3,103** | 100% | $103M/day | |
+
+### Who plays in each category (% of category volume by cohort)
+
+| Category | Pro-MM (Quoter) | Mid-MM (Quoter) | Hybrid-bot (Sniper) | HFT-taker (Sniper) | Active-retail (Human) | Active-mixed (Human) |
+|---|---:|---:|---:|---:|---:|---:|
+| **Sports** | **34%** | 6% | 20% | 21% | 14% | 5% |
+| **Politics** | 25% | 17% | 10% | 12% | **27%** | 10% |
+| **Crypto** | 32% | 8% | 17% | **26%** | 13% | 4% |
+| **Finance** | 21% | 16% | 13% | 11% | **24%** | 14% |
+| **Geopolitics** | 32% | 15% | 5% | 17% | **24%** | 7% |
+| **Culture** | 25% | 14% | 14% | 9% | **27%** | 13% |
+| **Other** | 33% | 6% | 21% | 24% | 13% | 5% |
+
+### Headline read on each category
+
+| Category | Headline | Implication for Verdict |
+|---|---|---|
+| **Sports** | Bot-dominated: 75% machines (Pro-MM 34% + Snipers 41%) | Polymarket sports MM is mature. Hard to break in. Skip. |
+| **Politics** | Most retail-heavy: 37% human cohorts; Active-retail alone is the largest single cohort here | Polymarket owns the brand. Politics is declining (16% → falling). Don't lead. |
+| **Crypto** | Most automated: 76% bots (Pro-MM + HFT + Hybrid). Only ~17% human | **Verdict's natural target.** Build for machines first. |
+| **Finance** | Balanced: ~45% bot, ~38% human, ~16% Mid-MM | Has sophisticated retail + Mid-MM both present. Verdict can compete here. |
+| **Geopolitics** | Pro-MM heavy + chunky human bets | Average trade $400-$550. Niche but lucrative. Subjective settlement risk. |
+| **Culture / Tech / Weather** | Tiny categories, retail-heavy | Distraction. Skip in launch. |
+
+### Wallet counts and trade-size signals per cell
+
+Full per-cell data in
+[`results/cohort_x_category_drilldown_30d.csv`](../results/cohort_x_category_drilldown_30d.csv).
+Standout cells:
+
+| Cohort | Category | Wallets | Avg trade size | Reads as |
+|---|---|---:|---:|---|
+| Pro-MM | Crypto | 2,871 | **$7** | Tiny recurring binaries fired 27M times in 30d |
+| Pro-MM | Geopolitics | 498 | **$415** | Chunky positions on Iran/Ukraine; few firms, big bets |
+| Active-retail | Politics | 167,082 | **$110** | Retail puts real money behind political bets |
+| Active-retail | Sports | 163,305 | $57 | Similar wallet count, smaller per-bet stakes |
+| Active-retail | Other (recurring crypto) | 200,847 | $25 | Most retail wallets dabble in recurring crypto at small stakes |
+| HFT-taker | Crypto | 9,924 | $7 | Pure-take bots picking off stale 5m binary quotes |
+| Hybrid-bot | Sports | 4,915 | $80 | Basket arbers on NBA/NFL/esports multi-outcome markets |
+| Mid-MM | Geopolitics | 7,355 | **$552** | Mid-tier MMs sitting on chunky geopolitical bets |
+
+### Strategic category focus for Verdict (HIP-4 crypto + financial outcome markets)
+
+| Focus | Category | Why |
+|---|---|---|
+| ✓ Lead | **Crypto outcome markets** (5m / 15m / 1h binaries hedgeable on HL perps) | Polymarket here is only $10M/day, 76% bot. Easy to design FOR machines on day 1. Contestable. |
+| ✓ Add | **Finance** (Fed, CPI, inflation, oil) | Most diverse cohort mix. Sophisticated retail + Mid-MM both present. |
+| ✓ Selective | **Geopolitics** (objective-settlement subset) | Chunky bets ($400-550 avg). Niche but lucrative. Avoid subjective markets. |
+| ✗ Skip | **Sports** | Polymarket's bot ecosystem is mature; you can't out-MM them on day 1. |
+| ✗ Skip | **Politics** | Polymarket owns the brand. Retail-heavy and declining. Not Verdict's edge. |
+| ✗ Skip | **Culture / Tech / Weather** | Too small to matter; retail-heavy. |
+
+---
+
 ## LP rewards — major correction
 
 The pre-audit doc said "top 100 wallets capture 100% of rewards" — that
@@ -158,6 +231,9 @@ Each cited number above maps to a specific CSV under `results/`:
    `lp_rewards_observed`.
 4. LP rewards concentration — `results/lp_rewards_concentration.csv`
    from `queries/08_lp_rewards_concentration.sql`.
+5. Cohort × category drill-down (wallet counts, fills, avg trade size
+   per cell) — `results/cohort_x_category_drilldown_30d.csv` from
+   `queries/09_cohort_x_category_drilldown.sql`.
 
 ---
 
