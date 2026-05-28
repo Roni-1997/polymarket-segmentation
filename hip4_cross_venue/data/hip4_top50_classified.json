@@ -82,7 +82,7 @@
   {
     "rank": 6,
     "addr": "0x95c16466ea54608c4d1ffb931441a08476cfb3f2",
-    "tag": "HFT-sweeper",
+    "tag": "Fast-sweeper",
     "hip4_total": 1734,
     "hip4_mkr": 97,
     "hip4_tkr": 1637,
@@ -130,7 +130,7 @@
   {
     "rank": 9,
     "addr": "0xcaef5b46df8077a07ddb2e1be56e768d8c81f6e0",
-    "tag": "HFT-sweeper",
+    "tag": "Fast-sweeper",
     "hip4_total": 534,
     "hip4_mkr": 36,
     "hip4_tkr": 498,
@@ -226,7 +226,7 @@
   {
     "rank": 15,
     "addr": "0xa17f5c11aa82798658754a5a563141c535441a79",
-    "tag": "HFT-sweeper",
+    "tag": "Fast-sweeper",
     "hip4_total": 276,
     "hip4_mkr": 0,
     "hip4_tkr": 276,
