@@ -147,6 +147,45 @@ only 16% of platform volume. Among tagged categories, sports is nearly
 | Tech | 5 | 0.2% | 0.2 | AI, science, tech outcomes |
 | **Total** | **3,071** | 100% | **~$102M/day** | |
 
+### Crypto tagging shifted between Q1 and May 2026 — caveat
+
+Comparing T30d (May) to Q1 2026 (Jan–Mar) reveals a data-quality flag:
+
+| Category | Q1 2026 ($M/day single) | T30d May 2026 ($M/day single) | Δ |
+|---|---:|---:|---|
+| Crypto | $37.8 | $9.7 | **−74%** |
+| Other (null-tagged) | $0.5 | $36.7 | **+73×** |
+| Crypto + Other combined | $38.3 | $46.4 | +21% |
+
+The 74% crypto crash is implausible against a stable platform total
+(Q1 $123M/day → T30d $102M/day, −17%). The real cause is **Polymarket
+re-tagging or untagging the recurring 5m/15m/1h crypto binaries**
+between Q1 and May. They moved from being tagged `Crypto` to being
+null-tagged `Other`.
+
+**Implication for citing the T30d category breakdown:** the May 2026
+"Other = 35.8%" bucket is *mostly de-tagged crypto*, not a true
+miscellaneous residual. Treat "Crypto + Other" as the upper bound on
+crypto's real share (~45% of platform in May). The Q1 2026 numbers
+better reflect the underlying market types (Crypto 30.7%, Other 0.4%).
+
+### Q1 2026 crypto cohort breakdown (90d window, $M)
+
+| Cohort | Touched $M | Single $M | % of crypto | T30d for ref |
+|---|---:|---:|---:|---:|
+| Pro-MM | 2,074 | 1,037 | **30.5%** | 31.7% |
+| Hybrid-bot | 1,634 | 817 | 24.0% | 17.4% |
+| Fast-taker | 1,611 | 806 | 23.7% | 26.0% |
+| Systematic-taker | 549 | 275 | 8.1% | 10.5% |
+| Retail | 461 | 231 | **6.8%** | 5.0% |
+| Mid-MM | 248 | 124 | 3.7% | 5.8% |
+| Systematic-mixed | 227 | 113 | 3.3% | 3.6% |
+| **Total** | **6,805** | **3,402** | 100% | $290M T30d |
+
+3-persona collapse (Q1 2026 crypto):
+**MMs 34% / Bots+Algo 59% / Retail 7%.** Stable vs T30d (38/58/5).
+Crypto has been consistently bot-dominated across both windows.
+
 ### Who plays in each category — three views
 
 The "Polymarket cohort share by category" is actually three different
