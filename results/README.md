@@ -16,6 +16,7 @@ CSVs from the audited query versions, re-executed against Dune on
 | `other_tags_top30.csv` | `03_other_category_probe.sql` | What's leaking into the "Other" bucket. |
 | `tags_top30.csv` | `02_tags_probe.sql` | Most common market tags. |
 | `cohort_x_category_drilldown_30d.csv` | `09_cohort_x_category_drilldown.sql` | Long-format: per (cohort, category) wallet count, touched and single-counted volume, fills, avg trade size. |
+| `cohort_x_category_maker_taker_30d.csv` | `10_cohort_x_category_maker_taker.sql` | Long-format: per (cohort, category) maker_vol, taker_vol, touched. Source for the three-view matrices (depth providers vs flow consumers). |
 
 ## Conventions
 
