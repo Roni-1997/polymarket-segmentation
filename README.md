@@ -278,53 +278,6 @@ Same data, collapsed into 3 personas for quick reading:
 | **Tech** | 35% | **53%** | 12.7% | Sys-taker dominant, tiny category |
 | **Other** | 38% | **60%** | 2.5% | Bots dominate the recurring residual |
 
-### Per-category cohort mix — by trade COUNT (not notional)
-
-All the percentage tables above are share of **notional volume** ($).
-Share by **trade count** tells a different story because avg trade
-size varies sharply by cohort:
-
-| Cohort | Avg $/fill | % of all fills | % of all notional |
-|---|---:|---:|---:|
-| Pro-MM | $22 | **37.1%** | 31.0% |
-| Fast-taker | $19 | **28.8%** | 20.5% |
-| Hybrid-bot | $27 | 17.5% | 17.9% |
-| Systematic-taker | $38 | 9.0% | 12.7% |
-| Retail | $49 | **2.9%** | 5.3% |
-| Systematic-mixed | $57 | 2.5% | 5.2% |
-| Mid-MM | $91 | 2.2% | 7.4% |
-
-**Pro-MM + Fast-taker + Hybrid-bot = 83% of all fills on the platform.**
-Pro-MM alone fires 37% of fills at $22 avg — high-speed tiny-quote
-spamming. Retail share by count (2.9%) is smaller than by notional
-(5.3%) because retail trades are larger per fill.
-
-Per-category fill-count distribution:
-
-| Category | Pro-MM | Mid-MM | Hybrid-bot | Sys-mixed | Fast-taker | Sys-taker | Retail | Total fills |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Crypto | **40.1%** | 1.3% | 17.1% | 1.5% | **31.6%** | 7.3% | 1.1% | 65.3M |
-| Other (recurring) | **39.0%** | 1.7% | 17.0% | 2.0% | **30.9%** | 8.0% | 1.3% | 120.0M |
-| Sports | **29.2%** | 4.5% | 20.9% | 4.1% | 20.8% | 14.1% | 6.3% | 22.8M |
-| Politics | 23.2% | 4.9% | 17.7% | 6.3% | 14.0% | 14.3% | **19.6%** | 9.7M |
-| Geopolitics | 23.6% | 5.9% | 11.7% | 8.0% | 9.6% | 16.7% | **24.5%** | 1.1M |
-| Finance | 23.9% | 7.0% | 18.7% | 7.9% | 13.0% | 15.5% | 14.1% | 1.5M |
-| Culture | 23.1% | 4.7% | **24.6%** | 6.3% | 14.0% | 14.1% | 13.3% | 1.8M |
-| Weather | 29.5% | 4.6% | 18.4% | 6.4% | 23.7% | 14.6% | 2.9% | 6.1M |
-| Tech | 23.8% | 4.7% | **30.1%** | 4.8% | 17.0% | 9.4% | 10.3% | 0.6M |
-
-Two patterns the count-view reveals:
-
-1. **Crypto + Other (recurring binaries) = 81% of ALL platform fills**
-   (185M of 229M) but only ~45% of notional. Each fill is $7-10.
-   These are the 5m/15m/1h Up-or-Down markets.
-2. **Retail by COUNT is meaningful only in Politics (19.6%) and
-   Geopolitics (24.5%)** — slow-resolving categories where humans
-   actually click. In Crypto and Other, retail is 1% of fills.
-
-Total platform fill count: **228.9M / 30d ≈ 7.6M fills/day ≈ 3.8M
-actual trades/day** (wallet_sides counts each side).
-
 ### Single-counted notional per (cohort, category), $M
 
 For sizing comparisons. Total per category = sum across cohorts.
