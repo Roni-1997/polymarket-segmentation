@@ -11,12 +11,13 @@ venues?"*
 Direct address overlap between the venues is **essentially zero** at the
 professional tier:
 
-- 0 of the 100 wallets in `results/top20_per_cohort_30d.csv` appear in
-  the HIP-4 top-127 captured here.
+- 0 of the 100 wallets in the exported `results/top20_per_cohort_30d.csv`
+  validation sample appear in the HIP-4 top-127 captured here. This CSV
+  is an exported top-per-cohort sample, not a true venue-wide top-100.
 - 0 of the 25 wallets in `results/lp_rewards_top25.csv` appear in the
   HIP-4 top-127.
-- 2 of the top 30 Polymarket wallets by audited 30d touched volume have
-  any Hyperliquid perp activity. **0** have visible HIP-4 activity.
+- 2 of the top 30 wallets in that exported Polymarket validation sample
+  have any Hyperliquid perp activity. **0** have visible HIP-4 activity.
 - Of the top 30 HIP-4 address sample, 10 (33%) have ≥1 Polygon
   transaction, but none appear in the Polymarket cohort data here.
   Distribution suggests casual Polygon use, not pro Polymarket trading.
@@ -37,9 +38,11 @@ MM acquisition — it has to recruit Polymarket-style expertise directly.
 
 ## Headline tables
 
-### Polymarket top-30 (by audited 30d touched volume) → Hyperliquid
+### Polymarket exported-sample top-30 → Hyperliquid
 
 Queried HL `/info` `clearinghouseState` + `userFillsByTime` 2026-05-27.
+The input is `results/top20_per_cohort_30d.csv` sorted by touched volume,
+not a true venue-wide top-30 wallet export.
 
 | Wallet | Poly 30d touched $ | Poly cohort | HL perp 30d fills | HL perp $ | HIP-4 fills |
 |---|---:|---|---:|---:|---:|
@@ -47,9 +50,12 @@ Queried HL `/info` `clearinghouseState` + `userFillsByTime` 2026-05-27.
 | `0xf6ae6df5…` | $19.3M | highMkr_fast | 175 | $585,229 | 0 |
 | *(other 28)* | various | various | 0 | $0 | 0 |
 
-These two wallets are the only identifiable bridge between Polymarket
-pro MM expertise and Hyperliquid signing infrastructure. They are the
-highest-priority MM-recruitment targets for Verdict.
+These two wallets are the identified bridges in this exported validation
+sample between Polymarket pro-MM behavior and Hyperliquid signing
+infrastructure. They are still high-priority MM-recruitment targets for
+Verdict, but the claim should be re-run with
+`queries/11_top_wallets_30d_with_lp.sql` before treating it as
+venue-wide.
 
 ### HIP-4 top-30 address sample → Polygon
 
@@ -71,9 +77,8 @@ Queried `eth_getTransactionCount` via `polygon.drpc.org` 2026-05-27.
 
 None of these 10 appear in `results/top20_per_cohort_30d.csv` or
 `results/lp_rewards_top25.csv`. Polygon nonce > 0 only confirms generic
-Polygon activity; Polymarket-specific contract interactions were not
-verified here (Polygonscan API key required for that step, blocked in
-the source session — see *Limitations* below).
+Polygon activity. A Polymarket-specific Dune query has been added under
+`queries/`, but its results are not committed yet.
 
 ## HIP-4 cohort context
 
@@ -112,14 +117,16 @@ Venue-level context (huskereth Dune query 7427890, livefetch via HL
 | HIP-4 7d trade count | 181,221 |
 | HIP-4 7d unique markets | 37 |
 | HIP-4 share of (HIP-4 + Polymarket + Kalshi) 1d | 0.68% |
-| Polymarket 7d notional (this repo's methodology) | ~$1.48B |
-| Polymarket 7d / HIP-4 7d ratio | ~112× |
+| Polymarket implied 7d single-counted notional from this repo's T30d average | ~$724M |
+| Polymarket implied 7d / HIP-4 7d ratio | ~55× |
 
 ## Methodology
 
 ### Polymarket pros → HL check
 1. Read `results/top20_per_cohort_30d.csv`, sort by
-   `touched_vol_musd` desc, take top 30.
+   `touched_vol_musd` desc, take top 30. This is an exported
+   top-per-cohort validation sample. For a true venue-wide top-wallet
+   test, first run `../queries/11_top_wallets_30d_with_lp.sql`.
 2. For each wallet, call HL `/info` `clearinghouseState` (checks open
    positions) and `userFillsByTime` for the last 30 days.
 3. Tag HL fills as HIP-4 (coin starts with `#` and integer ≥ 1000) vs.
@@ -147,28 +154,20 @@ true` = taker). This is venue-attested side direction, not inferred.
 ## Limitations
 
 1. **Polygon nonce ≠ Polymarket activity.** A Polygon transaction
-   could be USDC bridging, QuickSwap, Aave, etc. To confirm
-   Polymarket-specific, we'd need either:
-   - Polygonscan API key + filter on `to` ∈ {CTF Exchange
-     `0x4bfb41d5b3570defd03c39a9a4d8de6bd8b8982e`, NegRisk Exchange
-     `0xc5d563a36ae78145c45a50134d48a1215220f80a`, Conditional Tokens
-     `0x4d97dcd97ec945f40cf65f87097ace5ea0476045`}, or
-   - A Dune SQL JOIN of these HIP-4 addresses against
-     `polymarket_polygon.market_trades`.
-
-   Easiest next step: add a query in `queries/` that takes the address
-   list from `data/hip4_addrs.txt` and JOINs the maker/taker columns of
-   `polymarket_polygon.market_trades`.
+   could be USDC bridging, QuickSwap, Aave, etc. A Dune SQL JOIN of
+   these HIP-4 addresses against `polymarket_polygon.market_trades` now
+   exists at `queries/01_hip4_addresses_polymarket_overlap.sql`, but it
+   has not been executed and exported into `results/` yet.
 
 2. **The HIP-4 sample is shallow.** 127 wallets were observed in the
    WebSocket capture, and only 50 were deepened with 7d fill history. The
    deep tail may contain Polymarket-experienced retail, but this sample
    is aimed at MM/pro-flow overlap, not exhaustive retail overlap.
 
-3. **Polymarket data here is top-100 cohort + top-25 LP.** Polymarket
-   has ~1M+ wallets per `results/cohort_q1_2026.csv` (~849K in
-   `lowMkr_med` alone). Long-tail overlap is plausible but won't
-   change the strategic picture.
+3. **Polymarket data here is exported top-per-cohort sample + top-25
+   LP.** Polymarket has ~1M+ wallets per `results/cohort_q1_2026.csv`
+   (~849K in `lowMkr_med` alone). Long-tail overlap is plausible but
+   won't change the strategic picture.
 
 4. **HL `userFillsByTime` caps at 2,000 rows.** For very active
    wallets, the most recent 2,000 perp fills can hide their HIP-4
@@ -206,7 +205,8 @@ python3 scripts/check_polygon.py           # → data/hip4_polygon_check.json
 - `data/hip4_ws_wallets.json` — 127-wallet rollup from 548 WS trades.
 - `data/hip4_top50_classified.json` — top 50 with 7d profile + tag.
 - `data/hip4_polygon_check.json` — Polygon nonce per HIP-4 wallet.
-- `data/poly_x_hl_top30.json` — top-30 Polymarket wallets' HL activity.
+- `data/poly_x_hl_top30.json` — HL activity for the top 30 wallets
+  within the exported Polymarket validation sample.
 - `data/hip4_addrs.txt` — comma-separated address list for downstream
   SQL.
 - `queries/01_hip4_addresses_polymarket_overlap.sql` — Dune query to
@@ -220,12 +220,13 @@ python3 scripts/check_polygon.py           # → data/hip4_polygon_check.json
    come from HL-native sources (perp traders, HL-native systematic
    shops) or be recruited directly. Confirmed empirically — 12
    HIP-4 MM-hedgers identified all have HL perp activity; 0 have
-   Polymarket activity at the cohort-data tier.
+   Polymarket activity at the exported cohort-data tier.
 
-2. **Two cross-venue recruitment targets exist.** `0xba325e70…` and
-   `0xf6ae6df5…` — both Polymarket `highMkr_fast` cohort, both already
-   trading HL perps. They are the only identifiable bridges and worth
-   outreach.
+2. **Two cross-venue recruitment targets exist in this sample.**
+   `0xba325e70…` and `0xf6ae6df5…` — both Polymarket `highMkr_fast`
+   cohort, both already trading HL perps. They are worth outreach, but
+   re-run the venue-wide top-wallet query before calling them the only
+   bridges.
 
 3. **Don't model Polymarket as the comparable.** Liquidity flywheel
    assumptions that depend on Polymarket-style growth (mainstream

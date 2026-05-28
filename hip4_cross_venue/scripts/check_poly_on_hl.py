@@ -4,17 +4,28 @@ import time
 
 from common import DATA_DIR, RESULTS_DIR, hl_info, is_hip4_coin, polymarket_volume_musd
 
-# Load top Polymarket wallets from audited cohort output.
+# Load top Polymarket wallets from the audited cohort validation output.
+# This file is top-per-cohort, not a venue-wide ranking. If Dune API
+# results are fetched with the default 100-row limit, the 120-row query
+# can also be clipped.
 poly_top = []
 with (RESULTS_DIR / "top20_per_cohort_30d.csv").open() as f:
     reader = csv.DictReader(f)
     for row in reader:
         poly_top.append(row)
 
-# Sort by volume and take top 30
+cohorts = sorted({row["cohort"] for row in poly_top})
+if len(poly_top) < 120 or "midMkr_med" not in cohorts:
+    print(
+        "WARNING: top20_per_cohort_30d.csv appears to be an exported/capped "
+        f"validation sample ({len(poly_top)} rows, cohorts={cohorts}). "
+        "Use repo-root queries/11_top_wallets_30d_with_lp.sql for a true venue-wide top-wallet sample."
+    )
+
+# Sort by volume and take top 30 within the exported validation sample.
 poly_top.sort(key=lambda r: -polymarket_volume_musd(r))
 top30 = poly_top[:30]
-print("Checking top 30 Polymarket wallets by audited 30d touched volume for any HL activity")
+print("Checking top 30 wallets in exported Polymarket validation sample for any HL activity")
 print()
 
 end_ms = int(time.time() * 1000)

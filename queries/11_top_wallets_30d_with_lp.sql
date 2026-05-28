@@ -1,18 +1,14 @@
--- Top 20 wallets per cohort (30d) with LP-rewards-observed / confirmed flags.
--- LP rewards UNION of both sources (merkle distributor + USDC transfers
--- from the rewards distributor wallet), with same-tx direct transfers
--- excluded to avoid double-counting merkle claims.
+-- Venue-wide top wallets (30d) with LP-rewards flags.
 --
--- Validation interpretation:
---   lp_rewards_observed = any reward history, including dust.
---   lp_rewards_confirmed_1k = material LP-reward history. Use this for
---   MM validation, because dust rewards are not a strong identity signal.
+-- Use this for cross-venue checks that need the true top-N Polymarket
+-- wallets by touched volume. Do not use 05_top20_per_cohort_with_lp.sql
+-- for "top 100 venue-wide" claims; query 05 is intentionally stratified
+-- by cohort for validation.
 --
--- This query can return up to 120 rows (20 per active cohort). If using
--- Dune API getExecutionResults, request a limit > 120; the API default
--- 100-row page can clip the output.
+-- Output volume is touched volume: maker-side + taker-side volume. Divide
+-- by 2 only when comparing aggregate sums to single-counted venue notional.
 --
--- Cost: ~45 credits.
+-- Cost: similar to query 05.
 
 WITH params AS (
   SELECT CURRENT_TIMESTAMP - INTERVAL '30' DAY AS w_start, CURRENT_TIMESTAMP AS w_end
@@ -70,8 +66,6 @@ cohorts AS (
     END AS cadence_band
   FROM wallet_features
 ),
--- LP rewards UNION — both sources matter; merkle alone misses older direct
--- payouts, but raw transfers can overlap merkle claims.
 merkle_rewards AS (
   SELECT evt_tx_hash, tokenReceiver AS recipient, amount/1e6 AS amt
   FROM polymarket_usdc_merkle_distributor_polygon.MerkleDistributor_evt_Claimed
@@ -99,15 +93,18 @@ mm_confirmed AS (
   GROUP BY 1
 ),
 ranked AS (
-  SELECT c.*, ROW_NUMBER() OVER (PARTITION BY c.maker_band, c.cadence_band ORDER BY c.total_vol DESC) AS rnk
+  SELECT
+    c.*,
+    ROW_NUMBER() OVER (ORDER BY c.total_vol DESC) AS rank_by_touched_volume
   FROM cohorts c
   WHERE c.total_vol >= 10000
 )
 SELECT
-  r.maker_band || '_' || r.cadence_band AS cohort,
-  r.rnk AS rank,
+  r.rank_by_touched_volume AS rank,
   CONCAT('0x', LOWER(to_hex(r.wallet))) AS wallet,
+  r.maker_band || '_' || r.cadence_band AS cohort,
   ROUND(r.total_vol/1e6, 2) AS touched_vol_musd,
+  ROUND(r.total_vol/2e6, 2) AS equivalent_single_counted_musd,
   ROUND(r.maker_share, 3) AS maker_share,
   r.n_fills,
   r.n_unique_markets,
@@ -117,5 +114,5 @@ SELECT
   COALESCE(m.rewards_usd, 0) >= 1000 AS lp_rewards_confirmed_1k
 FROM ranked r
 LEFT JOIN mm_confirmed m ON m.wallet = r.wallet
-WHERE r.rnk <= 20
-ORDER BY r.rnk, r.maker_band, r.cadence_band;
+WHERE r.rank_by_touched_volume <= 100
+ORDER BY r.rank_by_touched_volume;

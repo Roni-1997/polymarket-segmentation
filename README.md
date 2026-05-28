@@ -50,15 +50,18 @@ SQL in [queries/](queries/). External research cross-validation in
 - LP reward concentration: top 3 owners = **20%** of all rewards (not
   34% as the pre-audit doc said); top 50 = **50%**. There's a 40%
   long tail across ~111,000 reward-earning owners.
-- Pro-MM cohort top 20 wallets are confirmed against the LP-rewards
-  registry (≥$1k threshold) — the behavioral classifier finds the real
-  oligopoly.
-- **Zero of the top 100 Polymarket wallets are active on Hyperliquid
-  HIP-4** (see [hip4_cross_venue/](hip4_cross_venue/)). The MM
-  migration path that exists runs HL-perps → HIP-4, not Polymarket
-  → HIP-4. Verdict cannot piggyback on Polymarket flywheels.
-- All `results/*.csv` are now from the audited rerun. Numbers match
-  the SQL in `queries/`.
+- Pro-MM-fast top 20 wallets show strong LP-reward overlap: 17/20 have
+  any reward history and 11/20 have material rewards (≥$1k). Use the
+  material threshold for confirmation; dust rewards are weak evidence.
+- **Zero of the exported 100 top-per-cohort Polymarket wallets are
+  active on Hyperliquid HIP-4** (see
+  [hip4_cross_venue/](hip4_cross_venue/)). This is not a venue-wide
+  top-100 test; use `queries/11_top_wallets_30d_with_lp.sql` for that.
+  The MM migration path visible so far runs HL-perps → HIP-4, not
+  Polymarket → HIP-4.
+- Core `results/*.csv` are from the audited rerun. Snapshot CSVs are
+  dated 2026-05-27; most SQL uses a rolling `CURRENT_TIMESTAMP` window,
+  so reruns will drift unless you pin the `params` CTE dates.
 
 ### Volume vs headcount — the asymmetry that matters most
 
@@ -75,11 +78,13 @@ trailing 30d drilldown ([cohort_x_category_drilldown_30d.csv](results/cohort_x_c
 | Mid-MM (highMkr_med) | 160,046 | 9% | $89.16 overall; $552 geopolitics |
 | Active-mixed (midMkr_med) | 183,232 | 6% | $51.85 overall |
 
-**~60,000 professional wallets generate ~78% of volume; ~1.2M retail-tier
-wallets generate ~22%.** Polymarket has retail in the sense of headcount,
-not in the sense of dollars. The diligence question "who drives volume"
-answers itself once you see this asymmetry: design for the professional
-cohort, even though the homepage looks retail-facing.
+**~221,000 MM/bot-classified owners generate ~78% of volume; ~1.03M
+retail-tier owners generate ~22%.** The three fast professional cohorts
+alone are ~60,600 owners and generate ~69% of volume. Polymarket has
+retail in the sense of headcount, not in the sense of dollars. The
+diligence question "who drives volume" answers itself once you see this
+asymmetry: design for the professional cohort, even though the homepage
+looks retail-facing.
 
 A few category-level trade-size signals worth flagging:
 
@@ -118,14 +123,20 @@ See [docs/findings.md](docs/findings.md) for the full memo.
 
 1. Open [dune.com](https://dune.com), create a new query, paste any
    file from [queries/](queries/), save, run.
-2. Total cost ~300 credits across all 8 queries — well within the
+2. Total cost ~350 credits across the core queries — well within the
    Dune free tier's 2,500/month allowance.
 3. Recommended order: `01_action_enum_probe.sql` → `02_tags_probe.sql`
    → `03_other_category_probe.sql` → `04_cohort_x_category_30d.sql`
    (the main result) → `05_top20_per_cohort_with_lp.sql` (validation)
    → `06_cohort_per_quarter.sql` (run twice with different windows
    for the time trend) → `07_lp_rewards_top_recipients.sql`
-   → `08_lp_rewards_concentration.sql`.
+   → `08_lp_rewards_concentration.sql` → `09_cohort_x_category_drilldown.sql`
+   → `10_cohort_x_category_maker_taker.sql`.
+4. Optional but recommended for cross-venue work:
+   `11_top_wallets_30d_with_lp.sql` returns a true venue-wide top-wallet
+   sample; `05_top20_per_cohort_with_lp.sql` is a per-cohort validation
+   sample and can be clipped by Dune API defaults if you do not request
+   enough rows.
 
 If you have a Dune Plus API key, see [docs/methodology.md](docs/methodology.md)
 for the MCP-driven workflow we used to drive Dune from the command line.

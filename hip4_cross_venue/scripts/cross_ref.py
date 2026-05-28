@@ -18,6 +18,12 @@ with (RESULTS_DIR / "lp_rewards_top25.csv").open() as f:
         poly_lp[row["wallet"].lower()] = float(row["lp_rewards_usd"])
 
 print(f"Polymarket top-20 per cohort wallets: {len(poly_wallets)}")
+cohorts = sorted({row["cohort"] for row in poly_wallets.values()})
+if len(poly_wallets) < 120 or "midMkr_med" not in cohorts:
+    print(
+        "WARNING: top20_per_cohort_30d.csv is an exported/capped validation "
+        f"sample ({len(poly_wallets)} rows, cohorts={cohorts}), not a true venue-wide top-100."
+    )
 print(f"Polymarket LP-reward top-25 wallets: {len(poly_lp)}")
 print()
 

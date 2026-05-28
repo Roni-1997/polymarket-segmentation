@@ -188,9 +188,22 @@ Dust rewards are not enough to call a wallet an MM. Use
 
 ## Running it
 
+### Reproducible windows
+
+Most query files use a rolling `CURRENT_TIMESTAMP - INTERVAL '30' DAY`
+window for convenience. The committed CSVs are snapshots from
+2026-05-27. If you need exact reproduction of the committed numbers,
+replace the `params` CTE with explicit timestamps for the intended
+window before running.
+
 ### Via Dune web UI
 Paste queries from [queries/](../queries/) into the editor at
 [dune.com/queries](https://dune.com/queries). Costs ~10–45 credits each.
+
+For wallet-level exports, watch Dune result pagination. Query 05 can
+return 120 rows (20 per cohort); Dune API defaults can clip that to 100
+unless you request a larger result limit. Use query 11 for true
+venue-wide top-wallet samples.
 
 ### Via Dune MCP (programmatic)
 We drove the analysis via the Dune MCP server exposed at

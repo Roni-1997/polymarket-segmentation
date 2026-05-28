@@ -8,7 +8,7 @@ CSVs from the audited query versions, re-executed against Dune on
 | File | Source query | Notes |
 |---|---|---|
 | `cohort_x_category_30d_clean.csv` | `04_cohort_x_category_30d.sql` | Trailing 30d; both touched and single-counted columns. |
-| `top20_per_cohort_30d.csv` | `05_top20_per_cohort_with_lp.sql` | Top 20 wallets per cohort with LP confirmation flags. |
+| `top20_per_cohort_30d.csv` | `05_top20_per_cohort_with_lp.sql` | Exported top-per-cohort validation sample with LP confirmation flags. The source query can return 120 rows; this CSV is clipped at 100 rows and is missing `midMkr_med`. |
 | `cohort_q1_2026.csv` | `06_cohort_per_quarter.sql` | Jan 1 – Apr 1, 2026. |
 | `cohort_q4_2025.csv` | `06_cohort_per_quarter.sql` (dates swapped) | Oct 1 2025 – Jan 1 2026. |
 | `lp_rewards_top25.csv` | `07_lp_rewards_top_recipients.sql` | Top 25 owners by deduped LP rewards. |
@@ -17,6 +17,9 @@ CSVs from the audited query versions, re-executed against Dune on
 | `tags_top30.csv` | `02_tags_probe.sql` | Most common market tags. |
 | `cohort_x_category_drilldown_30d.csv` | `09_cohort_x_category_drilldown.sql` | Long-format: per (cohort, category) wallet count, touched and single-counted volume, fills, avg trade size. |
 | `cohort_x_category_maker_taker_30d.csv` | `10_cohort_x_category_maker_taker.sql` | Long-format: per (cohort, category) maker_vol, taker_vol, touched. Source for the three-view matrices (depth providers vs flow consumers). |
+
+`queries/11_top_wallets_30d_with_lp.sql` is provided for true venue-wide
+top-wallet cross-venue checks, but no CSV output is committed yet.
 
 ## Conventions
 
@@ -29,7 +32,10 @@ CSVs from the audited query versions, re-executed against Dune on
 - All wallet addresses are aggregated to **owner** level via
   `polymarket_polygon.users_address_lookup`.
 - System/router contracts are excluded both pre- and post-mapping.
-  Hardcoded list in queries 04, 05, 06.
+  Hardcoded list in the core cohort queries.
+- Most queries use rolling `CURRENT_TIMESTAMP` windows. The CSVs here
+  are dated snapshots from 2026-05-27; reruns will drift unless the
+  `params` CTE is pinned to explicit timestamps.
 
 ## What's not here
 
