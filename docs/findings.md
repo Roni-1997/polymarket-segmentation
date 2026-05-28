@@ -186,6 +186,41 @@ better reflect the underlying market types (Crypto 30.7%, Other 0.4%).
 **MMs 34% / Bots+Algo 59% / Retail 7%.** Stable vs T30d (38/58/5).
 Crypto has been consistently bot-dominated across both windows.
 
+### Crypto vs Sports — side-by-side by notional
+
+The two largest fast-resolving categories have nearly identical
+cohort fingerprints. Both are bot-dominated, both have minimal retail.
+
+| Cohort | Q1 crypto | Q1 sports | T30d crypto | T30d sports |
+|---|---:|---:|---:|---:|
+| Pro-MM | 30.5% | 29.8% | 31.7% | 32.9% |
+| Mid-MM | 3.7% | 3.1% | 5.8% | 5.3% |
+| Hybrid-bot | 24.0% | 26.6% | 17.4% | 21.6% |
+| Systematic-mixed | 3.3% | 6.6% | 3.6% | 5.0% |
+| Fast-taker | 23.7% | 17.9% | 26.0% | 21.1% |
+| Systematic-taker | 8.1% | 10.7% | 10.5% | 11.5% |
+| Retail | 6.8% | 5.4% | 5.0% | 2.7% |
+| **Volume ($M/day single)** | **$37.8** | **$52.8** | **$9.7** | **$30.2** |
+
+3-persona:
+
+| Persona | Q1 crypto | Q1 sports | T30d crypto | T30d sports |
+|---|---:|---:|---:|---:|
+| MMs | 34% | 33% | 38% | 38% |
+| Bots + Algo | **59%** | **62%** | **58%** | **59%** |
+| Retail | 7% | 5% | 5% | 3% |
+
+Minor differences worth flagging:
+- Hybrid-bot leans slightly **more sports** in both windows (NegRisk
+  multi-outcome NBA/NFL basket arb works well)
+- Fast-taker leans slightly **more crypto** (latency edge on 5m
+  binaries)
+- Retail is slightly higher in crypto than sports — small but consistent
+
+The asymmetric volume drop (crypto −74%, sports −43%) confirms the
+crypto loss is mostly the tagging migration; sports decline is more
+seasonal (mid-May has less playoff activity than April).
+
 ### Who plays in each category — three views
 
 The "Polymarket cohort share by category" is actually three different
