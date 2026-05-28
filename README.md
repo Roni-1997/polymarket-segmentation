@@ -53,12 +53,14 @@ SQL in [queries/](queries/). External research cross-validation in
 - Pro-MM-fast top 20 wallets show strong LP-reward overlap: 17/20 have
   any reward history and 11/20 have material rewards (≥$1k). Use the
   material threshold for confirmation; dust rewards are weak evidence.
-- **Zero of the exported 100 top-per-cohort Polymarket wallets are
-  active on Hyperliquid HIP-4** (see
-  [hip4_cross_venue/](hip4_cross_venue/)). This is not a venue-wide
-  top-100 test; use `queries/11_top_wallets_30d_with_lp.sql` for that.
-  The MM migration path visible so far runs HL-perps → HIP-4, not
-  Polymarket → HIP-4.
+- **Zero of the 100 venue-wide top Polymarket wallets** (by 30d
+  touched volume, query 11) are active on Hyperliquid HIP-4 — see
+  [hip4_cross_venue/](hip4_cross_venue/) and
+  [results/top100_wallets_venue_wide_30d.csv](results/top100_wallets_venue_wide_30d.csv).
+  The venue-wide top-100 is 94% professional cohorts (51 Pro-MM + 23
+  HFT-taker + 20 Hybrid-bot). 32 of them have material LP rewards
+  (≥$1k). The MM migration path visible so far runs HL-perps → HIP-4,
+  not Polymarket → HIP-4.
 - Core `results/*.csv` are from the audited rerun. Snapshot CSVs are
   dated 2026-05-27; most SQL uses a rolling `CURRENT_TIMESTAMP` window,
   so reruns will drift unless you pin the `params` CTE dates.

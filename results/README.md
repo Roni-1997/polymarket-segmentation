@@ -17,9 +17,7 @@ CSVs from the audited query versions, re-executed against Dune on
 | `tags_top30.csv` | `02_tags_probe.sql` | Most common market tags. |
 | `cohort_x_category_drilldown_30d.csv` | `09_cohort_x_category_drilldown.sql` | Long-format: per (cohort, category) wallet count, touched and single-counted volume, fills, avg trade size. |
 | `cohort_x_category_maker_taker_30d.csv` | `10_cohort_x_category_maker_taker.sql` | Long-format: per (cohort, category) maker_vol, taker_vol, touched. Source for the three-view matrices (depth providers vs flow consumers). |
-
-`queries/11_top_wallets_30d_with_lp.sql` is provided for true venue-wide
-top-wallet cross-venue checks, but no CSV output is committed yet.
+| `top100_wallets_venue_wide_30d.csv` | `11_top_wallets_30d_with_lp.sql` | True venue-wide top 100 wallets by 30d touched volume, with cohort label and LP-reward flags. Used for cross-venue overlap checks (vs HIP-4). |
 
 ## Conventions
 

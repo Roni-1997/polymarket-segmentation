@@ -43,10 +43,13 @@ read this:
   is professionalizing rapidly.
 - **LP rewards concentration:** Top 10 owners = 30% of all rewards.
   Top 50 = 50%. Long tail of 111,000+ owners captures the remaining 40%.
-- **Cross-venue migration:** Zero of the exported 100 top-per-cohort
-  Polymarket wallets are active on Hyperliquid HIP-4. This is a
-  directional pro-flow sample, not a true venue-wide top-100. Migration
-  visible so far runs HL-perps → HIP-4, NOT Polymarket → HIP-4.
+- **Cross-venue migration:** **0 of the 100 venue-wide top wallets**
+  (by 30d touched volume — query 11) are active on Hyperliquid HIP-4.
+  Confirmed against the HIP-4 top-127 sample in
+  [hip4_cross_venue/](../hip4_cross_venue/). Migration visible so far
+  runs HL-perps → HIP-4, NOT Polymarket → HIP-4. The venue-wide
+  top-100 is 94% professional cohorts (51 Pro-MM + 23 HFT-taker +
+  20 Hybrid-bot) and 6% human (3 Active-retail + 3 Mid-MM).
 
 Verdict-relevant one-liner: **Build for machines first (crypto + finance
 markets). Recruit Hyperliquid-native MMs, not Polymarket veterans. Open
@@ -400,8 +403,9 @@ Each cited number above maps to a specific CSV under `results/`:
 
 6. **Do not assume Polymarket MMs will migrate to HIP-4 organically.**
    The sister analysis in [hip4_cross_venue/](../hip4_cross_venue/)
-   shows 0/100 exported top-per-cohort Polymarket wallets and 0/25
-   LP-reward recipients are active on Hyperliquid HIP-4 25 days after
+   shows 0/100 venue-wide top Polymarket wallets (rerun with query 11
+   for true venue-wide methodology) and 0/25 LP-reward recipients
+   are active on Hyperliquid HIP-4 25 days after
    launch. Only 2 of the top 30 wallets in that exported Polymarket
    sample have any HL perp activity. The
    cross-venue migration path that exists runs **HL-perps → HIP-4**,
