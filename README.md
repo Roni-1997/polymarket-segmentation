@@ -245,6 +245,42 @@ Categories ranked by single-counted notional (30d):
 | Culture | 33 | 1.1% | 1.1 | Awards, MrBeast, movies, music |
 | Tech | 5 | 0.2% | 0.2 | AI, science, tech outcomes |
 
+### Crypto vs Sports side-by-side (cohort breakdown, % notional)
+
+The two largest fast-resolving categories have nearly identical cohort
+fingerprints — both bot-dominated, neither retail-friendly.
+
+| Cohort | Q1 crypto | Q1 sports | T30d crypto | T30d sports |
+|---|---:|---:|---:|---:|
+| Pro-MM | **30.5%** | **29.8%** | **31.7%** | **32.9%** |
+| Mid-MM | 3.7% | 3.1% | 5.8% | 5.3% |
+| Hybrid-bot | 24.0% | **26.6%** | 17.4% | 21.6% |
+| Systematic-mixed | 3.3% | 6.6% | 3.6% | 5.0% |
+| Fast-taker | **23.7%** | 17.9% | **26.0%** | 21.1% |
+| Systematic-taker | 8.1% | 10.7% | 10.5% | 11.5% |
+| **Retail** | 6.8% | 5.4% | 5.0% | 2.7% |
+
+3-persona collapse:
+
+| Persona | Q1 crypto | Q1 sports | T30d crypto | T30d sports |
+|---|---:|---:|---:|---:|
+| MMs (Pro+Mid) | 34% | 33% | 38% | 38% |
+| **Bots + Algo** | **59%** | **62%** | **58%** | **59%** |
+| Retail | **7%** | **5%** | **5%** | **3%** |
+
+Single-counted notional:
+
+| Period | Crypto $M/day | Sports $M/day |
+|---|---:|---:|
+| Q1 2026 | $37.8 | $52.8 |
+| T30d May | $9.7 | $30.2 |
+| Δ | **−74%** | **−43%** |
+
+The asymmetric drop (crypto −74% vs sports −43%) is the tagging
+migration signal: most of the crypto volume didn't disappear, it
+moved to the null-tagged `Other` bucket. Sports' drop is more real
+(seasonal decline from peak NBA playoffs).
+
 **Caveat — Crypto vs Other tagging shifted between Q1 and May 2026.**
 Comparing Q1 2026 to T30d single-counted volumes:
 
