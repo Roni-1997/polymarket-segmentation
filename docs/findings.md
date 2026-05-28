@@ -130,30 +130,99 @@ only 16% of platform volume. Sports is nearly 2× larger.
 | Tech | 5 | 0.2% | 0.2 | AI, science, tech outcomes |
 | **Total** | **3,103** | 100% | $103M/day | |
 
-### Who plays in each category — simplified (3 buckets)
+### Who plays in each category — three views
 
-If you don't need the 6-cohort detail, this is the same data collapsed
-to MMs (Quoters) / Bots (Snipers) / Retail (Humans).
+The "Polymarket cohort share by category" is actually three different
+questions, each with a different answer. Maker side and taker side
+behave very differently for the same cohort.
 
-| Category | MMs (Pro + Mid) | Bots (Hybrid + HFT) | Retail (Active + Mixed) | Dominant |
-|---|---:|---:|---:|---|
-| **Sports** | 40% | **41%** | 19% | Bots edge MMs; retail tiny |
-| **Politics** | 42% | 22% | **37%** | MMs + Retail (least bot-heavy) |
-| **Crypto** | 39% | **43%** | 17% | Bots dominate; retail effectively absent |
-| **Finance** | 37% | 25% | **38%** | Retail-leaning, balanced |
-| **Geopolitics** | **47%** | 22% | 31% | MM-heavy + meaningful retail |
-| **Weather** | **43%** | 28% | 29% | MM-heavy, balanced rest |
-| **Culture** | 38% | 22% | **39%** | Retail-leaning, tiny category |
-| **Tech** | 38% | 24% | **37%** | Balanced, tiny category |
-| **Other** | 38% | **44%** | 17% | Bots dominate the recurring/untagged residual |
-| **Platform avg** | **40%** | **38%** | **22%** | Aligns with cohort distribution |
+#### View 1 — Who PROVIDES depth in each category (% of maker side)
 
-Three patterns jump out:
-- **Bots dominate** crypto, sports, "other" (recurring markets) — fast cadence helps
-- **MMs + Retail** dominate politics and geopolitics — slower-resolving markets, less basket arb opportunity
-- **Finance / culture / tech** are the most retail-leaning categories but tiny
+This is who's posting limit orders that other people fill. Every fill
+has one maker, so columns sum to 100%.
 
-### Who plays in each category — full detail (6 cohorts)
+| Category | Pro-MM | Mid-MM | Hybrid-bot | Active-mixed | HFT-taker | Active-retail |
+|---|---:|---:|---:|---:|---:|---:|
+| **Sports** | **58%** | 10% | 22% | 5% | 4% | 2% |
+| **Politics** | **46%** | **31%** | 10% | 10% | 2% | 2% |
+| **Crypto** | **59%** | 14% | 19% | 4% | 4% | 1% |
+| **Finance** | **38%** | **29%** | 13% | 14% | 3% | 4% |
+| **Geopolitics** | **59%** | **28%** | 5% | 6% | 1% | 1% |
+| **Culture** | **43%** | 24% | 15% | 14% | 2% | 3% |
+| **Weather** | **59%** | 18% | 12% | 7% | 2% | 2% |
+| **Tech** | 43% | 25% | 13% | 12% | 3% | 4% |
+| **Other** | **59%** | 10% | 21% | 5% | 4% | 2% |
+
+**Pro-MM provides 38–59% of depth in every single category.** Mid-MM is
+the consistent #2 (10–31%). Together MMs are **62–80% of all standing
+depth across categories.** Hybrid-bot adds another 5–22%.
+Retail provides only 1–4% of depth — they don't post limit orders much.
+
+#### View 2 — Who CONSUMES depth in each category (% of taker side)
+
+This is who's hitting other people's orders. Columns sum to 100%.
+
+| Category | Pro-MM | Mid-MM | Hybrid-bot | Active-mixed | HFT-taker | Active-retail |
+|---|---:|---:|---:|---:|---:|---:|
+| **Sports** | 8% | 2% | 21% | 5% | **39%** | 26% |
+| **Politics** | 4% | 3% | 10% | 10% | 22% | **51%** |
+| **Crypto** | 5% | 2% | 16% | 4% | **49%** | 25% |
+| **Finance** | 4% | 4% | 14% | 13% | 21% | **44%** |
+| **Geopolitics** | 5% | 3% | 6% | 7% | 34% | **46%** |
+| **Culture** | 6% | 4% | 14% | 10% | 16% | **51%** |
+| **Weather** | 7% | 2% | 9% | 6% | 33% | **42%** |
+| **Tech** | 4% | 4% | 15% | 12% | 20% | **46%** |
+| **Other** | 6% | 1% | 21% | 5% | **44%** | 24% |
+
+**The taker side flips entirely.** Active-retail consumes 24–51% of
+liquidity across categories — they're the dominant takers in politics,
+culture, geopolitics, finance, tech, weather. HFT-taker dominates the
+fast markets (crypto 49%, sports 39%, "other" 44%). Pro-MM consumes
+only 4–8% — they almost never take.
+
+#### View 3 — Combined participation (% of touched volume)
+
+This is the aggregate of maker + taker, useful for "how often is each
+cohort involved in trades in this category." This is what the original
+cohort × category headline matrix shows.
+
+| Category | MMs (Pro+Mid) | Bots (Hybrid+HFT) | Retail (Active+Mixed) |
+|---|---:|---:|---:|
+| **Sports** | 40% | **41%** | 19% |
+| **Politics** | 42% | 22% | **37%** |
+| **Crypto** | 39% | **43%** | 17% |
+| **Finance** | 37% | 25% | **38%** |
+| **Geopolitics** | **47%** | 22% | 31% |
+| **Weather** | **43%** | 28% | 29% |
+| **Culture** | 38% | 22% | **39%** |
+| **Tech** | 38% | 24% | **37%** |
+| **Other** | 38% | **44%** | 17% |
+| **Platform avg** | **40%** | **38%** | **22%** |
+
+#### Key insight from separating maker / taker / combined
+
+**The roles are crystal clear when you split sides:**
+- **MMs = liquidity providers.** 62–80% of all depth across categories, only 6–11% of taker flow.
+- **HFT + Retail = flow consumers.** Together they take 50–80% of liquidity per category, but provide only 3–6% of depth.
+- **Hybrid bots are the only cohort that's roughly balanced** (15–22% of both sides).
+
+The aggregate "touched" view conflates these roles, which is why the
+platform-average (40% MM / 38% Bot / 22% Retail) is misleading on its
+own — it makes it sound like MMs, bots, and retail all "do similar
+things at different volumes." They don't. MMs make. HFT and retail
+take. Hybrid bots straddle.
+
+**The strategic read for Verdict:**
+
+When you recruit MMs, you're recruiting the source of 62–80% of
+standing depth in every category. There's no substitute on the maker
+side except your internal vault. When you acquire retail, you're
+acquiring the largest single source of taker flow (24–51%) — they
+provide the uninformed counterparty MMs need to earn the spread. The
+bots (HFT-taker + Hybrid) will self-arrive once spread exists; they
+provide some depth (3–22%) but consume far more.
+
+### Who plays in each category — full detail (6 cohorts, combined)
 
 | Category | Pro-MM (Quoter) | Mid-MM (Quoter) | Hybrid-bot (Sniper) | HFT-taker (Sniper) | Active-retail (Human) | Active-mixed (Human) |
 |---|---:|---:|---:|---:|---:|---:|
@@ -289,6 +358,9 @@ Each cited number above maps to a specific CSV under `results/`:
 5. Cohort × category drill-down (wallet counts, fills, avg trade size
    per cell) — `results/cohort_x_category_drilldown_30d.csv` from
    `queries/09_cohort_x_category_drilldown.sql`.
+6. Cohort × category maker / taker split (who provides depth vs who
+   consumes it, per cell) — `results/cohort_x_category_maker_taker_30d.csv`
+   from `queries/10_cohort_x_category_maker_taker.sql`.
 
 ---
 
