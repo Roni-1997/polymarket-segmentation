@@ -1,13 +1,12 @@
 # Polymarket participant segmentation
 
 Reproducible SQL pack + analysis classifying every Polymarket wallet
-that traded in the trailing 30 days (and prior quarters) into 6
+that traded in the trailing 30 days (and prior quarters) into 7
 behavioral cohorts, then measuring **who drives volume**, **who
 provides depth**, **who consumes flow**, by category, over time.
 
-Built to answer one question for the Verdict (HIP-4 outcome markets on
-Hyperliquid) diligence: *who actually drives volume on Polymarket — and
-which of them should a new venue target?*
+Built to answer one question: *who actually drives volume and liquidity
+on Polymarket?*
 
 Repo state: audited rerun, 11 SQL queries, 9 result CSVs, cross-venue
 overlap check. Current as of **2026-05-27**.
@@ -23,7 +22,6 @@ overlap check. Current as of **2026-05-27**.
 - [Insights by role (maker vs taker)](#insights-by-role-depth-providers-vs-flow-consumers)
 - [Insights by time](#insights-by-time-the-professionalization-trend)
 - [Cross-venue (Polymarket × HIP-4)](#cross-venue-the-migration-that-isnt-happening)
-- [Strategic implications for Verdict](#strategic-implications-for-verdict)
 - [Next steps / open questions](#next-steps--open-questions)
 - [Repo structure](#repo-structure)
 - [How to reproduce](#how-to-reproduce)
@@ -38,7 +36,7 @@ overlap check. Current as of **2026-05-27**.
 For each wallet that traded on Polymarket (CTF Exchange + NegRisk
 Exchange on Polygon) in the analysis window, we compute behavioral
 features from raw `OrderFilled` events and classify the wallet into
-one of 6 cohorts. Then we aggregate volume, fill count, wallet count,
+one of 7 cohorts. Then we aggregate volume, fill count, wallet count,
 and average trade size per (cohort × category × maker/taker side).
 
 ### 2. Data sources
@@ -358,19 +356,6 @@ fills/active_day = retail), retail per category is **2.5–13%**. The
 difference is the Systematic-taker cohort (now properly classified as
 algo/bot), which was previously lumped into retail.
 
-**Strategic read per category (for Verdict):**
-
-| Category | Focus | Why |
-|---|---|---|
-| **Crypto** | ✓ **Lead** | 76% automated. Polymarket here is only $10M/day. Most contestable. Design for machines. |
-| **Finance** | ✓ Add | Most diverse cohort mix. Sophisticated retail + Mid-MM both present. |
-| **Geopolitics** | ✓ Selective | Chunky $400-550 bets, niche but lucrative. Avoid subjective settlement. |
-| **Sports** | ✗ Skip | Polymarket sports MM ecosystem is mature; you can't out-MM them on day 1 |
-| **Politics** | ✗ Skip | Polymarket owns the brand. Declining. Not Verdict's edge. |
-| **Culture / Tech / Weather** | ✗ Skip | Too small, retail-heavy distractions. |
-
----
-
 ## Insights by role (depth providers vs flow consumers)
 
 The aggregate "% volume" number is misleading because it conflates two
@@ -485,55 +470,7 @@ vs EOA-direct, UMA vs validator-vote settlement. The friction is
 structural and won't collapse on its own.
 
 **The migration that IS happening:** HL-perps traders →
-HIP-4. Verdict's MM-recruitment plan should target the Hyperliquid
-trader base, NOT Polymarket veterans.
-
----
-
-## Strategic implications for Verdict
-
-1. **Design for professional flow early.** 78% of Polymarket volume is
-   machines. Crypto outcome markets are 76% bots. Build API quality,
-   maker rebates, fast cancel, NegRisk-style basket support before
-   retail UX.
-
-2. **Internal vault is the launch mechanism, not the marketing
-   budget.** $5–10M HLP-style vault sized to provide 30–40% of intended
-   depth in launch markets. Substitutes for missing retail in months
-   0–6. Without it, MMs will not quote tight.
-
-3. **Recruit Hyperliquid-native MMs, NOT Polymarket veterans.** The
-   cross-venue data kills the "Polymarket migration" thesis. Target
-   HL-perps active MMs, HLP vault delegators, ex-DeFi MM operators
-   who already understand HL signing.
-
-4. **Hybrid bots are the highest-leverage early-onboard target.** 14/20
-   top hybrid bots earn LP rewards. They self-arrive with a
-   competitive rebate program + NegRisk basket support. Phase 1.
-
-5. **Open retail UX in months 3–9, not at launch.** Retail acquired
-   before depth exists = adverse selection = bad reviews = death.
-   Copy Polymarket's limit-order-first UX once depth exists. Hyperliquid
-   wallet integration → low-friction onboarding.
-
-6. **Tier-1 MMs (Wintermute, GSR, B2C2) come LAST**, not first. They
-   require $10M+/day notional for their seat-fee math to work. Phase
-   3, month 9+.
-
-7. **Skip politics, skip sports, skip Polymarket migration plays.**
-   Politics is 16% of Polymarket and shrinking. Sports MM ecosystem
-   on Polymarket is mature. Polymarket → HIP-4 migration is 0/100.
-
-**Phased launch playbook in one table:**
-
-| Phase | Months | Acquire | Volume target | Critical metric |
-|---|---|---|---|---|
-| **0** Build | T-3 → T-0 | Vault + 3–5 HL-native MM term sheets | $0 | Vault depth quoting ≤5bps |
-| **1** Ignition | 0–3 | Hybrid bots self-arrive; HL-perps power users | $1–5M/day | Maker side ≥40% from vault, ≥30% from MMs |
-| **2** Retail | 3–9 | Retail via HL wallet integration + airdrop tie-in | $10–20M/day | **Retail % of taker ≥20%** |
-| **3** Maturity | 9–18 | Tier-1 MMs become viable | $30–50M/day | Top-10 MM concentration <60% |
-
-Full implications: [docs/findings.md](docs/findings.md).
+HIP-4. The observed overlap is HL-native rather than Polymarket-derived.
 
 ---
 
@@ -553,19 +490,21 @@ analysis. Roughly ordered by leverage.
 
 2. **Cross-venue arber detection (Polymarket ↔ Kalshi).** The
    drop in Systematic-mixed cohort (11.6% → 5.2%) and Retail (10.7%
-   → 5.3%) likely reflects migration to Kalshi. Confirming requires Kalshi API data ($200/mo via FinFeedAPI
-   or scraping) + matching wallet timestamps across venues. **~3–5 days.**
+   → 5.3%) likely reflects migration to Kalshi. Confirming requires
+   Kalshi API data ($200/mo via FinFeedAPI or scraping) + matching
+   wallet timestamps across venues. **~3–5 days.**
 
 3. **Wallet-level firm attribution.** We can identify the LP-reward
    top 10 by address. Mapping them to firms (Wintermute, GSR, B2C2,
    Amber, Susquehanna, etc.) requires manual labeling against public
    registries + on-chain clustering for sibling-EOA grouping. **~1–2
-   days.** Important for BD targeting.
+   days.**
 
 4. **Wash-trade exclusion.** Solidus flagged ~15% of some markets as
    wash trading consistent with POLY airdrop farming. Filtering paired
    YES+NO same-owner positions in the same condition_id within a
-   short window would reduce Systematic-mixed and Retail cohort sizes. Likely shifts the headline cohort numbers by 2–5pp.
+   short window would reduce Systematic-mixed and Retail cohort sizes.
+   Likely shifts the headline cohort numbers by 2–5pp.
    **~2–3 days.**
 
 ### Medium-value additions
@@ -588,25 +527,10 @@ analysis. Roughly ordered by leverage.
    complete-set arber cohort (currently mixed into Hybrid-bot).
    **~1 day.**
 
-### Operational / for Verdict specifically
-
-8. **Internal vault sizing model.** Given target depth (X% of
-   intended book), market correlation matrix, and expected adverse
-   selection cost from this analysis, what's the minimum vault TVL
-   for Phase 0–1? Build a parameter sweep that outputs (vault size,
-   maker rebate budget, expected APY, kill-switch trigger
-   thresholds). **~3–5 days, requires market-specific assumptions.**
-
-9. **MM acquisition pipeline.** Build a wallet-level scoring system
-   that ranks HL-perps wallets by likelihood-to-onboard for HIP-4.
-   Inputs: their HL trading sophistication, maker share on HL,
-   capital deployed, any prediction-market activity. Use this to
-   prioritize BD outreach. **~1 week.**
-
-10. **Monthly automated rerun.** Pin the `params` CTE to explicit
-    timestamps and schedule monthly Dune executions. Build a
-    Streamlit/Observable dashboard that visualizes the cohort
-    distribution over time. **~2–3 days.**
+8. **Monthly automated rerun.** Pin the `params` CTE to explicit
+   timestamps and schedule monthly Dune executions. Build a
+   Streamlit/Observable dashboard that visualizes the cohort
+   distribution over time. **~2–3 days.**
 
 ### What we explicitly chose NOT to do
 
@@ -617,8 +541,8 @@ analysis. Roughly ordered by leverage.
   HIP-4. Kalshi/Manifold/Limitless/Myriad cross-checks are open
   follow-ups.
 - **Make recommendations on subjective markets (politics, culture,
-  sports).** Verdict's edge is in objective-resolution markets;
-  subjective markets aren't the target audience.
+  sports).** This repo measures observed Polymarket structure; it does
+  not prescribe which categories another venue should list.
 
 ---
 
@@ -626,7 +550,7 @@ analysis. Roughly ordered by leverage.
 
 | Path | What |
 |---|---|
-| [docs/findings.md](docs/findings.md) | Strategic memo — full findings + Verdict implications |
+| [docs/findings.md](docs/findings.md) | Detailed findings and result-source mapping |
 | [docs/methodology.md](docs/methodology.md) | Classifier spec, contract exclusions, schema gotchas |
 | [docs/external_research.md](docs/external_research.md) | Cross-validation vs Paradigm, Solidus, Chainalysis, Dune dashboards |
 | [queries/](queries/) | 11 SQL files — paste any into Dune to reproduce |

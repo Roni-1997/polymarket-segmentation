@@ -52,11 +52,6 @@ read this:
   only 6% non-professional (3 Systematic-taker + 3 Mid-MM, 0 Retail).
   Migration visible so far runs HL-perps → HIP-4, NOT Polymarket → HIP-4.
 
-Verdict-relevant one-liner: **Build for machines first (crypto + finance
-markets). Recruit Hyperliquid-native MMs, not Polymarket veterans. Open
-retail UX in month 3-9 once depth exists. Skip sports, skip politics,
-skip Polymarket migration plays.**
-
 ---
 
 ## Audited numbers (trailing 30 days, May 2026), 7-cohort framework
@@ -252,19 +247,6 @@ Standout cells:
 | Hybrid-bot | Sports | ~5k | $80 | Basket arbers on NBA/NFL/esports multi-outcome markets |
 | Mid-MM | Geopolitics | ~7k | **$550** | Mid-tier MMs sitting on chunky geopolitical bets |
 
-### Strategic category focus for Verdict (HIP-4 crypto + financial outcome markets)
-
-| Focus | Category | Why |
-|---|---|---|
-| ✓ Lead | **Crypto outcome markets** (5m / 15m / 1h binaries hedgeable on HL perps) | Polymarket here is only $10M/day, 76% bot. Easy to design FOR machines on day 1. Contestable. |
-| ✓ Add | **Finance** (Fed, CPI, inflation, oil) | Most diverse cohort mix. Sophisticated retail + Mid-MM both present. |
-| ✓ Selective | **Geopolitics** (objective-settlement subset) | Chunky bets ($400-550 avg). Niche but lucrative. Avoid subjective markets. |
-| ✗ Skip | **Sports** | Polymarket's bot ecosystem is mature; you can't out-MM them on day 1. |
-| ✗ Skip | **Politics** | Polymarket owns the brand. Retail-heavy and declining. Not Verdict's edge. |
-| ✗ Skip | **Culture / Tech / Weather** | Too small to matter; retail-heavy. |
-
----
-
 ## LP rewards — major correction
 
 The pre-audit doc said "top 100 wallets capture 100% of rewards" — that
@@ -342,7 +324,7 @@ Each cited number above maps to a specific CSV under `results/`:
 3. Wallet-level validation — `results/top20_per_cohort_30d.csv` from
    `queries/05_top20_per_cohort_with_lp.sql`. This exported CSV is
    clipped at 100 rows, so it is a top-per-cohort validation sample, not
-   the full 120-row query output. Use `lp_rewards_confirmed_1k` as the
+   the full 140-row query output. Use `lp_rewards_confirmed_1k` as the
    strong signal, not `lp_rewards_observed`.
 4. LP rewards concentration — `results/lp_rewards_concentration.csv`
    from `queries/08_lp_rewards_concentration.sql`.
@@ -352,45 +334,6 @@ Each cited number above maps to a specific CSV under `results/`:
 6. Cohort × category maker / taker split (who provides depth vs who
    consumes it, per cell) — `results/cohort_x_category_maker_taker_30d.csv`
    from `queries/10_cohort_x_category_maker_taker.sql`.
-7. True venue-wide top-wallet sample — use
-   `queries/11_top_wallets_30d_with_lp.sql`. No CSV is committed yet.
-
----
-
-## Verdict implications (rerun-confirmed)
-
-1. **Design for professional flow early.** Crypto and financial outcome
-   markets are naturally quoteable, hedgeable, and automation-friendly.
-   Verdict should prioritize API quality, deterministic settlement, and
-   maker tooling before broad retail discovery work.
-
-2. **Internal liquidity still matters, but measure it correctly.**
-   Baseline liquidity should be evaluated by quote uptime, spread, depth,
-   markouts, and inventory bounds, not headline volume.
-
-3. **Hybrid maker/taker bots are strategically important.** These actors
-   bridge pure MM and pure taker flow: they quote when rewarded, take when
-   inventory or cross-market pricing demands it, and are easier to
-   onboard than a small set of top-tier institutional MMs.
-
-4. **Retail is still useful even if not dominant.** Less informed flow is
-   what lets market makers earn the spread. A venue with only professional
-   flow becomes an adverse-selection contest.
-
-5. **Avoid overfitting to politics.** Verdict's HIP-4 edge is strongest
-   in objective, fast-resolving, hedgeable crypto/financial markets.
-
-6. **Do not assume Polymarket MMs will migrate to HIP-4 organically.**
-   The sister analysis in [hip4_cross_venue/](../hip4_cross_venue/)
-   shows 0/100 venue-wide top Polymarket wallets (rerun with query 11
-   for true venue-wide methodology) and 0/25 LP-reward recipients
-   are active on Hyperliquid HIP-4 25 days after
-   launch. Only 2 of the top 30 wallets in that exported Polymarket
-   sample have any HL perp activity. The
-   cross-venue migration path that exists runs **HL-perps → HIP-4**,
-   not Polymarket → HIP-4. Verdict's MM recruitment plan must target
-   the HL-perps audience directly and recruit Polymarket-style
-   expertise as a separate effort. The structural friction explaining
-   this gap (Polygon vs HL, USDC.e vs USDC, Gnosis-Safe + meta tx vs
-   EOA-direct, UMA vs validator-vote settlement) is unlikely to
-   collapse on its own.
+7. True venue-wide top-wallet sample —
+   `results/top100_wallets_venue_wide_30d.csv` from
+   `queries/11_top_wallets_30d_with_lp.sql`.
