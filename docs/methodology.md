@@ -69,38 +69,43 @@ from Conditional Tokens events before making arber-share claims.
 
 ```
                     cadence_band (n_fills / n_active_days)
-                    ──────────────────────────────────────
-                    fast (≥100)   med (1-100)   slow (<1)
-                    ─────────────────────────────────────
-maker_band   high   Pro-MM        Mid-MM        Passive-quoter
+                    ──────────────────────────────────────────────
+                    fast (≥100)   systematic (10-100)   <10
+                    ──────────────────────────────────────────────
+maker_band   high   Pro-MM        Mid-MM                ↓
 (70-100%)
-             mid    Hybrid-bot    Active-mixed  Casual-mixed
+             mid    Hybrid-bot    Systematic-mixed      ↓
 (30-70%)
-             low    HFT-taker     Active-retail Casual-retail
+             low    Fast-taker    Systematic-taker      ↓
 (<30%)
+             any    —             —                     Retail
 ```
 
-**Three of nine cells are empty by construction**: "slow" cadence (<1
-fill per active day) is mathematically impossible because we define an
-"active day" as one where a fill occurred. So `n_fills / n_active_days
-≥ 1` always.
+**The 3 discretionary cells collapse into a single Retail cohort.** Once
+a wallet is at <10 fills/active_day, maker_share is a stylistic
+order-type choice (limit vs market) rather than a strategic role.
+Collapsing them simplifies the framework to **7 cohorts**.
 
-In practice, only six cohorts have meaningful volume.
+**Important framing:** these are observed trading behaviors over the
+measurement window, not user identities. A wallet labeled `Retail` may
+be a casual bettor, a wealth-tier directional trader, or a hedger.
+A wallet labeled `Fast-taker` may be HFT-like in behavior but is not
+formally latency-classified. We don't claim identity.
 
 ## Why these thresholds
 
-- **maker_share ≥ 0.70**: a wallet whose primary role is providing
-  liquidity. 60-70% is the soft boundary; pure passive quoters are 85%+;
-  hybrid strategies are 30-70%; pure-take is <30%.
-- **fills/day ≥ 100**: bot-cadence threshold. Real HFT bots fire
-  thousands of times per day; 100 fills/day is the lower bound for
-  "this is automated" with high confidence.
-- **fills/day ∈ [1, 100)**: active human or slow bot. Human discretionary
-  traders typically fall in 5-50 fills/day on active days.
+- **maker_share ≥ 0.70**: primary role is providing liquidity.
+- **maker_share 0.30–0.70**: hybrid (basket arb / inventory rebalancer / news-reaction MM).
+- **maker_share < 0.30**: primary role is consuming liquidity.
+- **cadence ≥ 100/day**: clearly automated; no human sustains 100+ orders/day.
+- **cadence 10–100/day**: systematic / tool-assisted (slow algo, copy-trading wrapper, sophisticated discretionary human).
+- **cadence < 10/day**: retail-cadence; humans placing opinionated bets.
 
 **These are reasonable defaults, not gospel.** The 70% maker-share line
-is the most sensitive — sliding it to 60% moves ~5pp from HFT-taker
-into Pro-MM.
+is the most sensitive — sliding it to 60% moves ~5pp from Fast-taker
+into Pro-MM. The 10/day cadence boundary was chosen deliberately to
+separate true retail from semi-pro / slow-algo behavior; lowering it to
+5/day would shrink Retail volume share further (already only 5.3% at 10).
 
 ## Contract exclusion
 

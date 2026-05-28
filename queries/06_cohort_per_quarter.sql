@@ -1,12 +1,12 @@
--- Cohort distribution over a single quarter (90-day window).
--- Set w_start/w_end to the quarter you want. We ran two copies of
--- this — Q4 2025 and Q1 2026 — to see the time trend.
+-- Cohort distribution over a single quarter (90-day window), 7-cohort framework.
+-- Set w_start/w_end to the quarter you want. We run two copies — Q4 2025
+-- and Q1 2026 — to see the time trend.
 --
 -- Dropped the category dimension to fit Dune's free-tier 2-minute SQL
--- timeout on 90-day windows. To get category breakdown for a quarter,
--- you'd need to chunk further (45d or 30d) and combine.
+-- timeout on 90-day windows. For category breakdown per quarter, chunk
+-- further (45d or 30d) and combine.
 --
--- Output volume is touched volume: maker-side + taker-side volume. Divide
+-- Output volume is touched volume: maker-side + taker-side. Divide
 -- by 2 only when comparing to single-counted venue notional.
 --
 -- Cost: ~12 credits.
@@ -40,36 +40,37 @@ wallet_sides_raw AS (
   FROM trades t LEFT JOIN polymarket_polygon.users_address_lookup u ON u.polymarket_wallet = t.maker
 ),
 wallet_sides AS (
-  SELECT *
-  FROM wallet_sides_raw
-  WHERE wallet NOT IN (SELECT addr FROM excluded_contracts)
+  SELECT * FROM wallet_sides_raw WHERE wallet NOT IN (SELECT addr FROM excluded_contracts)
 ),
 wallet_features AS (
-  SELECT wallet,
-    COUNT(*) AS n_fills,
+  SELECT wallet, COUNT(*) AS n_fills,
     COUNT(DISTINCT date_trunc('day', block_time)) AS n_active_days,
     SUM(notional) AS total_vol,
     SUM(CASE WHEN side='maker' THEN notional ELSE 0 END) AS maker_vol
-  FROM wallet_sides
-  GROUP BY 1
-  HAVING COUNT(*) <= 5000000  -- safety net for unidentified routers
+  FROM wallet_sides GROUP BY 1
+  HAVING COUNT(*) <= 5000000
 ),
 cohorts AS (
-  SELECT total_vol, maker_vol,
+  SELECT wallet, total_vol, maker_vol,
     CASE
-      WHEN maker_vol / NULLIF(total_vol, 0) >= 0.70 THEN 'highMkr'
-      WHEN maker_vol / NULLIF(total_vol, 0) >= 0.30 THEN 'midMkr'
-      ELSE 'lowMkr'
-    END AS maker_band,
-    CASE
-      WHEN n_fills * 1.0 / GREATEST(n_active_days, 1) >= 100 THEN 'fast'
-      WHEN n_fills * 1.0 / GREATEST(n_active_days, 1) >= 1   THEN 'med'
-      ELSE 'slow'
-    END AS cadence_band
+      WHEN n_fills * 1.0 / GREATEST(n_active_days, 1) < 10 THEN 'Retail'
+      WHEN n_fills * 1.0 / GREATEST(n_active_days, 1) >= 100 THEN
+        CASE
+          WHEN maker_vol / NULLIF(total_vol, 0) >= 0.70 THEN 'Pro-MM'
+          WHEN maker_vol / NULLIF(total_vol, 0) >= 0.30 THEN 'Hybrid-bot'
+          ELSE 'Fast-taker'
+        END
+      ELSE
+        CASE
+          WHEN maker_vol / NULLIF(total_vol, 0) >= 0.70 THEN 'Mid-MM'
+          WHEN maker_vol / NULLIF(total_vol, 0) >= 0.30 THEN 'Systematic-mixed'
+          ELSE 'Systematic-taker'
+        END
+    END AS cohort
   FROM wallet_features
 )
 SELECT
-  maker_band || '_' || cadence_band AS cohort,
+  cohort,
   COUNT(*) AS n_wallets,
   ROUND(SUM(total_vol)/1e6, 1) AS total_touched_vol_musd,
   ROUND(SUM(total_vol)/2e6, 1) AS equivalent_single_counted_musd,
