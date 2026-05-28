@@ -247,19 +247,63 @@ Categories ranked by single-counted notional (30d):
 | Culture | 33 | 1.1% | 1.1 | Awards, MrBeast, movies, music |
 | Tech | 5 | 0.2% | 0.2 | AI, science, tech outcomes |
 
-### Per-category cohort mix (% of category touched volume, 3-persona rollup)
+### Per-category cohort mix — full 7-cohort breakdown
 
-| Category | MMs | Bots+Algo | Retail | Dominant pattern |
+% of category touched volume by cohort (T30d). Bold = top cohort in
+that category.
+
+| Category | Pro-MM | Mid-MM | Hybrid-bot | Sys-mixed | Fast-taker | Sys-taker | Retail |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| **Crypto** | **31.7%** | 5.8% | 17.4% | 3.6% | **26.0%** | 10.5% | 5.0% |
+| **Politics** | 24.7% | 14.4% | 9.8% | 7.9% | 11.9% | **18.4%** | **13.0%** |
+| **Sports** | **32.9%** | 5.3% | 21.6% | 5.0% | 21.1% | 11.5% | 2.7% |
+| **Finance** | 21.1% | 13.3% | 13.4% | 11.8% | 11.6% | **19.1%** | 9.7% |
+| **Geopolitics** | **31.8%** | 13.0% | 5.2% | 5.2% | 17.3% | 14.8% | **12.7%** |
+| **Culture** | 24.2% | 11.3% | 14.6% | 10.8% | 8.6% | **19.7%** | 10.8% |
+| **Weather** | **32.9%** | 9.5% | 10.5% | 6.5% | 17.8% | **18.2%** | 4.6% |
+| **Tech** | 23.8% | 11.0% | 13.7% | 9.6% | 11.3% | **18.0%** | 12.7% |
+| **Other** | **32.5%** | 5.2% | 20.9% | 4.2% | 23.8% | 10.8% | 2.5% |
+
+### Per-category cohort mix — 3-persona collapse
+
+Same data, collapsed into 3 personas for quick reading:
+
+| Category | MMs (Pro+Mid) | Bots+Algo (Hybrid+Sys-mixed+Fast+Sys-taker) | Retail | Dominant pattern |
 |---|---:|---:|---:|---|
-| **Sports** | 38% | **59%** | **2.7%** | Bots dominate; retail negligible |
-| **Politics** | 39% | 48% | **13.0%** | Most retail-heavy major category (still small) |
-| **Crypto** | 38% | **58%** | 5.0% | Bot-dominated, almost no retail |
-| **Finance** | 34% | **56%** | 9.7% | Bot-leaning, some retail |
-| **Geopolitics** | **45%** | 43% | 12.7% | MM-heavy, meaningful retail |
+| **Sports** | 38% | **59%** | 2.7% | Pro-MM + fast bots dominate; almost no retail |
+| **Politics** | 39% | 48% | **13.0%** | Most retail-heavy; Sys-taker is largest single cohort |
+| **Crypto** | 38% | **58%** | 5.0% | Pro-MM + Fast-taker dominant. Almost no retail. |
+| **Finance** | 34% | **56%** | 9.7% | Most balanced mix; Mid-MM tail present |
+| **Geopolitics** | **45%** | 43% | 12.7% | MM-heavy + meaningful retail. Chunky bet sizes. |
 | **Weather** | 42% | **53%** | 4.6% | Bot-leaning |
-| **Culture** | 36% | **54%** | 10.8% | Bot-leaning, tiny |
-| **Tech** | 35% | **53%** | 12.7% | Bot-leaning, tiny |
+| **Culture** | 36% | **54%** | 10.8% | Sys-taker dominant, tiny category |
+| **Tech** | 35% | **53%** | 12.7% | Sys-taker dominant, tiny category |
 | **Other** | 38% | **60%** | 2.5% | Bots dominate the recurring residual |
+
+### Single-counted notional per (cohort, category), $M
+
+For sizing comparisons. Total per category = sum across cohorts.
+
+| Category | Pro-MM | Mid-MM | Hybrid-bot | Sys-mixed | Fast-taker | Sys-taker | Retail | **Total** |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Sports | 298 | 48 | 196 | 45 | 191 | 105 | 24 | **906** |
+| Other | 358 | 57 | 230 | 46 | 262 | 119 | 28 | **1,100** |
+| Politics | 122 | 71 | 48 | 39 | 58 | 90 | 64 | **492** |
+| Crypto | 92 | 17 | 50 | 10 | 75 | 30 | 14 | **290** |
+| Geopolitics | 52 | 21 | 9 | 9 | 28 | 24 | 21 | **163** |
+| Finance | 9 | 6 | 6 | 5 | 5 | 8 | 4 | **41** |
+| Weather | 13 | 4 | 4 | 3 | 7 | 7 | 2 | **40** |
+| Culture | 8 | 4 | 5 | 4 | 3 | 7 | 4 | **33** |
+| Tech | 1 | 1 | 1 | 1 | 1 | 1 | 1 | **5** |
+
+### Per-category headline reads
+
+- **Crypto** — bot-extreme: 75% from fast bots (Pro-MM 32% + Fast-taker 26% + Hybrid-bot 17%). Retail effectively absent (5%). Most automated category.
+- **Politics** — most retail-heavy AND most balanced cohort spread. Retail 13% (highest), but Sys-taker is biggest single cohort (18%). Real money: ~$110 avg retail trade.
+- **Sports** — bot-dominated (Pro-MM 33% + Hybrid-bot 22% + Fast-taker 21% = 77%). Hybrid-bot share highest of any category — NegRisk basket arb works here.
+- **Finance** — most balanced mix. Mid-MM at 13% is second-highest across categories — small MMs like slow-resolving markets.
+- **Geopolitics** — MM-heavy with chunky human bets. Avg $400–550/fill. Retail 13% is real money.
+- **Culture / Tech** — long-tail patterns: Sys-taker dominant (~18-20%), retail 11-13%. Slow-algo + human discretionary, not fast bots.
 
 Note vs prior framing: under the previous (looser) classifier, retail
 shares per category were 19–39%. Under the strict definition (<10
