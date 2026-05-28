@@ -10,13 +10,13 @@ numbers agree or diverge.
 |---|---|---|---|
 | Real volume ~$103M/day single-counted | [Paradigm, Dec 2025](https://www.paradigm.xyz/2025/12/polymarket-volume-is-being-double-counted) | Headline volume ~2× overstated via OrderFilled double-counting; real Oct/Nov 2024 monthly volume ~$1.25B vs $2.5B reported | ✓ Matches the methodology; our $103M/day single-counted = ~$3.1B/month for May 2026 |
 | 67–78% of platform flow is automated counterparties | filarm Dune classification (see §3 below) | Fast-market taker volume was 55–62% bots in Feb–Mar 2026 | △ Same direction; our number higher partly because we count maker side too |
-| Pro-MM cohort top-20 are 17/20 LP-confirmed (≥$1k threshold) | LP rewards distribution from `MerkleDistributor_evt_Claimed` | n/a — we validate against on-chain rewards | ✓ Self-validating; classifier finds LP-confirmed wallets independently |
+| Pro-MM-fast top-20 have 17/20 any LP rewards and 11/20 material LP rewards (≥$1k threshold) | LP rewards distribution from `MerkleDistributor_evt_Claimed` | n/a — we validate against on-chain rewards | ✓ Directionally validates the classifier; use ≥$1k for strong MM-program evidence |
 | Top 10 LP-reward owners capture 30% of all rewards | [Solidus Labs / Coindesk, Apr 2026](https://www.coindesk.com/markets/2026/04/29/a-tiny-group-is-winning-on-polymarket-as-under-1-of-wallets-take-half-the-profits) | 0.55% of profitable maker wallets capture 50% of PROFIT gains in politics markets | △ Different metric (rewards vs profit), same direction. Profit concentration likely more extreme than reward concentration. We have not measured PnL. |
 | Politics is the most retail-heavy category | Long-standing folklore | Same | ✓ |
-| Sports is the largest category by volume (30%) | filarm Polymarket Activity dashboard, datadashboards Polymarket Overview | Sports surged in 2025–2026, esports especially | ✓ |
-| Whales are ~1.6% of touched volume | [Chainalysis Théo cluster reporting](https://www.chainalysis.com/) | 11 wallets identified as Théo cluster | ✗ Whales much smaller share of volume than "Théo moves the market" narrative implies |
+| Sports is the largest tagged category by volume (30%); null-tagged Other is larger (35%) | filarm Polymarket Activity dashboard, datadashboards Polymarket Overview | Sports surged in 2025–2026, esports especially | ✓ Directionally, but tag coverage remains incomplete |
+| Whale / informed directional share is not separately measured in this repo | [Chainalysis Théo cluster reporting](https://www.chainalysis.com/) | 11 wallets identified as Théo cluster | Open item. The current classifier is maker-share × cadence, not a whale registry. |
 | Active-mixed cohort dropped 14.7% → 6.0% in 6 months | n/a — novel finding | n/a | ⊕ Unique to this analysis. Possible cause: capital migrated to Kalshi (per Paradigm's note that Kalshi overtook Polymarket in Q1 2026) |
-| 0/100 top Polymarket wallets active on HIP-4; 0/25 LP-reward recipients on HIP-4 | [hip4_cross_venue/](../hip4_cross_venue/) (sister analysis) | n/a | ⊕ Novel cross-venue finding. The Polymarket pro-MM cohort is NOT migrating to Hyperliquid. HIP-4 maker cohort came from the HL-perps audience instead. |
+| 0/100 exported top-per-cohort Polymarket wallets active on HIP-4; 0/25 LP-reward recipients on HIP-4 | [hip4_cross_venue/](../hip4_cross_venue/) (sister analysis) | n/a | ⊕ Novel cross-venue finding. This is a pro-flow sample, not a true venue-wide top-100. HIP-4 maker cohort appears to come from the HL-perps audience instead. |
 
 Legend: ✓ matches, △ partial / directional, ✗ contradicts folklore, ⊕ novel claim.
 
@@ -68,10 +68,10 @@ Legend: ✓ matches, △ partial / directional, ✗ contradicts folklore, ⊕ no
   (specific post URL varies by date; search "Polymarket Théo")
 - **Claim**: A single trader ("Théo") operates ~11 wallets that bet
   ~$30M on the 2024 US election outcome.
-- **What this means for us**: Our Whale cohort captures this kind of
-  wallet but they're only 1.6% of platform volume even in their peak
-  cycle. The "whales move the market" narrative overweights media
-  coverage relative to actual volume share.
+- **What this means for us**: The current repo does not maintain a
+  known-whale registry, so whale/informed directional flow is not
+  separately measured. Add a manually curated wallet registry before
+  making whale-share claims.
 
 ---
 
@@ -150,7 +150,7 @@ Legend: ✓ matches, △ partial / directional, ✗ contradicts folklore, ⊕ no
    wrapper" volume. Source: gateresearch Builders dashboard.
 
 6. **Polymarket's official tag taxonomy.** Our "Other" bucket is still
-   17% of platform volume even after expanded pattern matching, mostly
+   35% of platform volume even after expanded pattern matching, mostly
    null-tagged markets. Direct access to Polymarket's internal
    category taxonomy would resolve this.
 

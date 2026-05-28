@@ -29,11 +29,13 @@ read this:
   $200M/day figure — Paradigm OrderFilled double-counting).
 - **Who drives volume:** **MMs 40% / Bots 38% / Retail 22%.** Sums to
   78% professional, 22% retail.
-- **Headcount asymmetry:** ~60,000 professional wallets generate the
-  78%. ~1,200,000 retail wallets generate the 22%. Polymarket is retail
-  by *headcount*, professional by *dollars*.
-- **Where the dollars are by category:** Sports 30% > Politics 16% >
-  Crypto 10%. (The "Polymarket = politics" narrative is wrong.)
+- **Headcount asymmetry:** ~221,000 MM/bot-classified owners generate
+  the 78%. ~1,030,000 retail-tier owners generate the 22%. The three
+  fast professional cohorts alone are ~60,600 owners and generate ~69%.
+  Polymarket is retail by *headcount*, professional by *dollars*.
+- **Where the dollars are by category:** Other/null-tagged is 35%;
+  among tagged categories, Sports 30% > Politics 16% > Crypto 10%.
+  (The "Polymarket = politics" narrative is wrong.)
 - **Who plays where:** Politics is most retail-heavy (37% human).
   Crypto is most bot-dominated (77% MM+Bot, only 17% human). Sports is
   bot-dominated and mature.
@@ -41,9 +43,10 @@ read this:
   is professionalizing rapidly.
 - **LP rewards concentration:** Top 10 owners = 30% of all rewards.
   Top 50 = 50%. Long tail of 111,000+ owners captures the remaining 40%.
-- **Cross-venue migration:** Zero of the top 100 Polymarket wallets are
-  active on Hyperliquid HIP-4. Migration runs HL-perps → HIP-4, NOT
-  Polymarket → HIP-4.
+- **Cross-venue migration:** Zero of the exported 100 top-per-cohort
+  Polymarket wallets are active on Hyperliquid HIP-4. This is a
+  directional pro-flow sample, not a true venue-wide top-100. Migration
+  visible so far runs HL-perps → HIP-4, NOT Polymarket → HIP-4.
 
 Verdict-relevant one-liner: **Build for machines first (crypto + finance
 markets). Recruit Hyperliquid-native MMs, not Polymarket veterans. Open
@@ -113,7 +116,8 @@ peak. Likely drivers: NCAA + crypto rally + post-inauguration markets.
 ## Category breakdown — where the dollars actually go
 
 The "Polymarket is a politics venue" narrative is outdated. Politics is
-only 16% of platform volume. Sports is nearly 2× larger.
+only 16% of platform volume. Among tagged categories, sports is nearly
+2× larger. The largest bucket overall is still "other" / null-tagged.
 
 ### Categories ranked by size (single-counted notional, 30d)
 
@@ -154,9 +158,10 @@ has one maker, so columns sum to 100%.
 | **Other** | **59%** | 10% | 21% | 5% | 4% | 2% |
 
 **Pro-MM provides 38–59% of depth in every single category.** Mid-MM is
-the consistent #2 (10–31%). Together MMs are **62–80% of all standing
-depth across categories.** Hybrid-bot adds another 5–22%.
-Retail provides only 1–4% of depth — they don't post limit orders much.
+the consistent #2 (10–31%). Together MMs are **66–87% of all maker-side
+flow across categories.** Hybrid-bot adds another 5–22%. Active-retail
+alone provides only 1–4% of depth; Active-mixed wallets post more, but
+they are still secondary to the MM cohorts.
 
 #### View 2 — Who CONSUMES depth in each category (% of taker side)
 
@@ -202,9 +207,11 @@ cohort × category headline matrix shows.
 #### Key insight from separating maker / taker / combined
 
 **The roles are crystal clear when you split sides:**
-- **MMs = liquidity providers.** 62–80% of all depth across categories, only 6–11% of taker flow.
-- **HFT + Retail = flow consumers.** Together they take 50–80% of liquidity per category, but provide only 3–6% of depth.
-- **Hybrid bots are the only cohort that's roughly balanced** (15–22% of both sides).
+- **MMs = liquidity providers.** 66–87% of maker-side flow across categories, only 6–11% of taker flow.
+- **HFT + Active-retail = flow consumers.** Together they take 65–80% of liquidity per category, but provide only 2–7% of depth.
+- **Hybrid bots are the only cohort with roughly balanced maker/taker
+  behavior.** They are not consistently maker-dominated like MMs or
+  taker-dominated like HFT/retail.
 
 The aggregate "touched" view conflates these roles, which is why the
 platform-average (40% MM / 38% Bot / 22% Retail) is misleading on its
@@ -214,13 +221,14 @@ take. Hybrid bots straddle.
 
 **The strategic read for Verdict:**
 
-When you recruit MMs, you're recruiting the source of 62–80% of
-standing depth in every category. There's no substitute on the maker
+When you recruit MMs, you're recruiting the source of 66–87% of
+maker-side flow in every category. There's no substitute on the maker
 side except your internal vault. When you acquire retail, you're
 acquiring the largest single source of taker flow (24–51%) — they
 provide the uninformed counterparty MMs need to earn the spread. The
-bots (HFT-taker + Hybrid) will self-arrive once spread exists; they
-provide some depth (3–22%) but consume far more.
+bots will self-arrive once spread exists. Hybrid bots provide meaningful
+depth in some categories (5–22% of maker-side flow); HFT-taker wallets
+mostly consume liquidity.
 
 ### Who plays in each category — full detail (6 cohorts, combined)
 
@@ -350,9 +358,10 @@ Each cited number above maps to a specific CSV under `results/`:
    `results/cohort_q4_2025.csv` from `queries/06_cohort_per_quarter.sql`
    (run twice with different date windows).
 3. Wallet-level validation — `results/top20_per_cohort_30d.csv` from
-   `queries/05_top20_per_cohort_with_lp.sql`. Use
-   `lp_rewards_confirmed_1k` as the strong signal, not
-   `lp_rewards_observed`.
+   `queries/05_top20_per_cohort_with_lp.sql`. This exported CSV is
+   clipped at 100 rows, so it is a top-per-cohort validation sample, not
+   the full 120-row query output. Use `lp_rewards_confirmed_1k` as the
+   strong signal, not `lp_rewards_observed`.
 4. LP rewards concentration — `results/lp_rewards_concentration.csv`
    from `queries/08_lp_rewards_concentration.sql`.
 5. Cohort × category drill-down (wallet counts, fills, avg trade size
@@ -361,6 +370,8 @@ Each cited number above maps to a specific CSV under `results/`:
 6. Cohort × category maker / taker split (who provides depth vs who
    consumes it, per cell) — `results/cohort_x_category_maker_taker_30d.csv`
    from `queries/10_cohort_x_category_maker_taker.sql`.
+7. True venue-wide top-wallet sample — use
+   `queries/11_top_wallets_30d_with_lp.sql`. No CSV is committed yet.
 
 ---
 
@@ -389,9 +400,10 @@ Each cited number above maps to a specific CSV under `results/`:
 
 6. **Do not assume Polymarket MMs will migrate to HIP-4 organically.**
    The sister analysis in [hip4_cross_venue/](../hip4_cross_venue/)
-   shows 0/100 top Polymarket wallets and 0/25 LP-reward recipients
-   are active on Hyperliquid HIP-4 25 days after launch. Only 2 of
-   the top 30 Polymarket wallets have any HL perp activity. The
+   shows 0/100 exported top-per-cohort Polymarket wallets and 0/25
+   LP-reward recipients are active on Hyperliquid HIP-4 25 days after
+   launch. Only 2 of the top 30 wallets in that exported Polymarket
+   sample have any HL perp activity. The
    cross-venue migration path that exists runs **HL-perps → HIP-4**,
    not Polymarket → HIP-4. Verdict's MM recruitment plan must target
    the HL-perps audience directly and recruit Polymarket-style
