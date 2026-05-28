@@ -1,15 +1,15 @@
--- Cohort × category drill-down (long format) — 30d.
+-- Cohort × category drill-down (long format) — 30d, 7-cohort framework.
 --
 -- Produces one row per (cohort, category) with:
---   n_wallets             — distinct owners in that cohort that traded
---                           this category at all in the window
---   touched_vol_musd      — maker-side + taker-side dollars
---   single_counted_musd   — touched / 2 (Paradigm-style venue notional)
---   n_fills               — total fill rows in wallet_sides for this cell
---   avg_trade_size_usd    — touched_vol / n_fills (per-side fill size)
+--   n_wallets            — distinct owners in that cohort that traded
+--                          this category at all in the window
+--   touched_vol_musd     — maker-side + taker-side dollars
+--   single_counted_musd  — touched / 2 (Paradigm-style venue notional)
+--   n_fills              — total fill rows in wallet_sides for this cell
+--   avg_trade_size_usd   — touched_vol / n_fills (per-side fill size)
 --
 -- Each wallet can appear in multiple categories (different rows). Wallet
--- count column sums across categories will OVERSTATE distinct wallets;
+-- count column sums across categories will overstate distinct wallets;
 -- use cohort_x_category_30d_clean.csv for headline cohort totals.
 --
 -- Cost: ~35 credits, ~90 sec.
@@ -70,8 +70,7 @@ wallet_sides_raw AS (
   FROM trades_cat t LEFT JOIN polymarket_polygon.users_address_lookup u ON u.polymarket_wallet = t.maker
 ),
 wallet_sides AS (
-  SELECT * FROM wallet_sides_raw
-  WHERE wallet NOT IN (SELECT addr FROM excluded_contracts)
+  SELECT * FROM wallet_sides_raw WHERE wallet NOT IN (SELECT addr FROM excluded_contracts)
 ),
 wallet_features AS (
   SELECT wallet,
@@ -79,33 +78,34 @@ wallet_features AS (
     COUNT(DISTINCT date_trunc('day', block_time)) AS n_active_days,
     SUM(notional) AS total_vol,
     SUM(CASE WHEN side='maker' THEN notional ELSE 0 END) AS maker_vol
-  FROM wallet_sides
-  GROUP BY 1
+  FROM wallet_sides GROUP BY 1
   HAVING COUNT(*) <= 5000000
 ),
 cohorts AS (
   SELECT wallet,
     CASE
-      WHEN maker_vol / NULLIF(total_vol, 0) >= 0.70 THEN 'highMkr'
-      WHEN maker_vol / NULLIF(total_vol, 0) >= 0.30 THEN 'midMkr'
-      ELSE 'lowMkr'
-    END AS maker_band,
-    CASE
-      WHEN n_fills * 1.0 / GREATEST(n_active_days, 1) >= 100 THEN 'fast'
-      WHEN n_fills * 1.0 / GREATEST(n_active_days, 1) >= 1   THEN 'med'
-      ELSE 'slow'
-    END AS cadence_band
+      WHEN n_fills * 1.0 / GREATEST(n_active_days, 1) < 10 THEN 'Retail'
+      WHEN n_fills * 1.0 / GREATEST(n_active_days, 1) >= 100 THEN
+        CASE
+          WHEN maker_vol / NULLIF(total_vol, 0) >= 0.70 THEN 'Pro-MM'
+          WHEN maker_vol / NULLIF(total_vol, 0) >= 0.30 THEN 'Hybrid-bot'
+          ELSE 'Fast-taker'
+        END
+      ELSE
+        CASE
+          WHEN maker_vol / NULLIF(total_vol, 0) >= 0.70 THEN 'Mid-MM'
+          WHEN maker_vol / NULLIF(total_vol, 0) >= 0.30 THEN 'Systematic-mixed'
+          ELSE 'Systematic-taker'
+        END
+    END AS cohort
   FROM wallet_features
 ),
 wallet_cat_agg AS (
-  SELECT ws.wallet, ws.category,
-    SUM(ws.notional) AS vol,
-    COUNT(*) AS n_fills
-  FROM wallet_sides ws
-  GROUP BY 1, 2
+  SELECT ws.wallet, ws.category, SUM(ws.notional) AS vol, COUNT(*) AS n_fills
+  FROM wallet_sides ws GROUP BY 1, 2
 )
 SELECT
-  c.maker_band || '_' || c.cadence_band AS cohort,
+  c.cohort,
   wc.category,
   COUNT(DISTINCT c.wallet) AS n_wallets,
   ROUND(SUM(wc.vol) / 1e6, 2) AS touched_vol_musd,

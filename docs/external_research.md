@@ -15,7 +15,7 @@ numbers agree or diverge.
 | Politics is the most retail-heavy category | Long-standing folklore | Same | ✓ |
 | Sports is the largest tagged category by volume (30%); null-tagged Other is larger (35%) | filarm Polymarket Activity dashboard, datadashboards Polymarket Overview | Sports surged in 2025–2026, esports especially | ✓ Directionally, but tag coverage remains incomplete |
 | Whale / informed directional share is not separately measured in this repo | [Chainalysis Théo cluster reporting](https://www.chainalysis.com/) | 11 wallets identified as Théo cluster | Open item. The current classifier is maker-share × cadence, not a whale registry. |
-| Active-mixed cohort dropped 14.7% → 6.0% in 6 months | n/a — novel finding | n/a | ⊕ Unique to this analysis. Possible cause: capital migrated to Kalshi (per Paradigm's note that Kalshi overtook Polymarket in Q1 2026) |
+| Retail share collapsed 10.7% → 5.3% in 6 months (strict <10/day def) | n/a — novel finding | n/a | ⊕ Unique to this analysis. Possible cause: capital migrated to Kalshi (per Paradigm's note that Kalshi overtook Polymarket in Q1 2026) |
 | 0/100 exported top-per-cohort Polymarket wallets active on HIP-4; 0/25 LP-reward recipients on HIP-4 | [hip4_cross_venue/](../hip4_cross_venue/) (sister analysis) | n/a | ⊕ Novel cross-venue finding. This is a pro-flow sample, not a true venue-wide top-100. HIP-4 maker cohort appears to come from the HL-perps audience instead. |
 
 Legend: ✓ matches, △ partial / directional, ✗ contradicts folklore, ⊕ novel claim.
@@ -60,7 +60,7 @@ Legend: ✓ matches, △ partial / directional, ✗ contradicts folklore, ⊕ no
 - **Caveat**: 15% wash trading flag is material. If you re-run our
   classifier on a subset that excludes wash patterns (paired YES+NO
   positions within the same wallet/owner, same condition_id), the
-  Active-mixed and Active-retail cohorts will likely shrink further.
+  Systematic-mixed and Retail cohorts will likely shrink further.
 
 ### Chainalysis — Théo cluster identification
 
@@ -128,8 +128,9 @@ Legend: ✓ matches, △ partial / directional, ✗ contradicts folklore, ⊕ no
    defioasis PnL dashboard + position-state reconstruction (~1–2 weeks).
 
 2. **Cross-venue arber share.** Paradigm noted Kalshi overtook
-   Polymarket by Q1 2026. The 8.6pp drop in Active-mixed cohort in our
-   data may reflect migration to Kalshi. Confirming requires Kalshi
+   Polymarket by Q1 2026. The retail collapse in our data (10.7% →
+   5.3% under strict def) and the parallel shrinking of Systematic-mixed
+   (11.6% → 5.2%) may reflect migration to Kalshi. Confirming requires Kalshi
    API access + matching wallet timestamps across the two venues.
 
 3. **Wallet-level firm attribution.** We can identify the LP-reward
@@ -141,7 +142,7 @@ Legend: ✓ matches, △ partial / directional, ✗ contradicts folklore, ⊕ no
    wash trading consistent with POLY airdrop farming. Our classifier
    does not exclude these patterns. Filtering paired YES+NO same-owner
    positions in the same condition_id within a short window would
-   reduce Active-mixed and Active-retail cohort sizes.
+   reduce Systematic-mixed and Retail cohort sizes.
 
 5. **Builder Program flow attribution.** Some bot volume routes through
    the Polymarket Builder Program (231 registered apps as of late

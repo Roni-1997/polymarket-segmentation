@@ -1,18 +1,12 @@
--- Top 20 wallets per cohort (30d) with LP-rewards-observed / confirmed flags.
--- LP rewards UNION of both sources (merkle distributor + USDC transfers
--- from the rewards distributor wallet), with same-tx direct transfers
--- excluded to avoid double-counting merkle claims.
+-- Top 20 wallets per cohort (30d), 7-cohort framework, with overlay tags.
+-- Overlay tags ship in this query:
+--   lp_rewards_observed    — any LP reward history (any $)
+--   lp_rewards_confirmed_1k — material LP reward (>= $1k all-time)
+--   complete_set_arber     — n_split + n_merge events >= 5 in window
+--   large_ticket_whale     — high vol per fill ($/fill >= $500 AND total_vol >= $100k)
+--   confidence             — High / Medium / Low based on threshold-boundary proximity
 --
--- Validation interpretation:
---   lp_rewards_observed = any reward history, including dust.
---   lp_rewards_confirmed_1k = material LP-reward history. Use this for
---   MM validation, because dust rewards are not a strong identity signal.
---
--- This query can return up to 120 rows (20 per active cohort). If using
--- Dune API getExecutionResults, request a limit > 120; the API default
--- 100-row page can clip the output.
---
--- Cost: ~45 credits.
+-- Cost: ~50 credits.
 
 WITH params AS (
   SELECT CURRENT_TIMESTAMP - INTERVAL '30' DAY AS w_start, CURRENT_TIMESTAMP AS w_end
@@ -39,9 +33,7 @@ wallet_sides_raw AS (
   FROM trades t LEFT JOIN polymarket_polygon.users_address_lookup u ON u.polymarket_wallet = t.maker
 ),
 wallet_sides AS (
-  SELECT *
-  FROM wallet_sides_raw
-  WHERE wallet NOT IN (SELECT addr FROM excluded_contracts)
+  SELECT * FROM wallet_sides_raw WHERE wallet NOT IN (SELECT addr FROM excluded_contracts)
 ),
 wallet_features AS (
   SELECT wallet,
@@ -59,19 +51,23 @@ cohorts AS (
     maker_vol / NULLIF(total_vol, 0) AS maker_share,
     n_fills * 1.0 / GREATEST(n_active_days, 1) AS fills_per_day,
     CASE
-      WHEN maker_vol / NULLIF(total_vol, 0) >= 0.70 THEN 'highMkr'
-      WHEN maker_vol / NULLIF(total_vol, 0) >= 0.30 THEN 'midMkr'
-      ELSE 'lowMkr'
-    END AS maker_band,
-    CASE
-      WHEN n_fills * 1.0 / GREATEST(n_active_days, 1) >= 100 THEN 'fast'
-      WHEN n_fills * 1.0 / GREATEST(n_active_days, 1) >= 1   THEN 'med'
-      ELSE 'slow'
-    END AS cadence_band
+      WHEN n_fills * 1.0 / GREATEST(n_active_days, 1) < 10 THEN 'Retail'
+      WHEN n_fills * 1.0 / GREATEST(n_active_days, 1) >= 100 THEN
+        CASE
+          WHEN maker_vol / NULLIF(total_vol, 0) >= 0.70 THEN 'Pro-MM'
+          WHEN maker_vol / NULLIF(total_vol, 0) >= 0.30 THEN 'Hybrid-bot'
+          ELSE 'Fast-taker'
+        END
+      ELSE
+        CASE
+          WHEN maker_vol / NULLIF(total_vol, 0) >= 0.70 THEN 'Mid-MM'
+          WHEN maker_vol / NULLIF(total_vol, 0) >= 0.30 THEN 'Systematic-mixed'
+          ELSE 'Systematic-taker'
+        END
+    END AS cohort
   FROM wallet_features
 ),
--- LP rewards UNION — both sources matter; merkle alone misses older direct
--- payouts, but raw transfers can overlap merkle claims.
+-- LP rewards (deduped merkle + direct transfers)
 merkle_rewards AS (
   SELECT evt_tx_hash, tokenReceiver AS recipient, amount/1e6 AS amt
   FROM polymarket_usdc_merkle_distributor_polygon.MerkleDistributor_evt_Claimed
@@ -81,16 +77,10 @@ direct_rewards AS (
   FROM erc20_polygon.evt_Transfer tr
   WHERE tr."from" = from_hex('c288480574783bd7615170660d71753378159c47')
     AND tr.contract_address = from_hex('2791bca1f2de4661ed88a30c99a7a9449aa84174')
-    AND NOT EXISTS (
-      SELECT 1
-      FROM merkle_rewards mr
-      WHERE mr.evt_tx_hash = tr.evt_tx_hash
-    )
+    AND NOT EXISTS (SELECT 1 FROM merkle_rewards mr WHERE mr.evt_tx_hash = tr.evt_tx_hash)
 ),
 lp_rewards_raw AS (
-  SELECT recipient, amt FROM merkle_rewards
-  UNION ALL
-  SELECT recipient, amt FROM direct_rewards
+  SELECT recipient, amt FROM merkle_rewards UNION ALL SELECT recipient, amt FROM direct_rewards
 ),
 mm_confirmed AS (
   SELECT COALESCE(u.owner, r.recipient) AS wallet, SUM(r.amt) AS rewards_usd
@@ -98,13 +88,26 @@ mm_confirmed AS (
   LEFT JOIN polymarket_polygon.users_address_lookup u ON u.polymarket_wallet = r.recipient
   GROUP BY 1
 ),
+-- Complete-set arber signal: count splits + merges per stakeholder (owner-mapped) in window
+split_merge AS (
+  SELECT COALESCE(u.owner, addr.stakeholder) AS wallet, COUNT(*) AS n_split_merge
+  FROM (
+    SELECT stakeholder, evt_block_time FROM polymarket_polygon.ctf_evt_positionsplit
+    UNION ALL
+    SELECT stakeholder, evt_block_time FROM polymarket_polygon.ctf_evt_positionsmerge
+  ) addr
+  CROSS JOIN params p
+  LEFT JOIN polymarket_polygon.users_address_lookup u ON u.polymarket_wallet = addr.stakeholder
+  WHERE addr.evt_block_time >= p.w_start AND addr.evt_block_time < p.w_end
+  GROUP BY 1
+),
 ranked AS (
-  SELECT c.*, ROW_NUMBER() OVER (PARTITION BY c.maker_band, c.cadence_band ORDER BY c.total_vol DESC) AS rnk
+  SELECT c.*, ROW_NUMBER() OVER (PARTITION BY c.cohort ORDER BY c.total_vol DESC) AS rnk
   FROM cohorts c
   WHERE c.total_vol >= 10000
 )
 SELECT
-  r.maker_band || '_' || r.cadence_band AS cohort,
+  r.cohort,
   r.rnk AS rank,
   CONCAT('0x', LOWER(to_hex(r.wallet))) AS wallet,
   ROUND(r.total_vol/1e6, 2) AS touched_vol_musd,
@@ -114,8 +117,25 @@ SELECT
   CAST(ROUND(r.fills_per_day, 0) AS INTEGER) AS fills_per_day,
   CAST(ROUND(COALESCE(m.rewards_usd, 0), 0) AS BIGINT) AS lp_rewards_usd,
   COALESCE(m.rewards_usd, 0) > 0 AS lp_rewards_observed,
-  COALESCE(m.rewards_usd, 0) >= 1000 AS lp_rewards_confirmed_1k
+  COALESCE(m.rewards_usd, 0) >= 1000 AS lp_rewards_confirmed_1k,
+  COALESCE(sm.n_split_merge, 0) >= 5 AS complete_set_arber,
+  r.total_vol >= 100000 AND (r.total_vol / NULLIF(r.n_fills, 0)) >= 500 AS large_ticket_whale,
+  CASE
+    -- High confidence: LP-confirmed (Pro-MM/Mid-MM) or strong arb evidence
+    WHEN COALESCE(m.rewards_usd, 0) >= 1000
+      AND r.cohort IN ('Pro-MM', 'Mid-MM') THEN 'High'
+    WHEN COALESCE(sm.n_split_merge, 0) >= 5
+      AND r.cohort IN ('Hybrid-bot', 'Systematic-mixed') THEN 'High'
+    -- Low confidence: wallet sits on a threshold boundary
+    WHEN r.maker_share BETWEEN 0.65 AND 0.75 THEN 'Low'
+    WHEN r.maker_share BETWEEN 0.25 AND 0.35 THEN 'Low'
+    WHEN r.fills_per_day BETWEEN 8 AND 12 THEN 'Low'
+    WHEN r.fills_per_day BETWEEN 90 AND 110 THEN 'Low'
+    -- Default: medium
+    ELSE 'Medium'
+  END AS confidence
 FROM ranked r
 LEFT JOIN mm_confirmed m ON m.wallet = r.wallet
+LEFT JOIN split_merge sm ON sm.wallet = r.wallet
 WHERE r.rnk <= 20
-ORDER BY r.rnk, r.maker_band, r.cadence_band;
+ORDER BY r.cohort, r.rnk;

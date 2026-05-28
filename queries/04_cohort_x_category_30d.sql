@@ -1,18 +1,20 @@
--- Cohort × category cross-tab (trailing 30 days), CLEAN version.
--- All three fixes applied:
---   1. Excludes routing contracts (NegRisk adapter + 3 others).
---   2. Expanded category mapping to catch Iran/Ukraine/Awards/MrBeast/etc.
---   3. market_details pre-aggregated to one row per condition_id
---      (otherwise binary YES/NO + NegRisk multi-outcome inflate JOIN
---      by 2-5x).
+-- Cohort × category cross-tab (trailing 30 days), 7-cohort framework.
 --
--- Output: one row per (cohort), columns by category, ordered by total
--- touched volume. Touched volume counts both maker and taker sides. Divide
--- by 2 only when comparing to single-counted venue notional.
--- Re-aggregate categories with column sums for a category-only view; collapse
--- cohorts to MM/HFT/Retail to compare to original memo.
+-- Classifier (3 cadence bands × 3 maker bands, with the 3 discretionary
+-- cells collapsed into single "Retail" bucket):
+--   Anyone with <10 fills/active_day → "Retail" regardless of maker share
+--     (cadence is the primary identity signal; humans don't fire 10+/day)
+--   10-100 fills/active_day → systematic (split by maker share)
+--   >=100 fills/active_day → fast (split by maker share)
 --
--- Cost: ~30 credits on Dune free tier. Runs in ~60-90 sec.
+-- 7 cohorts:
+--   Pro-MM, Mid-MM, Hybrid-bot, Systematic-mixed, Fast-taker,
+--   Systematic-taker, Retail
+--
+-- Output: long format. One row per (cohort, category) with touched and
+-- single-counted volume.
+--
+-- Cost: ~30 credits, ~60-90 sec.
 
 WITH params AS (
   SELECT CURRENT_TIMESTAMP - INTERVAL '30' DAY AS w_start, CURRENT_TIMESTAMP AS w_end
@@ -70,33 +72,36 @@ wallet_sides_raw AS (
   FROM trades_cat t LEFT JOIN polymarket_polygon.users_address_lookup u ON u.polymarket_wallet = t.maker
 ),
 wallet_sides AS (
-  SELECT *
-  FROM wallet_sides_raw
+  SELECT * FROM wallet_sides_raw
   WHERE wallet NOT IN (SELECT addr FROM excluded_contracts)
 ),
 wallet_features AS (
   SELECT wallet,
     COUNT(*) AS n_fills,
     COUNT(DISTINCT date_trunc('day', block_time)) AS n_active_days,
-    COUNT(DISTINCT condition_id) AS n_unique_markets,
     SUM(notional) AS total_vol,
     SUM(CASE WHEN side='maker' THEN notional ELSE 0 END) AS maker_vol
   FROM wallet_sides
   GROUP BY 1
-  HAVING COUNT(*) <= 5000000  -- safety net for unidentified routers
+  HAVING COUNT(*) <= 5000000
 ),
 cohorts AS (
   SELECT wallet,
     CASE
-      WHEN maker_vol / NULLIF(total_vol, 0) >= 0.70 THEN 'highMkr'
-      WHEN maker_vol / NULLIF(total_vol, 0) >= 0.30 THEN 'midMkr'
-      ELSE 'lowMkr'
-    END AS maker_band,
-    CASE
-      WHEN n_fills * 1.0 / GREATEST(n_active_days, 1) >= 100 THEN 'fast'
-      WHEN n_fills * 1.0 / GREATEST(n_active_days, 1) >= 1   THEN 'med'
-      ELSE 'slow'
-    END AS cadence_band
+      WHEN n_fills * 1.0 / GREATEST(n_active_days, 1) < 10 THEN 'Retail'
+      WHEN n_fills * 1.0 / GREATEST(n_active_days, 1) >= 100 THEN
+        CASE
+          WHEN maker_vol / NULLIF(total_vol, 0) >= 0.70 THEN 'Pro-MM'
+          WHEN maker_vol / NULLIF(total_vol, 0) >= 0.30 THEN 'Hybrid-bot'
+          ELSE 'Fast-taker'
+        END
+      ELSE
+        CASE
+          WHEN maker_vol / NULLIF(total_vol, 0) >= 0.70 THEN 'Mid-MM'
+          WHEN maker_vol / NULLIF(total_vol, 0) >= 0.30 THEN 'Systematic-mixed'
+          ELSE 'Systematic-taker'
+        END
+    END AS cohort
   FROM wallet_features
 ),
 wallet_cat_vol AS (
@@ -106,23 +111,14 @@ wallet_cat_vol AS (
   GROUP BY 1, 2
 ),
 coh_cat AS (
-  SELECT c.maker_band || '_' || c.cadence_band AS cohort, wc.category, SUM(wc.vol) AS vol
+  SELECT c.cohort, wc.category, SUM(wc.vol) AS vol
   FROM cohorts c
   JOIN wallet_cat_vol wc ON wc.wallet = c.wallet
   GROUP BY 1, 2
 )
-SELECT cohort,
-  ROUND(SUM(CASE WHEN category='sports'      THEN vol ELSE 0 END)/1e6, 1) AS sports_touched_musd,
-  ROUND(SUM(CASE WHEN category='politics'    THEN vol ELSE 0 END)/1e6, 1) AS politics_touched_musd,
-  ROUND(SUM(CASE WHEN category='crypto'      THEN vol ELSE 0 END)/1e6, 1) AS crypto_touched_musd,
-  ROUND(SUM(CASE WHEN category='finance'     THEN vol ELSE 0 END)/1e6, 1) AS finance_touched_musd,
-  ROUND(SUM(CASE WHEN category='culture'     THEN vol ELSE 0 END)/1e6, 1) AS culture_touched_musd,
-  ROUND(SUM(CASE WHEN category='geopolitics' THEN vol ELSE 0 END)/1e6, 1) AS geopol_touched_musd,
-  ROUND(SUM(CASE WHEN category='weather'     THEN vol ELSE 0 END)/1e6, 1) AS weather_touched_musd,
-  ROUND(SUM(CASE WHEN category='tech'        THEN vol ELSE 0 END)/1e6, 1) AS tech_touched_musd,
-  ROUND(SUM(CASE WHEN category='other'       THEN vol ELSE 0 END)/1e6, 1) AS other_touched_musd,
-  ROUND(SUM(vol)/1e6, 1) AS total_touched_musd,
-  ROUND(SUM(vol)/2e6, 1) AS equivalent_single_counted_musd
+SELECT cohort, category,
+  ROUND(SUM(vol)/1e6, 2) AS touched_vol_musd,
+  ROUND(SUM(vol)/2e6, 2) AS single_counted_musd
 FROM coh_cat
-GROUP BY 1
-ORDER BY total_touched_musd DESC;
+GROUP BY 1, 2
+ORDER BY cohort, touched_vol_musd DESC;
