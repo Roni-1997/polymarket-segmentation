@@ -18,6 +18,7 @@ CSVs from the audited query versions, re-executed against Dune on
 | `cohort_x_category_drilldown_30d.csv` | `09_cohort_x_category_drilldown.sql` | Long-format: per (cohort, category) wallet count, touched and single-counted volume, fills, avg trade size. |
 | `cohort_x_category_maker_taker_30d.csv` | `10_cohort_x_category_maker_taker.sql` | Long-format: per (cohort, category) maker_vol, taker_vol, touched. Source for the three-view matrices (depth providers vs flow consumers). |
 | `top100_wallets_venue_wide_30d.csv` | `11_top_wallets_30d_with_lp.sql` | True venue-wide top 100 wallets by 30d touched volume, with cohort label and LP-reward flags. Used for cross-venue overlap checks (vs HIP-4). |
+| `cohort_x_category_q1_2026.csv` | `04_cohort_x_category_30d.sql` (window swapped to Jan 1 – Apr 1, 2026) | Same query as the 30d clean, but for the Q1 2026 quarter. Useful for the crypto-vs-other-tagging shift comparison (crypto categorization shifted in May 2026; Q1 numbers reflect the original tagging). |
 
 ## Conventions
 

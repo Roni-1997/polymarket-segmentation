@@ -235,15 +235,32 @@ Categories ranked by single-counted notional (30d):
 
 | Category | $M / 30d | % platform | $M / day | What's in it |
 |---|---:|---:|---:|---|
-| Other (null-tagged) | 1,100 | **35.8%** | 37 | Mostly recurring crypto/sports markets that lost their tags |
+| Other (null-tagged) | 1,100 | **35.8%** | 37 | **Mostly de-tagged crypto** — see caveat below |
 | Sports | 906 | **29.5%** | 30 | NBA + NFL + esports (Dota, CS2, LoL) + soccer |
 | Politics | 492 | 16.0% | 16 | Trump, elections, geopolitical politics |
-| Crypto | 290 | 9.4% | 10 | 5m / 15m / 1h Up-or-Down recurring binaries |
+| Crypto | 290 | 9.4% | 10 | 5m / 15m / 1h Up-or-Down binaries (T30d undercount, see caveat) |
 | Geopolitics | 163 | 5.3% | 5.4 | Iran, Ukraine, Russia, Gaza, world affairs |
 | Finance | 41 | 1.3% | 1.4 | Fed, inflation, interest rates, oil |
 | Weather | 40 | 1.3% | 1.3 | (newer category) |
 | Culture | 33 | 1.1% | 1.1 | Awards, MrBeast, movies, music |
 | Tech | 5 | 0.2% | 0.2 | AI, science, tech outcomes |
+
+**Caveat — Crypto vs Other tagging shifted between Q1 and May 2026.**
+Comparing Q1 2026 to T30d single-counted volumes:
+
+| Category | Q1 2026 ($M/day) | T30d May 2026 ($M/day) | Δ |
+|---|---:|---:|---|
+| Crypto | $37.8 | $9.7 | **−74%** |
+| Other (null-tagged) | $0.5 | $36.7 | **+73×** |
+| Crypto + Other | $38.3 | $46.4 | +21% |
+
+The 74% crypto crash is implausible against the −17% platform total
+change. The real cause is **Polymarket re-tagging or untagging the
+recurring 5m/15m/1h crypto binaries** between Q1 and May. Treat
+**"Crypto + Other" as the real crypto share** (~45% of platform in
+May). The Q1 2026 numbers (Crypto 30.7%, Other 0.4%) better reflect
+the underlying market types. Full Q1 breakdown in
+[results/cohort_x_category_q1_2026.csv](results/cohort_x_category_q1_2026.csv).
 
 ### Per-category cohort mix — full 7-cohort breakdown
 
