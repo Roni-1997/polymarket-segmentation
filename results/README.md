@@ -8,7 +8,7 @@ CSVs from the audited query versions, re-executed against Dune on
 | File | Source query | Notes |
 |---|---|---|
 | `cohort_x_category_30d_clean.csv` | `04_cohort_x_category_30d.sql` | Trailing 30d; both touched and single-counted columns. |
-| `top20_per_cohort_30d.csv` | `05_top20_per_cohort_with_lp.sql` | Exported top-per-cohort validation sample with LP confirmation flags. The source query can return 120 rows; this CSV is clipped at 100 rows and is missing `midMkr_med`. |
+| `top20_per_cohort_30d.csv` | `05_top20_per_cohort_with_lp.sql` | Exported top-per-cohort validation sample with LP confirmation flags. The source query can return 140 rows; this CSV is clipped at 100 rows and is missing `Systematic-mixed` and `Systematic-taker`. |
 | `cohort_q1_2026.csv` | `06_cohort_per_quarter.sql` | Jan 1 – Apr 1, 2026. |
 | `cohort_q4_2025.csv` | `06_cohort_per_quarter.sql` (dates swapped) | Oct 1 2025 – Jan 1 2026. |
 | `lp_rewards_top25.csv` | `07_lp_rewards_top_recipients.sql` | Top 25 owners by deduped LP rewards. |

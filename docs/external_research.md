@@ -16,7 +16,7 @@ numbers agree or diverge.
 | Sports is the largest tagged category by volume (30%); null-tagged Other is larger (35%) | filarm Polymarket Activity dashboard, datadashboards Polymarket Overview | Sports surged in 2025–2026, esports especially | ✓ Directionally, but tag coverage remains incomplete |
 | Whale / informed directional share is not separately measured in this repo | [Chainalysis Théo cluster reporting](https://www.chainalysis.com/) | 11 wallets identified as Théo cluster | Open item. The current classifier is maker-share × cadence, not a whale registry. |
 | Retail share collapsed 10.7% → 5.3% in 6 months (strict <10/day def) | n/a — novel finding | n/a | ⊕ Unique to this analysis. Possible cause: capital migrated to Kalshi (per Paradigm's note that Kalshi overtook Polymarket in Q1 2026) |
-| 0/100 exported top-per-cohort Polymarket wallets active on HIP-4; 0/25 LP-reward recipients on HIP-4 | [hip4_cross_venue/](../hip4_cross_venue/) (sister analysis) | n/a | ⊕ Novel cross-venue finding. This is a pro-flow sample, not a true venue-wide top-100. HIP-4 maker cohort appears to come from the HL-perps audience instead. |
+| 0/100 venue-wide top Polymarket wallets active on HIP-4; 0/25 LP-reward recipients on HIP-4 | [hip4_cross_venue/](../hip4_cross_venue/) (sister analysis) | n/a | ⊕ Cross-venue finding from `results/top100_wallets_venue_wide_30d.csv` and the HIP-4 127-wallet sample. HIP-4 maker activity appears HL-native in this sample. |
 
 Legend: ✓ matches, △ partial / directional, ✗ contradicts folklore, ⊕ novel claim.
 

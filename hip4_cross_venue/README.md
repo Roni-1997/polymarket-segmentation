@@ -2,18 +2,19 @@
 
 Status: **audited first pass, 2026-05-27**. Bidirectional check between Hyperliquid
 HIP-4 outcome markets (live since 2026-05-02) and the Polymarket cohort
-data in the rest of this repo. Built as one block of the Verdict
-diligence — answers the question *"do the same operators trade both
-venues?"*
+data in the rest of this repo. Answers the question *"do the same
+operators trade both venues?"*
 
 ## TL;DR
 
 Direct address overlap between the venues is **essentially zero** at the
 professional tier:
 
+- 0 of the 100 wallets in
+  `results/top100_wallets_venue_wide_30d.csv` appear in the HIP-4
+  top-127 captured here.
 - 0 of the 100 wallets in the exported `results/top20_per_cohort_30d.csv`
-  validation sample appear in the HIP-4 top-127 captured here. This CSV
-  is an exported top-per-cohort sample, not a true venue-wide top-100.
+  validation sample appear in the same HIP-4 sample.
 - 0 of the 25 wallets in `results/lp_rewards_top25.csv` appear in the
   HIP-4 top-127.
 - 2 of the top 30 wallets in that exported Polymarket validation sample
@@ -26,15 +27,12 @@ The cross-venue migration path that **does** exist runs HL-perps →
 HIP-4. The HIP-4 maker cohort came from the Hyperliquid perps audience,
 not Polymarket.
 
-## Why this matters
+## What It Shows
 
-For the Verdict MM-recruitment plan, this rules out an implicit
-assumption: that Polymarket-trained desks would organically discover
-HIP-4 once it scaled. They are **not** doing so 25 days after launch,
-and structural friction (Polygon → HL, different signing flow, USDC.e →
-USDC, validator-vote settlement vs UMA, EOA-direct vs Gnosis-Safe + meta
-tx) explains why. Verdict cannot piggyback on Polymarket flywheels for
-MM acquisition — it has to recruit Polymarket-style expertise directly.
+The professional wallet sets are distinct in this sample. Structural
+friction is material: Polygon vs HL signing, USDC.e vs USDC,
+validator-vote settlement vs UMA, and EOA-direct flow vs Gnosis-Safe +
+meta-tx flow.
 
 ## Headline tables
 
@@ -52,8 +50,7 @@ not a true venue-wide top-30 wallet export.
 
 These two wallets are the identified bridges in this exported validation
 sample between Polymarket pro-MM behavior and Hyperliquid signing
-infrastructure. They are still high-priority MM-recruitment targets for
-Verdict, but the claim should be re-run with
+infrastructure. The claim should be re-run with
 `queries/11_top_wallets_30d_with_lp.sql` before treating it as
 venue-wide.
 
@@ -123,13 +120,16 @@ Venue-level context (huskereth Dune query 7427890, livefetch via HL
 ## Methodology
 
 ### Polymarket pros → HL check
-1. Read `results/top20_per_cohort_30d.csv`, sort by
+1. For venue-wide address overlap, intersect
+   `results/top100_wallets_venue_wide_30d.csv` with
+   `data/hip4_ws_wallets.json`.
+2. For the deeper HL activity check, read
+   `results/top20_per_cohort_30d.csv`, sort by
    `touched_vol_musd` desc, take top 30. This is an exported
-   top-per-cohort validation sample. For a true venue-wide top-wallet
-   test, first run `../queries/11_top_wallets_30d_with_lp.sql`.
-2. For each wallet, call HL `/info` `clearinghouseState` (checks open
+   top-per-cohort validation sample.
+3. For each wallet, call HL `/info` `clearinghouseState` (checks open
    positions) and `userFillsByTime` for the last 30 days.
-3. Tag HL fills as HIP-4 (coin starts with `#` and integer ≥ 1000) vs.
+4. Tag HL fills as HIP-4 (coin starts with `#` and integer ≥ 1000) vs.
    perp/spot otherwise.
 
 ### HIP-4 wallets → Polygon check
@@ -166,8 +166,8 @@ true` = taker). This is venue-attested side direction, not inferred.
 
 3. **Polymarket data here is exported top-per-cohort sample + top-25
    LP.** Polymarket has ~1M+ wallets per `results/cohort_q1_2026.csv`
-   (~849K in `lowMkr_med` alone). Long-tail overlap is plausible but
-   won't change the strategic picture.
+   (including ~926K Retail owners). Long-tail overlap is plausible but
+   does not change the top-tier overlap finding.
 
 4. **HL `userFillsByTime` caps at 2,000 rows.** For very active
    wallets, the most recent 2,000 perp fills can hide their HIP-4
@@ -214,23 +214,10 @@ python3 scripts/check_polygon.py           # → data/hip4_polygon_check.json
   proxy owners.
 - `scripts/` — Python scripts that produced the above.
 
-## Strategic implications
+## Interpretation
 
-1. **Verdict's MM cohort will not migrate from Polymarket.** It has to
-   come from HL-native sources (perp traders, HL-native systematic
-   shops) or be recruited directly. Confirmed empirically — 12
-   HIP-4 MM-hedgers identified all have HL perp activity; 0 have
-   Polymarket activity at the exported cohort-data tier.
-
-2. **Two cross-venue recruitment targets exist in this sample.**
-   `0xba325e70…` and `0xf6ae6df5…` — both Polymarket `highMkr_fast`
-   cohort, both already trading HL perps. They are worth outreach, but
-   re-run the venue-wide top-wallet query before calling them the only
-   bridges.
-
-3. **Don't model Polymarket as the comparable.** Liquidity flywheel
-   assumptions that depend on Polymarket-style growth (mainstream
-   retail, political/sports headline events, UMA-style settlement
-   trust) don't transfer. HIP-4's growth path is HL-perp-pros first,
-   then HL-native retail, then maybe external MM later. Polymarket
-   talent is a *recruitment* lever, not an organic flywheel.
+The observed HIP-4 professional cohort is HL-native, not
+Polymarket-derived. The sample shows 12 HIP-4 MM-hedgers with HL perp
+activity and no visible Polymarket activity at the exported cohort-data
+tier. Two Polymarket pro-MM wallets in the validation sample also traded
+HL perps, but neither showed HIP-4 activity in the checked window.

@@ -19,7 +19,11 @@ with (RESULTS_DIR / "lp_rewards_top25.csv").open() as f:
 
 print(f"Polymarket top-20 per cohort wallets: {len(poly_wallets)}")
 cohorts = sorted({row["cohort"] for row in poly_wallets.values()})
-if len(poly_wallets) < 120 or "midMkr_med" not in cohorts:
+expected_cohorts = {
+    "Pro-MM", "Mid-MM", "Hybrid-bot", "Systematic-mixed",
+    "Fast-taker", "Systematic-taker", "Retail",
+}
+if len(poly_wallets) < 140 or not expected_cohorts.issubset(cohorts):
     print(
         "WARNING: top20_per_cohort_30d.csv is an exported/capped validation "
         f"sample ({len(poly_wallets)} rows, cohorts={cohorts}), not a true venue-wide top-100."

@@ -206,7 +206,7 @@ Paste queries from [queries/](../queries/) into the editor at
 [dune.com/queries](https://dune.com/queries). Costs ~10–45 credits each.
 
 For wallet-level exports, watch Dune result pagination. Query 05 can
-return 120 rows (20 per cohort); Dune API defaults can clip that to 100
+return 140 rows (20 per cohort); Dune API defaults can clip that to 100
 unless you request a larger result limit. Use query 11 for true
 venue-wide top-wallet samples.
 

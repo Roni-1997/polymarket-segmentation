@@ -6,7 +6,7 @@ from common import DATA_DIR, RESULTS_DIR, hl_info, is_hip4_coin, polymarket_volu
 
 # Load top Polymarket wallets from the audited cohort validation output.
 # This file is top-per-cohort, not a venue-wide ranking. If Dune API
-# results are fetched with the default 100-row limit, the 120-row query
+# results are fetched with the default 100-row limit, the 140-row query
 # can also be clipped.
 poly_top = []
 with (RESULTS_DIR / "top20_per_cohort_30d.csv").open() as f:
@@ -15,7 +15,11 @@ with (RESULTS_DIR / "top20_per_cohort_30d.csv").open() as f:
         poly_top.append(row)
 
 cohorts = sorted({row["cohort"] for row in poly_top})
-if len(poly_top) < 120 or "midMkr_med" not in cohorts:
+expected_cohorts = {
+    "Pro-MM", "Mid-MM", "Hybrid-bot", "Systematic-mixed",
+    "Fast-taker", "Systematic-taker", "Retail",
+}
+if len(poly_top) < 140 or not expected_cohorts.issubset(cohorts):
     print(
         "WARNING: top20_per_cohort_30d.csv appears to be an exported/capped "
         f"validation sample ({len(poly_top)} rows, cohorts={cohorts}). "
