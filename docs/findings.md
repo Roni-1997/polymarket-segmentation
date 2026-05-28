@@ -20,6 +20,38 @@ in the SQL and the queries re-executed against Dune:
 
 ---
 
+## Headline numbers (the 60-second read)
+
+Everything below is sliced six different ways. If you only have a minute,
+read this:
+
+- **Real volume:** ~$103M/day single-counted notional (half the headline
+  $200M/day figure — Paradigm OrderFilled double-counting).
+- **Who drives volume:** **MMs 40% / Bots 38% / Retail 22%.** Sums to
+  78% professional, 22% retail.
+- **Headcount asymmetry:** ~60,000 professional wallets generate the
+  78%. ~1,200,000 retail wallets generate the 22%. Polymarket is retail
+  by *headcount*, professional by *dollars*.
+- **Where the dollars are by category:** Sports 30% > Politics 16% >
+  Crypto 10%. (The "Polymarket = politics" narrative is wrong.)
+- **Who plays where:** Politics is most retail-heavy (37% human).
+  Crypto is most bot-dominated (77% MM+Bot, only 17% human). Sports is
+  bot-dominated and mature.
+- **The trend:** Retail share dropped 33% → 22% in 6 months. Polymarket
+  is professionalizing rapidly.
+- **LP rewards concentration:** Top 10 owners = 30% of all rewards.
+  Top 50 = 50%. Long tail of 111,000+ owners captures the remaining 40%.
+- **Cross-venue migration:** Zero of the top 100 Polymarket wallets are
+  active on Hyperliquid HIP-4. Migration runs HL-perps → HIP-4, NOT
+  Polymarket → HIP-4.
+
+Verdict-relevant one-liner: **Build for machines first (crypto + finance
+markets). Recruit Hyperliquid-native MMs, not Polymarket veterans. Open
+retail UX in month 3-9 once depth exists. Skip sports, skip politics,
+skip Polymarket migration plays.**
+
+---
+
 ## Audited numbers (trailing 30 days, May 2026)
 
 ### Cohort distribution by single-counted notional ($M)
@@ -98,7 +130,30 @@ only 16% of platform volume. Sports is nearly 2× larger.
 | Tech | 5 | 0.2% | 0.2 | AI, science, tech outcomes |
 | **Total** | **3,103** | 100% | $103M/day | |
 
-### Who plays in each category (% of category volume by cohort)
+### Who plays in each category — simplified (3 buckets)
+
+If you don't need the 6-cohort detail, this is the same data collapsed
+to MMs (Quoters) / Bots (Snipers) / Retail (Humans).
+
+| Category | MMs (Pro + Mid) | Bots (Hybrid + HFT) | Retail (Active + Mixed) | Dominant |
+|---|---:|---:|---:|---|
+| **Sports** | 40% | **41%** | 19% | Bots edge MMs; retail tiny |
+| **Politics** | 42% | 22% | **37%** | MMs + Retail (least bot-heavy) |
+| **Crypto** | 39% | **43%** | 17% | Bots dominate; retail effectively absent |
+| **Finance** | 37% | 25% | **38%** | Retail-leaning, balanced |
+| **Geopolitics** | **47%** | 22% | 31% | MM-heavy + meaningful retail |
+| **Weather** | **43%** | 28% | 29% | MM-heavy, balanced rest |
+| **Culture** | 38% | 22% | **39%** | Retail-leaning, tiny category |
+| **Tech** | 38% | 24% | **37%** | Balanced, tiny category |
+| **Other** | 38% | **44%** | 17% | Bots dominate the recurring/untagged residual |
+| **Platform avg** | **40%** | **38%** | **22%** | Aligns with cohort distribution |
+
+Three patterns jump out:
+- **Bots dominate** crypto, sports, "other" (recurring markets) — fast cadence helps
+- **MMs + Retail** dominate politics and geopolitics — slower-resolving markets, less basket arb opportunity
+- **Finance / culture / tech** are the most retail-leaning categories but tiny
+
+### Who plays in each category — full detail (6 cohorts)
 
 | Category | Pro-MM (Quoter) | Mid-MM (Quoter) | Hybrid-bot (Sniper) | HFT-taker (Sniper) | Active-retail (Human) | Active-mixed (Human) |
 |---|---:|---:|---:|---:|---:|---:|
