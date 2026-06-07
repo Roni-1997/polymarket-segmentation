@@ -1,7 +1,8 @@
 # Results
 
-CSVs from the audited query versions, re-executed against Dune on
-2026-05-27.
+CSVs from the audited query versions. Core cohort tables were
+re-executed against Dune on 2026-05-27; the expiry-volume table was
+re-executed on 2026-06-07.
 
 ## Files
 
@@ -19,6 +20,7 @@ CSVs from the audited query versions, re-executed against Dune on
 | `cohort_x_category_maker_taker_30d.csv` | `10_cohort_x_category_maker_taker.sql` | Long-format: per (cohort, category) maker_vol, taker_vol, touched. Source for the three-view matrices (depth providers vs flow consumers). |
 | `top100_wallets_venue_wide_30d.csv` | `11_top_wallets_30d_with_lp.sql` | True venue-wide top 100 wallets by 30d touched volume, with cohort label and LP-reward flags. Used for cross-venue overlap checks (vs HIP-4). |
 | `cohort_x_category_q1_2026.csv` | `04_cohort_x_category_30d.sql` (window swapped to Jan 1 – Apr 1, 2026) | Same query as the 30d clean, but for the Q1 2026 quarter. Useful for the crypto-vs-other-tagging shift comparison (crypto categorization shifted in May 2026; Q1 numbers reflect the original tagging). |
+| `volume_by_time_to_expiry_30d.csv` | `12_volume_by_time_to_expiry.sql` | Trailing 30d single-counted volume by time-to-resolution/end bucket. Source for `docs/expiry_volume.md`. |
 
 ## Conventions
 
