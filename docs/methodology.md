@@ -187,7 +187,10 @@ Dust rewards are not enough to call a wallet an MM. Use
    outcome). Always pre-aggregate to one row per condition_id before
    joining trades.
 4. **`market_start_time`, `market_end_time`** stored as VARCHAR — use
-   `try_cast(... AS timestamp)` if you need them.
+   `try_cast(... AS timestamp)` if you need them. For time-to-expiry
+   analysis, prefer `resolved_on_timestamp` first and fall back to
+   parsed `market_end_time`; using `market_end_time` alone creates a
+   large stale/past-end bucket in sports and fast markets.
 5. **Dune free-tier SQL timeout is 2 minutes.** 90-day windows fit;
    180-day usually doesn't unless query is simplified.
 

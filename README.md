@@ -8,8 +8,9 @@ provides depth**, **who consumes flow**, by category, over time.
 Built to answer one question: *who actually drives volume and liquidity
 on Polymarket?*
 
-Repo state: audited rerun, 11 SQL queries, 9 result CSVs, cross-venue
-overlap check. Current as of **2026-05-27**.
+Repo state: audited rerun, 12 SQL queries, 10 result CSVs, cross-venue
+overlap check. Core cohort CSVs were rerun on **2026-05-27**; the
+expiry-volume table was rerun on **2026-06-07**.
 
 ---
 
@@ -21,6 +22,7 @@ overlap check. Current as of **2026-05-27**.
 - [Insights by category](#insights-by-category) — sports / politics / crypto / finance / etc.
 - [Insights by role (maker vs taker)](#insights-by-role-depth-providers-vs-flow-consumers)
 - [Insights by time](#insights-by-time-the-professionalization-trend)
+- [Expiry-volume note](docs/expiry_volume.md) — how much volume trades near resolution/end time
 - [Cross-venue (Polymarket × HIP-4)](#cross-venue-the-migration-that-isnt-happening)
 - [Next steps / open questions](#next-steps--open-questions)
 - [Repo structure](#repo-structure)
@@ -560,8 +562,9 @@ analysis. Roughly ordered by leverage.
 | [docs/findings.md](docs/findings.md) | Detailed findings and result-source mapping |
 | [docs/methodology.md](docs/methodology.md) | Classifier spec, contract exclusions, schema gotchas |
 | [docs/external_research.md](docs/external_research.md) | Cross-validation vs Paradigm, Solidus, Chainalysis, Dune dashboards |
-| [queries/](queries/) | 11 SQL files — paste any into Dune to reproduce |
-| [results/](results/) | 9 CSV result tables from the audited rerun (2026-05-27) |
+| [docs/expiry_volume.md](docs/expiry_volume.md) | Publishable note: trailing-30d volume by time-to-resolution/end bucket |
+| [queries/](queries/) | 12 SQL files — paste any into Dune to reproduce |
+| [results/](results/) | 10 CSV result tables from the audited reruns |
 | [hip4_cross_venue/](hip4_cross_venue/) | Sister analysis: bidirectional HIP-4 ↔ Polymarket overlap |
 
 ---
@@ -578,7 +581,8 @@ analysis. Roughly ordered by leverage.
    different quarter windows for the time trend) → `07` (LP
    recipients) → `08` (LP concentration) → `09` (drilldown with
    wallets/fills/avg-trade) → `10` (maker/taker split) → `11`
-   (venue-wide top-100 with LP flags, for cross-venue checks).
+   (venue-wide top-100 with LP flags, for cross-venue checks) → `12`
+   (trailing-30d volume attribution by time-to-expiry).
 
 For programmatic execution via Dune MCP, see
 [docs/methodology.md](docs/methodology.md).
