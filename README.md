@@ -25,6 +25,7 @@ expiry-volume table was rerun on **2026-06-07**.
 - [Expiry-volume note](docs/expiry_volume.md) — how much volume trades near resolution/end time
 - [Cross-venue (Polymarket × HIP-4)](#cross-venue-the-migration-that-isnt-happening)
 - [Next steps / open questions](#next-steps--open-questions)
+- [Agent loops](#agent-loops)
 - [Repo structure](#repo-structure)
 - [How to reproduce](#how-to-reproduce)
 - [Caveats](#caveats)
@@ -555,10 +556,23 @@ analysis. Roughly ordered by leverage.
 
 ---
 
+## Agent loops
+
+Reusable agent runbooks live in [agent_loops/](agent_loops/). Use
+[`agent_loops/research_yolo.md`](agent_loops/research_yolo.md) to have
+an agent find, validate, write, commit, and push one publishable
+market-structure insight from the repo.
+
+The loops enforce source-query/result mapping, methodology caveats, and
+public-facing red-flag scans before commit.
+
+---
+
 ## Repo structure
 
 | Path | What |
 |---|---|
+| [agent_loops/](agent_loops/) | Reusable runbooks for recurring research and repo-audit work |
 | [docs/findings.md](docs/findings.md) | Detailed findings and result-source mapping |
 | [docs/methodology.md](docs/methodology.md) | Classifier spec, contract exclusions, schema gotchas |
 | [docs/external_research.md](docs/external_research.md) | Cross-validation vs Paradigm, Solidus, Chainalysis, Dune dashboards |
