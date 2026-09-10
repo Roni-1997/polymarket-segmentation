@@ -16,6 +16,7 @@ expiry-volume table was rerun on **2026-06-07**.
 
 ## Contents
 
+- [September 2026 update: PnL by cohort](#september-2026-update-pnl-by-cohort) — BTC 5m both legs, who earns and who pays
 - [Methodology](#methodology) — how the classifier works, what we count, what we exclude
 - [Headline numbers (60-second read)](#headline-numbers-60-second-read)
 - [Insights by cohort](#insights-by-cohort) — who plays, sized by dollars and headcount
@@ -168,6 +169,32 @@ incidental maker activity.
   shot. Use 30-day or 90-day chunks.
 
 Full spec: [docs/methodology.md](docs/methodology.md).
+
+---
+
+## September 2026 update: PnL by cohort
+
+Full note: [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md). Same grid, applied to every fill on
+Polymarket's BTC 5-minute up/down markets on 2026-09-09 (both legs, 1.38M records, $14.3M touched), with
+settlement PnL per cohort.
+
+- **Retail is not the flow.** Strict retail is 1.3% of BTC 5m touched volume (5.3% venue-wide in May).
+  The retail narrative does not explain volume, depth or growth on these venues.
+- **Flow needs machines.** MMs plus fast machines are 63% of touched volume, 74% of the maker side and
+  95% of the taker side, and they arrive within days of a product launching. They are the book.
+- **Machines need someone to pay them.** $49k moved from Systematic-taker (-$32k) and Retail (-$12k) to
+  Pro-MM (+$33k) and Fast-taker (+$16k). The payers are tool-assisted people at 10-300 fills a day, not
+  casual clickers. A venue needs machines plus a steady supply of those session traders through frontends,
+  brokers and partner apps.
+
+| Persona | % touched | % maker side | % taker side | PnL $ | May venue-wide |
+|---|---:|---:|---:|---:|---:|
+| MMs | 36.7% | 74.2% | 2.9% | +32,271 | 38.4% |
+| Bots + Algo | 62.0% | 25.6% | 94.9% | -19,786 | 56.3% |
+| Retail | 1.3% | 0.3% | 2.2% | -12,485 | 5.3% |
+
+The Bots + Algo persona nets negative because it holds both the payers (Systematic-taker) and the earners
+(Fast-taker). A proposed v2 grid that splits operation mode and directionality is in the note.
 
 ---
 
@@ -456,8 +483,9 @@ T30d $102M (mild reversion).
    Either the Systematic-taker / Systematic-mixed cohorts are
    sufficiently uninformed to function as retail substitutes, or MM
    economics depend on rebates and inventory management more than spread
-   capture alone. Worth investigating: PnL-by-cohort analysis
-   (see next steps).
+   capture alone. September 2026 answer for BTC 5m: the Systematic-taker cohort loses 2.0% per
+   dollar and supplies two thirds of the losses; it is the uninformed flow. Counting
+   it, uninformed flow is about 17% of touched volume and 29% of the taker side.
 
 ---
 
@@ -491,7 +519,7 @@ analysis. Roughly ordered by leverage.
 
 ### High-value additions
 
-1. **PnL by cohort.** Solidus measured profit concentration in politics
+1. **PnL by cohort.** Done for BTC 5m on 2026-09-09 (both legs): see [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md). Remaining: other categories, longer windows, owner level. Solidus measured profit concentration in politics
    markets only (0.55% of wallets capture 50% of profit, Dec 2025–Feb
    2026). Reproducing across all categories + longer windows would let
    us check whether the claim generalizes and quantify adverse
@@ -630,7 +658,7 @@ For programmatic execution via Dune MCP, see
    Citation guidance in
    [docs/external_research.md](docs/external_research.md).
 
-7. **PnL by cohort is not measured.** "Volume share" ≠ "profit
+7. **PnL by cohort is measured only for BTC 5m on one day** (docs/btc5m_cohorts_pnl.md), not venue-wide. "Volume share" ≠ "profit
    share." Solidus claims 0.55% of wallets capture 50% of profit in
    politics; our top-10 LP-reward owners capture 30% of rewards.
    Different metrics, both directionally valid.

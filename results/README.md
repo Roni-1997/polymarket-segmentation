@@ -43,3 +43,8 @@ re-executed on 2026-06-07.
 - PnL by cohort (would require position-state reconstruction).
 - Cross-venue arber detection (needs Kalshi data).
 - Wallet-level identity labels (Wintermute, GSR, etc.).
+
+## btc5m_cohorts_v1_2026-09-09.csv, btc5m_cohorts_v2_2026-09-09.csv
+Seven-cohort grid (v1) and proposed six-cohort v2 on Polymarket BTC 5m up/down, 2026-09-09, both legs,
+proxy-wallet level, with settlement PnL per cohort. Built by `scripts/btc5m/`. See docs/btc5m_cohorts_pnl.md.
+
