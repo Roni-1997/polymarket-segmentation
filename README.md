@@ -13,7 +13,8 @@ note is at [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md).
 
 ## Contents
 
-- [Short version](#short-version)
+- [Highlights](#highlights)
+- [What this means for Verdict](#what-this-means-for-verdict)
 - [September 2026: BTC 5-minute markets, PnL by cohort](#september-2026-btc-5-minute-markets-pnl-by-cohort)
 - [Method](#method)
 - [Cohorts](#cohorts)
@@ -27,28 +28,47 @@ note is at [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md).
 - [Limitations](#limitations)
 - [Expiry-volume note](docs/expiry_volume.md)
 
-## Short version
+## Highlights
 
-Real volume is about $102M a day single-counted. Polymarket's headline figure counts both sides of
-each fill and is about twice that, as Paradigm noted in December 2025.
+- Polymarket's real volume is about $102M a day. The headline figure counts both sides of every fill
+  and is about twice that.
+- Machines make the market. Market makers are 38% of touched volume and provide 69% of all depth.
+  Bots and systematic traders are 56% of volume and consume 85% of taker flow. Strict retail, under
+  10 fills a day, is 5% of volume venue-wide and 1.3% on BTC 5-minute markets.
+- Retail's share halved in six months, 10.7% to 5.3%, while volume doubled from Q4 2025 to Q1 2026.
+  The growth came from machines and maker capital, not from new retail.
+- The paying flow is not casual retail either. On BTC 5-minute markets, settlement PnL moves about
+  $49k a day from the Systematic-taker cohort (people using tools, 10 to 300 fills a day) and Retail
+  to Pro-MM and Fast-taker. About 17% of touched volume, 29% of the taker side, loses by result and
+  funds everyone else.
+- Crypto binaries are the most automated category, with 75% of volume from the three fast cohorts,
+  and their cohort mix is nearly identical to sports.
+- Polymarket's machines do not migrate. None of its top 100 wallets is active on Hyperliquid HIP-4.
+  The HIP-4 flow that exists comes from Hyperliquid perps traders.
+- Liquidity rewards concentrate: the top 10 owners take 30% of all LP rewards, the top 50 take 50%.
 
-Of touched volume in the 30 days to 2026-05-27, market makers are 38%, bots and systematic traders
-56%, retail 5%. About 327,000 professional or systematic owners produce the 95%; about 926,000 retail
-owners produce the 5%. Polymarket is retail by headcount and professional by dollars.
+## What this means for Verdict
 
-By category, untagged markets are 36% of volume and are mostly recurring crypto binaries that lost
-their tags. Sports is 30%, politics 16%, tagged crypto 9%. The idea that Polymarket is a politics
-venue is out of date.
+Verdict builds short-dated outcome markets on Hyperliquid HIP-4. Read as go-to-market, the data says:
 
-Retail's share of volume fell from 10.7% in Q4 2025 to 7.7% in Q1 2026 to 5.3% in May 2026.
-
-LP rewards are concentrated: the top 10 owners take 30% of all rewards and the top 50 take 50%.
-Of the 100 largest wallets by volume, 32 have collected at least $1,000 in LP rewards, 16 run
-complete-set arbitrage, 48 trade in large tickets, and none is active on Hyperliquid HIP-4.
-
-On BTC 5-minute markets in September 2026, retail is 1.3% of touched volume. Market makers and fast
-machines are 63% of volume, 74% of the maker side and 95% of the taker side. Settlement PnL moves
-about $49k a day from the Systematic-taker and Retail cohorts to Pro-MM and Fast-taker.
+1. Liquidity is not the scarce input. Machines arrive within days of a launch, the 5-minute product
+   opened at 46% machine share on its second day, and they are the book. Recruit market makers and
+   neutral machines with a reliable settlement feed, fast cancels and clear rules. Do not spend to
+   acquire casual retail; it is 1% to 5% of flow everywhere and shrinking.
+2. Paying flow is the scarce input, and it is the tooled-up session trader, not the clicker. On
+   Hyperliquid that profile is the perps trader who already sits one click from an HIP-4 book.
+   Distribution runs through frontends and builder codes, Polymarket routes about 15% of its volume
+   through 50 third-party frontends, not through a consumer funnel.
+3. A consumer app is not the gate to product-market fit. It is where fees are collected and where the
+   customer relationship is owned. Build it as a trader terminal with a builder program for other
+   frontends and bots, and do not gate the launch on it.
+4. Fee design decides which machines the venue hosts. Zero taker fees invite stale-quote machines
+   that earn off makers and people; a taker fee removes that edge. Until fees exist, settlement design
+   is what protects the makers.
+5. Do not pitch what the venue cannot host. Complete-set arbitrage does not exist on HIP-4's mirror
+   books, and Polymarket's machines are not migrating.
+6. Measure after incentives, not during: repeat fee-paying strategies, depth at size, maker
+   profitability after rewards, venue revenue net of incentives.
 
 ## September 2026: BTC 5-minute markets, PnL by cohort
 
