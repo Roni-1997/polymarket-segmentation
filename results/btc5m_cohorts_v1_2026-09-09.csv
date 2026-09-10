@@ -1,0 +1,8 @@
+cohort,wallets,pct_touched,pct_maker_side,pct_taker_side,usd_per_fill,pnl_per_usd_pct,pnl_per_usd_taker_pct,pnl_per_usd_maker_pct,pnl_usd
+Pro-MM,545,35.5,71.8,2.7,7,0.66,3.25,0.55,33254
+Fast-taker,711,34.6,6.6,59.9,14,0.32,0.2,1.53,15806
+Hybrid-bot,171,15.1,17.4,13.1,12,-0.11,0.11,-0.3,-2439
+Systematic-taker,2742,11.3,0.6,20.9,17,-2.01,-1.99,-2.88,-32274
+Mid-MM,435,1.2,2.4,0.2,10,-0.56,11.67,-1.65,-983
+Systematic-mixed,301,1.0,1.0,1.0,13,-0.61,-1.81,0.77,-879
+Retail,3423,1.3,0.3,2.2,15,-6.85,-6.58,-9.41,-12485

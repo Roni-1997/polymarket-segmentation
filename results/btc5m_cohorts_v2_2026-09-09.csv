@@ -1,0 +1,7 @@
+cohort_v2,wallets,pct_touched,pct_maker_side,pct_taker_side,pnl_per_usd_pct,pnl_usd,median_exact_dollar_buys_pct,sells_pct_of_volume,median_active_hours
+Pro-MM,687,34.3,69.7,2.3,0.77,37830,3,8,20
+Part-time MM,240,2.4,4.4,0.5,-1.31,-4390,4,7,6
+Neutral bot,376,25.0,14.3,34.7,1.38,49480,10,6,9
+Directional bot,1107,21.5,8.1,33.6,-0.23,-7158,6,7,18
+Session trader,2374,15.3,3.1,26.3,-2.76,-60356,41,27,5
+Retail,3544,1.5,0.4,2.5,-7.16,-15406,0,19,1
