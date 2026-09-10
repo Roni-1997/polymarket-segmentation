@@ -44,7 +44,7 @@ Use single-counted notional for venue volume:
 equivalent single-counted notional = touched volume / 2
 ```
 
-This distinction is load-bearing. MMs that take liquidity still count as
+The distinction matters. MMs that take liquidity still count as
 MM flow once their wallet is classified as an MM, but absolute dollar
 volume must not be compared to public venue volume until divided by 2.
 
@@ -86,7 +86,7 @@ a wallet is at <10 fills/active_day, maker_share is a stylistic
 order-type choice (limit vs market) rather than a strategic role.
 Collapsing them simplifies the framework to **7 cohorts**.
 
-**Important framing:** these are observed trading behaviors over the
+These are observed trading behaviors over the
 measurement window, not user identities. A wallet labeled `Retail` may
 be a casual bettor, a wealth-tier directional trader, or a hedger.
 A wallet labeled `Fast-taker` may be automated or tool-assisted, but is
