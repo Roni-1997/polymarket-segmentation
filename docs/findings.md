@@ -1,7 +1,7 @@
-# Findings — Polymarket participant segmentation
+# Findings - Polymarket participant segmentation
 
 Status: **audit-adjusted methodology AND rerun completed**.
-Data window: trailing 30 days (April 27 – May 27, 2026).
+Data window: trailing 30 days (April 27 - May 27, 2026).
 Quarterly comparison: Q4 2025 and Q1 2026.
 
 The original exported CSVs had two audit issues that have now been fixed
@@ -9,7 +9,7 @@ in the SQL and the queries re-executed against Dune:
 
 1. The cohort queries counted **touched volume** (each fill once on the
    maker side + once on the taker side). Correct for participant-share
-   analysis, but 2× single-counted venue notional. Output now carries
+   analysis, but 2x single-counted venue notional. Output now carries
    both columns explicitly.
 2. Known router/system contracts were filtered as raw maker/taker
    addresses, but not after `users_address_lookup` mapped proxy wallets
@@ -20,13 +20,13 @@ in the SQL and the queries re-executed against Dune:
 
 ---
 
-## Headline numbers (the 60-second read)
+## Headline numbers
 
 Everything below is sliced six different ways. If you only have a minute,
 read this:
 
 - **Real volume:** ~$102M/day single-counted notional (half the headline
-  $200M/day figure — Paradigm OrderFilled double-counting).
+  $200M/day figure - Paradigm OrderFilled double-counting).
 - **Who drives volume (T30d):** **MMs 38% / Bots+Algo 56% / Retail 5%.**
   Sums to **94.7% professional/systematic, 5.3% retail.**
 - **Headcount asymmetry:** ~327,000 professional/systematic owners
@@ -39,7 +39,7 @@ read this:
   category at 13% retail. Crypto is the most bot-dominated (96%
   MMs+Bots+Algo). Sports is bot-dominated and mature.
 - **The retail collapse:** Retail share dropped from **10.7% (Q4 2025)
-  → 7.7% (Q1 2026) → 5.3% (T30d May 2026)**. Halved in 6 months.
+  to 7.7% (Q1 2026) to 5.3% (T30d May 2026)**. Halved in 6 months.
   Far below the ~20% structural floor for healthy uninformed flow.
 - **LP rewards concentration:** Top 10 owners = 30% of all rewards.
   Top 50 = 50%. Long tail of 111,000+ owners captures the remaining 40%.
@@ -50,7 +50,7 @@ read this:
   (by 30d touched volume) are active on HIP-4. The venue-wide top-100
   is 94% professional (50 Pro-MM + 23 Fast-taker + 21 Hybrid-bot) and
   only 6% non-professional (3 Systematic-taker + 3 Mid-MM, 0 Retail).
-  Migration visible so far runs HL-perps → HIP-4, NOT Polymarket → HIP-4.
+  Migration visible so far runs HL-perps to HIP-4, NOT Polymarket to HIP-4.
 
 ---
 
@@ -71,7 +71,7 @@ read this:
 
 Real volume: **~$102M/day single-counted notional** over the trailing
 30 days. Matches Paradigm's December 2025 finding that Polymarket's
-~$200M/day headline number is ~2× overstated via OrderFilled
+~$200M/day headline number is ~2x overstated via OrderFilled
 double-counting.
 
 ### Collapsed three-persona view
@@ -105,10 +105,10 @@ is the sharpest professionalization signal in the data.
 | Q1 2026 | 11.1 | **123** |
 | T30d (May 2026) | 3.1 | **102** |
 
-Q1 2026 was a 2× volume spike vs Q4 2025; T30d sits ~83% of the Q1
+Q1 2026 was a 2x volume spike vs Q4 2025; T30d sits ~83% of the Q1
 peak. Likely drivers: NCAA + crypto rally + post-inauguration markets.
 
-### Wallet counts (Q1 2026 — 90d stable reference)
+### Wallet counts (Q1 2026 - 90d stable reference)
 
 | Cohort | Distinct owners |
 |---|---:|
@@ -126,11 +126,11 @@ of dollars. Retail owners: ~926,087. They generate ~7.7%.
 
 ---
 
-## Category breakdown — where the dollars actually go
+## Category breakdown - where the dollars actually go
 
 The "Polymarket is a politics venue" narrative is outdated. Politics is
 only 16% of platform volume. Among tagged categories, sports is nearly
-2× larger. The largest bucket overall is still "other" / null-tagged.
+2x larger. The largest bucket overall is still "other" / null-tagged.
 
 ### Categories ranked by size (single-counted notional, 30d)
 
@@ -147,18 +147,18 @@ only 16% of platform volume. Among tagged categories, sports is nearly
 | Tech | 5 | 0.2% | 0.2 | AI, science, tech outcomes |
 | **Total** | **3,071** | 100% | **~$102M/day** | |
 
-### Crypto tagging shifted between Q1 and May 2026 — caveat
+### Crypto tagging shifted between Q1 and May 2026 - caveat
 
-Comparing T30d (May) to Q1 2026 (Jan–Mar) reveals a data-quality flag:
+Comparing T30d (May) to Q1 2026 (Jan-Mar) reveals a data-quality flag:
 
 | Category | Q1 2026 ($M/day single) | T30d May 2026 ($M/day single) | Δ |
 |---|---:|---:|---|
-| Crypto | $37.8 | $9.7 | **−74%** |
-| Other (null-tagged) | $0.5 | $36.7 | **+73×** |
+| Crypto | $37.8 | $9.7 | **-74%** |
+| Other (null-tagged) | $0.5 | $36.7 | **+73x** |
 | Crypto + Other combined | $38.3 | $46.4 | +21% |
 
 The 74% crypto crash is implausible against a stable platform total
-(Q1 $123M/day → T30d $102M/day, −17%). The real cause is **Polymarket
+(Q1 $123M/day to T30d $102M/day, -17%). The real cause is **Polymarket
 re-tagging or untagging the recurring 5m/15m/1h crypto binaries**
 between Q1 and May. They moved from being tagged `Crypto` to being
 null-tagged `Other`.
@@ -186,7 +186,7 @@ better reflect the underlying market types (Crypto 30.7%, Other 0.4%).
 **MMs 34% / Bots+Algo 59% / Retail 7%.** Stable vs T30d (38/58/5).
 Crypto has been consistently bot-dominated across both windows.
 
-### Crypto vs Sports — side-by-side by notional
+### Crypto vs Sports - side-by-side by notional
 
 The two largest fast-resolving categories have nearly identical
 cohort fingerprints. Both are bot-dominated, both have minimal retail.
@@ -215,19 +215,19 @@ Minor differences worth flagging:
   multi-outcome NBA/NFL basket arb works well)
 - Fast-taker leans slightly **more crypto** (latency edge on 5m
   binaries)
-- Retail is slightly higher in crypto than sports — small but consistent
+- Retail is slightly higher in crypto than sports - small but consistent
 
-The asymmetric volume drop (crypto −74%, sports −43%) confirms the
+The asymmetric volume drop (crypto -74%, sports -43%) confirms the
 crypto loss is mostly the tagging migration; sports decline is more
 seasonal (mid-May has less playoff activity than April).
 
-### Who plays in each category — three views
+### Who plays in each category - three views
 
 The "Polymarket cohort share by category" is actually three different
 questions, each with a different answer. Maker side and taker side
 behave very differently for the same cohort.
 
-#### View 1 — Who PROVIDES depth in each category (% of maker side)
+#### View 1 - Who PROVIDES depth in each category (% of maker side)
 
 This is who's posting limit orders that other people fill. Every fill
 has one maker, so columns sum to 100%.
@@ -244,13 +244,13 @@ has one maker, so columns sum to 100%.
 | **Tech** | **44%** | 19% | 12% | 9% | 3% | 3% | 10% |
 | **Other** | **59%** | 9% | 21% | 4% | 4% | 1% | 1% |
 
-**Pro-MM provides 38–59% of depth in every single category.** Mid-MM
-is the consistent #2 (9–26%). Together MMs are **65–82% of all
-maker-side flow across categories.** Hybrid-bot adds another 5–22%.
-Retail provides 1–10% of depth — mostly via Politics/Finance/Tech
+**Pro-MM provides 38-59% of depth in every single category.** Mid-MM
+is the consistent #2 (9-26%). Together MMs are **65-82% of all
+maker-side flow across categories.** Hybrid-bot adds another 5-22%.
+Retail provides 1-10% of depth - mostly via Politics/Finance/Tech
 where humans use limit orders to express directional views.
 
-#### View 2 — Who CONSUMES depth in each category (% of taker side)
+#### View 2 - Who CONSUMES depth in each category (% of taker side)
 
 This is who's hitting other people's orders. Columns sum to 100%.
 
@@ -267,11 +267,11 @@ This is who's hitting other people's orders. Columns sum to 100%.
 | **Other** | 6% | 1% | 21% | 4% | **44%** | 20% | 4% |
 
 **The taker side is dominated by Fast-taker and Systematic-taker.**
-Combined they consume 57–69% of taker flow in every category. Retail
-takers are 4–19% — meaningfully present in slow-resolving categories
+Combined they consume 57-69% of taker flow in every category. Retail
+takers are 4-19% - meaningfully present in slow-resolving categories
 (politics, geopol, culture, tech) but small everywhere else.
 
-#### View 3 — Combined participation (3-persona, % of touched)
+#### View 3 - Combined participation (3-persona, % of touched)
 
 | Category | MMs (Pro+Mid) | Bots+Algo (Hybrid+Fast+Sys-mixed+Sys-taker) | Retail |
 |---|---:|---:|---:|
@@ -298,7 +298,7 @@ takers are 4–19% — meaningfully present in slow-resolving categories
 The aggregate "touched" view conflates these roles. MMs make. Bots and
 Algo take. Retail provides a thin slice of both.
 
-**The uninformed-flow problem:** With Retail at only 5–13% of taker
+**The uninformed-flow problem:** With Retail at only 5-13% of taker
 flow across categories, MMs are increasingly trading against other
 machines. The Systematic-taker cohort may function as a quasi-retail
 substitute (slow algos behave somewhat uninformed at intra-day scale),
@@ -321,9 +321,9 @@ Standout cells:
 | Hybrid-bot | Sports | ~5k | $80 | Basket arbers on NBA/NFL/esports multi-outcome markets |
 | Mid-MM | Geopolitics | ~7k | **$550** | Mid-tier MMs sitting on chunky geopolitical bets |
 
-## LP rewards — major correction
+## LP rewards - major correction
 
-The pre-audit doc said "top 100 wallets capture 100% of rewards" — that
+The pre-audit doc said "top 100 wallets capture 100% of rewards" - that
 was an artifact of fetching only the top 50 from a paginated result.
 After deduping merkle claims against direct USDC transfers and
 aggregating to owner level, the actual picture is:
@@ -341,13 +341,13 @@ aggregating to owner level, the actual picture is:
 top 100 = 100%; audited says 59.4%, with a 40% long tail across
 ~111,000 reward-earning wallets.
 
-The Tier-1 oligopoly is real — top 3 captured $4.24M (20%) — but
+The Tier-1 oligopoly is real - top 3 captured $4.24M (20%) - but
 much more diluted by a long tail than the original analysis suggested.
 
 Top 3 owners by all-time LP rewards (deduped):
-- `0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb` — $2.43M
-- `0x9d84ce0306f8551e02efef1680475fc0f1dc1344` — $1.27M
-- `0x96bde0dd1d5ba5cc8e1c74cdec14041564a1363a` — $545k
+- `0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb` - $2.43M
+- `0x9d84ce0306f8551e02efef1680475fc0f1dc1344` - $1.27M
+- `0x96bde0dd1d5ba5cc8e1c74cdec14041564a1363a` - $545k
 
 ---
 
@@ -390,24 +390,24 @@ sides; absolute dollar-volume claims must use the single-counted column.
 
 Each cited number above maps to a specific CSV under `results/`:
 
-1. Trailing-30d cohort × category — `results/cohort_x_category_30d_clean.csv`
+1. Trailing-30d cohort x category - `results/cohort_x_category_30d_clean.csv`
    from `queries/04_cohort_x_category_30d.sql`.
-2. Quarterly trend — `results/cohort_q1_2026.csv` and
+2. Quarterly trend - `results/cohort_q1_2026.csv` and
    `results/cohort_q4_2025.csv` from `queries/06_cohort_per_quarter.sql`
    (run twice with different date windows).
-3. Wallet-level validation — `results/top20_per_cohort_30d.csv` from
+3. Wallet-level validation - `results/top20_per_cohort_30d.csv` from
    `queries/05_top20_per_cohort_with_lp.sql`. This exported CSV is
    clipped at 100 rows, so it is a top-per-cohort validation sample, not
    the full 140-row query output. Use `lp_rewards_confirmed_1k` as the
    strong signal, not `lp_rewards_observed`.
-4. LP rewards concentration — `results/lp_rewards_concentration.csv`
+4. LP rewards concentration - `results/lp_rewards_concentration.csv`
    from `queries/08_lp_rewards_concentration.sql`.
-5. Cohort × category drill-down (wallet counts, fills, avg trade size
-   per cell) — `results/cohort_x_category_drilldown_30d.csv` from
+5. Cohort x category drill-down (wallet counts, fills, avg trade size
+   per cell) - `results/cohort_x_category_drilldown_30d.csv` from
    `queries/09_cohort_x_category_drilldown.sql`.
-6. Cohort × category maker / taker split (who provides depth vs who
-   consumes it, per cell) — `results/cohort_x_category_maker_taker_30d.csv`
+6. Cohort x category maker / taker split (who provides depth vs who
+   consumes it, per cell) - `results/cohort_x_category_maker_taker_30d.csv`
    from `queries/10_cohort_x_category_maker_taker.sql`.
-7. True venue-wide top-wallet sample —
+7. True venue-wide top-wallet sample -
    `results/top100_wallets_venue_wide_30d.csv` from
    `queries/11_top_wallets_30d_with_lp.sql`.

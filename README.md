@@ -1,664 +1,485 @@
 # Polymarket participant segmentation
 
-Reproducible SQL pack + analysis classifying every Polymarket wallet
-that traded in the trailing 30 days (and prior quarters) into 7
-behavioral cohorts, then measuring **who drives volume**, **who
-provides depth**, **who consumes flow**, by category, over time.
+Who trades on Polymarket, measured from the chain. Every wallet that traded in a window is sorted
+into one of seven cohorts by two things: how much of its volume it makes rather than takes, and how
+often it trades. The cohorts are then measured by volume, by depth provided, by flow consumed, by
+market category and over time. The SQL runs on Dune's curated Polymarket tables and the result CSVs
+are committed, so every number here can be rerun.
 
-Built to answer one question: *who actually drives volume and liquidity
-on Polymarket?*
-
-Repo state: audited rerun, 12 SQL queries, 10 result CSVs, cross-venue
-overlap check. Core cohort CSVs were rerun on **2026-05-27**; the
-expiry-volume table was rerun on **2026-06-07**.
-
----
+The main cohort tables are from 2026-05-27 (trailing 30 days, with Q4 2025 and Q1 2026 for the
+trend). The expiry-volume table is from 2026-06-07. In September 2026 the same grid was applied to
+Polymarket's BTC 5-minute markets with both legs of every fill and settlement PnL per cohort; that
+note is at [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md).
 
 ## Contents
 
-- [September 2026 update: PnL by cohort](#september-2026-update-pnl-by-cohort) — BTC 5m both legs, who earns and who pays
-- [Methodology](#methodology) — how the classifier works, what we count, what we exclude
-- [Headline numbers (60-second read)](#headline-numbers-60-second-read)
-- [Insights by cohort](#insights-by-cohort) — who plays, sized by dollars and headcount
-- [Insights by category](#insights-by-category) — sports / politics / crypto / finance / etc.
-- [Insights by role (maker vs taker)](#insights-by-role-depth-providers-vs-flow-consumers)
-- [Insights by time](#insights-by-time-the-professionalization-trend)
-- [Expiry-volume note](docs/expiry_volume.md) — how much volume trades near resolution/end time
-- [Cross-venue (Polymarket × HIP-4)](#cross-venue-the-migration-that-isnt-happening)
-- [Next steps / open questions](#next-steps--open-questions)
-- [Agent loops](#agent-loops)
-- [Repo structure](#repo-structure)
-- [How to reproduce](#how-to-reproduce)
-- [Caveats](#caveats)
+- [Short version](#short-version)
+- [September 2026: BTC 5-minute markets, PnL by cohort](#september-2026-btc-5-minute-markets-pnl-by-cohort)
+- [Method](#method)
+- [Cohorts](#cohorts)
+- [Categories](#categories)
+- [Roles: who provides depth and who consumes it](#roles-who-provides-depth-and-who-consumes-it)
+- [Over time](#over-time)
+- [Cross-venue: Polymarket and Hyperliquid HIP-4](#cross-venue-polymarket-and-hyperliquid-hip-4)
+- [Open questions](#open-questions)
+- [Repository layout](#repository-layout)
+- [Reproducing the numbers](#reproducing-the-numbers)
+- [Limitations](#limitations)
+- [Expiry-volume note](docs/expiry_volume.md)
 
----
+## Short version
 
-## Methodology
+Real volume is about $102M a day single-counted. Polymarket's headline figure counts both sides of
+each fill and is about twice that, as Paradigm noted in December 2025.
 
-### 1. What we measure
+Of touched volume in the 30 days to 2026-05-27, market makers are 38%, bots and systematic traders
+56%, retail 5%. About 327,000 professional or systematic owners produce the 95%; about 926,000 retail
+owners produce the 5%. Polymarket is retail by headcount and professional by dollars.
 
-For each wallet that traded on Polymarket (CTF Exchange + NegRisk
-Exchange on Polygon) in the analysis window, we compute behavioral
-features from raw `OrderFilled` events and classify the wallet into
-one of 7 cohorts. Then we aggregate volume, fill count, wallet count,
-and average trade size per (cohort × category × maker/taker side).
+By category, untagged markets are 36% of volume and are mostly recurring crypto binaries that lost
+their tags. Sports is 30%, politics 16%, tagged crypto 9%. The idea that Polymarket is a politics
+venue is out of date.
 
-### 2. Data sources
+Retail's share of volume fell from 10.7% in Q4 2025 to 7.7% in Q1 2026 to 5.3% in May 2026.
 
-All on-chain, all free, via [Dune curated tables](https://docs.dune.com/data-catalog/curated/prediction-markets/polymarket/overview):
+LP rewards are concentrated: the top 10 owners take 30% of all rewards and the top 50 take 50%.
+Of the 100 largest wallets by volume, 32 have collected at least $1,000 in LP rewards, 16 run
+complete-set arbitrage, 48 trade in large tickets, and none is active on Hyperliquid HIP-4.
 
-| Table | What we pull |
+On BTC 5-minute markets in September 2026, retail is 1.3% of touched volume. Market makers and fast
+machines are 63% of volume, 74% of the maker side and 95% of the taker side. Settlement PnL moves
+about $49k a day from the Systematic-taker and Retail cohorts to Pro-MM and Fast-taker.
+
+## September 2026: BTC 5-minute markets, PnL by cohort
+
+Full note: [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md). The seven-cohort grid was
+applied to every fill on Polymarket's BTC 5-minute up/down markets on 2026-09-09, both legs,
+1.38M records and $14.3M touched, with settlement PnL computed per cohort.
+
+Retail is not the flow. Strict retail, under 10 fills per active day, is 1.3% of touched volume on
+this product and was 5.3% venue-wide in May. Casual clickers do not explain the volume, the depth or
+the growth of these venues.
+
+Flow needs machines. Market makers and fast machines are 63% of touched volume, 74% of the maker
+side and 95% of the taker side, and they show up within days of a product launching. They are the
+book.
+
+Machines need someone to pay them. On this day $49k moved from Systematic-taker (-$32k) and Retail
+(-$12k) to Pro-MM (+$33k) and Fast-taker (+$16k). The payers are people using tools at 10 to 300
+fills a day, not casual clickers. A venue therefore needs machines plus a steady supply of those
+session traders, arriving through frontends, brokers and partner apps.
+
+| Persona | % touched | % maker side | % taker side | PnL $ | May 2026 venue-wide |
+|---|---:|---:|---:|---:|---:|
+| MMs | 36.7% | 74.2% | 2.9% | +32,271 | 38.4% |
+| Bots and algo | 62.0% | 25.6% | 94.9% | -19,786 | 56.3% |
+| Retail | 1.3% | 0.3% | 2.2% | -12,485 | 5.3% |
+
+The bots-and-algo persona nets negative as a whole because it contains both the payers
+(Systematic-taker) and the earners (Fast-taker). The note proposes a second version of the grid that
+separates operation mode and directionality so that this does not happen.
+
+## Method
+
+### What is measured
+
+For each wallet that traded on Polymarket (CTF Exchange and NegRisk Exchange on Polygon) in the
+window, behavioural features are computed from raw `OrderFilled` events and the wallet is placed in
+one of seven cohorts. Volume, fill count, wallet count and average trade size are then aggregated per
+cohort, category and side.
+
+### Data
+
+All on-chain, all free, from [Dune's curated tables](https://docs.dune.com/data-catalog/curated/prediction-markets/polymarket/overview).
+
+| Table | Used for |
 |---|---|
-| `polymarket_polygon.market_trades` | Every fill — block_time, maker, taker, amount, condition_id |
-| `polymarket_polygon.market_details` | Market metadata + comma-separated `tags` for category mapping |
-| `polymarket_polygon.users_address_lookup` | Proxy wallet → owner EOA mapping (so one MM with many proxies = one entity) |
-| `polymarket_polygon.ctf_evt_positionsplit` / `ctf_evt_positionsmerge` | Complete-set arber signals (not currently in the main classifier) |
-| `polymarket_usdc_merkle_distributor_polygon.MerkleDistributor_evt_Claimed` | LP rewards ground truth — material MM signal |
-| `erc20_polygon.evt_Transfer` (from `0xc28848...`) | Older direct LP-reward transfers, deduped against merkle claims |
+| `polymarket_polygon.market_trades` | Every fill: block time, maker, taker, amount, condition id |
+| `polymarket_polygon.market_details` | Market metadata and the comma-separated `tags` used for categories |
+| `polymarket_polygon.users_address_lookup` | Proxy wallet to owner EOA, so one firm with many proxies counts once |
+| `polymarket_polygon.ctf_evt_positionsplit`, `ctf_evt_positionsmerge` | Complete-set arbitrage signals (not yet in the main classifier) |
+| `polymarket_usdc_merkle_distributor_polygon.MerkleDistributor_evt_Claimed` | LP rewards, the strongest evidence that a wallet is a market maker |
+| `erc20_polygon.evt_Transfer` from `0xc28848...` | Older direct LP-reward transfers, deduplicated against merkle claims |
 
-### 3. The cohort classifier — 7-cohort grid
+### The seven cohorts
 
-Two axes (**maker share** × **fills per active day**) produce a 3×3 grid.
-The 3 cells in the `discretionary` cadence band collapse into a single
-`Retail` bucket — once you're at <10 fills/day, maker/taker behavior is a
-stylistic order-type choice rather than a strategic role.
+Two axes: maker share of a wallet's touched volume, and cadence, measured as fills per active day.
+Below 10 fills a day the maker-taker distinction is an order-type preference rather than a role, so
+the three low-cadence cells collapse into one Retail cohort.
 
-| | **fast** (≥100/day) | **systematic** (10–100/day) | **discretionary** (<10/day) |
+| Maker share | Fast, 100+ fills a day | Systematic, 10 to 100 | Discretionary, under 10 |
 |---|---|---|---|
-| **highMkr** (≥70% maker share) | Pro-MM | Mid-MM | ↓ |
-| **midMkr** (30–70%) | Hybrid-bot | Systematic-mixed | ↓ |
-| **lowMkr** (<30%) | Fast-taker | Systematic-taker | ↓ |
-| **(any maker share)** | — | — | **Retail** |
+| 70% or more | Pro-MM | Mid-MM | Retail |
+| 30% to 70% | Hybrid-bot | Systematic-mixed | Retail |
+| Under 30% | Fast-taker | Systematic-taker | Retail |
 
-**7 cohorts total.** Labels are intentionally behavioral, not identity:
-"Fast-taker" describes observed cadence + low maker share, not formally
-latency-classified trading. "Retail" is the only cohort where headcount
-dominates — by volume it's the smallest.
+The labels describe behaviour, not identity. Fast-taker means high cadence and low maker share, not
+a latency measurement. A Retail wallet may be a casual bettor, a large directional trader who places a
+few big bets, or a hedger; the data only shows low cadence.
 
-**Threshold rationale:**
+Why these thresholds: 70% maker share or more means the wallet mainly provides liquidity; 30% to 70%
+means a mix (basket arbitrage, inventory rebalancing, news-reaction quoting); under 30% means it
+mainly consumes liquidity. 100 or more fills a day is treated as automated. 10 to 100 is systematic
+or tool-assisted: slow algorithms, copy-trading wrappers, heavy discretionary traders. Under 10 is
+retail cadence.
 
-- **Maker ≥70%** = wallet acts primarily as liquidity provider
-- **Maker 30–70%** = hybrid (basket arb / inventory rebalancing / news-reaction MM)
-- **Maker <30%** = wallet acts primarily as liquidity consumer
-- **Cadence ≥100/day** = clearly automated (no human sustains 100+ orders/day)
-- **Cadence 10–100/day** = systematic / tool-assisted (slow algo, copy-trading wrapper, sophisticated discretionary human)
-- **Cadence <10/day** = retail-cadence discretionary trading
+Cadence is per active day, not per calendar day. A wallet with 30 fills on three days has cadence 10
+and is systematic even if it was dormant for the other 27. The same 30 fills spread over 30 days give
+cadence 1 and Retail.
 
-**Cadence is fills per ACTIVE day, not per calendar day.** A wallet
-trading 30 fills concentrated in 3 hot days has cadence 10
-(systematic), even if dormant the other 27 days. Same wallet trading
-30 fills spread evenly across 30 days has cadence 1.0 (Retail). This
-catches behavior, not just total activity.
+### Owner aggregation
 
-**Important framing:** these are *observed trading behaviors over the
-measurement window*, not user identities. A wallet labeled `Retail` may
-be a casual bettor, OR a wealth-tier directional trader who places few
-chunky bets, OR a hedger — the data only proves low cadence + low
-maker share. We don't claim identity.
+Wallets are aggregated to the owner level through `users_address_lookup`. Polymarket gives each user a
+proxy wallet (Safe or Magic) controlled by an owner EOA, and trades happen at the proxy. Aggregating
+to the owner means a firm running 30 proxies counts as one entity. EOAs that trade directly keep their
+own address. Firms that split activity across several owner EOAs are not clustered; that would need
+manual address work and is out of scope.
 
-### 4. Owner aggregation
+### Contract exclusion
 
-Wallets are aggregated to **owner level** via
-`users_address_lookup`. Polymarket creates a proxy wallet (Safe or
-Magic) controlled by an owner EOA for each user; trades happen at the
-proxy level. Aggregating to owner means one firm running 30 proxies
-counts as one entity. EOAs that trade directly (no proxy) keep their
-own address — correct.
-
-This does NOT cluster across multiple owner EOAs run by the same firm
-(an MM that uses 5 independent EOAs for risk separation). For that
-you'd need manual address clustering — out of scope.
-
-### 5. Contract exclusion
-
-Known routing/system contracts are excluded both as raw maker/taker
-addresses AND after proxy-to-owner mapping (some system addresses can
-re-enter via owner mapping). Hardcoded list:
+Routing and system contracts are excluded both as raw maker or taker addresses and again after the
+proxy-to-owner mapping, because some of them re-enter through the mapping.
 
 | Address | Role |
 |---|---|
-| `0xe111180000d2663c0091e4f400237545b87b996b` | NegRisk Adapter |
-| `0xe2222d279d744050d28e00520010520000310f59` | NegRisk router (sibling) |
-| `0x4bfb41d5b3570defd03c39a9a4d8de6bd8b8982e` | CTF Exchange contract |
-| `0xc5d563a36ae78145c45a50134d48a1215220f80a` | Suspected router (106k fills/day, 0% maker) |
+| `0xe111180000d2663c0091e4f400237545b87b996b` | NegRisk adapter |
+| `0xe2222d279d744050d28e00520010520000310f59` | NegRisk router |
+| `0x4bfb41d5b3570defd03c39a9a4d8de6bd8b8982e` | CTF Exchange |
+| `0xc5d563a36ae78145c45a50134d48a1215220f80a` | Suspected router (106k fills a day, 0% maker) |
 
-Behavioral safety net: `HAVING COUNT(*) ≤ 5,000,000` per window
-catches any router we haven't enumerated (no real wallet trades >55k
-fills/day sustained).
+A `HAVING COUNT(*) <= 5,000,000` per window catches any router not on the list; no real wallet sustains
+more than about 55,000 fills a day. Without these exclusions, Fast-taker volume is inflated by roughly
+$3B a month of NegRisk basket pass-through. With them, the totals match Paradigm's finding that the
+headline volume is about twice the real figure.
 
-Without these exclusions, fast-taker volume is inflated by ~$3B/month
-from NegRisk basket pass-through. With them, headline numbers match
-Paradigm's December 2025 finding that Polymarket headline volume is
-~2× overstated.
+### Touched and single-counted volume
 
-### 6. Volume accounting — touched vs single-counted
+Touched volume is the maker-side amount plus the taker-side amount, so each fill counts twice, once
+per participant. It is used for participant shares. Single-counted notional is half of that and is used
+for venue volume, matching Paradigm and the corrected Polymarket dashboards. Both columns are in the
+output of `04_cohort_x_category_30d.sql`.
 
-**Touched volume** = maker_side amount + taker_side amount, summed.
-Used for participant share (because each side of every fill counts as
-an instance of participation).
+### LP rewards as ground truth
 
-**Single-counted notional** = touched / 2. Used for venue volume
-comparisons ($/day). Matches what Paradigm and the corrected
-Polymarket dashboards report.
+To check whether a wallet really makes markets, two on-chain reward sources are combined: merkle
+distributor claims, the standard mechanism since 2024, and USDC transfers from the rewards wallet
+`0xc288480574783BD7615170660d71753378159c47`. Transfers in the same transaction as a claim are dropped
+so that claims are not counted twice. A wallet counts as a confirmed LP at $1,000 or more of lifetime
+rewards. Smaller amounts accumulate from incidental maker activity and prove little.
 
-Both columns appear in the output of `04_cohort_x_category_30d.sql`.
+### Windows
 
-### 7. LP rewards ground truth
+The main window is the trailing 30 days to 2026-05-27. The trend uses Q4 2025 (Oct 1 to Jan 1) and
+Q1 2026 (Jan 1 to Apr 1). Dune's free tier times out at two minutes, which rules out 180-day windows
+in one query; use 30 or 90 days. Full specification in [docs/methodology.md](docs/methodology.md).
 
-To validate "is this wallet really a market maker?" we UNION two
-on-chain reward sources:
+## Cohorts
 
-- `MerkleDistributor_evt_Claimed` events (canonical post-2024 rewards
-  mechanism)
-- USDC transfers from the rewards distributor wallet
-  `0xc288480574783BD7615170660d71753378159c47`
+Owner counts are from Q1 2026 (90 days) for stability; trailing-30-day counts are smaller in the same
+ratio. Volume share is percent of touched volume.
 
-The UNION deduplicates by `evt_tx_hash` (merkle claims trigger a USDC
-transfer in the same tx, so naive UNION double-counts).
-
-**Material LP confirmation** requires ≥$1,000 all-time rewards. Dust
-rewards (<$1k) are weak evidence — they accumulate from any
-incidental maker activity.
-
-### 8. Time windows
-
-- Main analysis: **trailing 30 days** (April 27 – May 27, 2026)
-- Historical comparison: **Q4 2025** (Oct 1 – Jan 1) and **Q1 2026**
-  (Jan 1 – Apr 1)
-- Dune free-tier 2-min SQL timeout blocks 180-day windows in one
-  shot. Use 30-day or 90-day chunks.
-
-Full spec: [docs/methodology.md](docs/methodology.md).
-
----
-
-## September 2026 update: PnL by cohort
-
-Full note: [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md). Same grid, applied to every fill on
-Polymarket's BTC 5-minute up/down markets on 2026-09-09 (both legs, 1.38M records, $14.3M touched), with
-settlement PnL per cohort.
-
-- **Retail is not the flow.** Strict retail is 1.3% of BTC 5m touched volume (5.3% venue-wide in May).
-  The retail narrative does not explain volume, depth or growth on these venues.
-- **Flow needs machines.** MMs plus fast machines are 63% of touched volume, 74% of the maker side and
-  95% of the taker side, and they arrive within days of a product launching. They are the book.
-- **Machines need someone to pay them.** $49k moved from Systematic-taker (-$32k) and Retail (-$12k) to
-  Pro-MM (+$33k) and Fast-taker (+$16k). The payers are tool-assisted people at 10-300 fills a day, not
-  casual clickers. A venue needs machines plus a steady supply of those session traders through frontends,
-  brokers and partner apps.
-
-| Persona | % touched | % maker side | % taker side | PnL $ | May venue-wide |
-|---|---:|---:|---:|---:|---:|
-| MMs | 36.7% | 74.2% | 2.9% | +32,271 | 38.4% |
-| Bots + Algo | 62.0% | 25.6% | 94.9% | -19,786 | 56.3% |
-| Retail | 1.3% | 0.3% | 2.2% | -12,485 | 5.3% |
-
-The Bots + Algo persona nets negative because it holds both the payers (Systematic-taker) and the earners
-(Fast-taker). A proposed v2 grid that splits operation mode and directionality is in the note.
-
----
-
-## Headline numbers (60-second read)
-
-- **Real volume**: ~$102M/day single-counted notional. Headline numbers
-  are ~2× overstated (Paradigm Dec 2025 OrderFilled double-counting).
-- **Who drives volume** (touched volume, T30d):
-  **MMs 38% / Bots+Systematic 56% / Retail 5%.**
-  **94.7% professional or systematic, 5.3% retail.**
-- **Headcount asymmetry**: ~327k professional/systematic owners
-  generate the 94.7%; ~926k true-retail owners generate the 5.3%.
-  Polymarket is retail by headcount, professional by dollars.
-- **Categories by size**: Sports 30% > Politics 16% > Crypto 10%. The
-  "Polymarket = politics" narrative is outdated. (~35% is null-tagged
-  "Other" — mostly recurring crypto/sports markets without tags.)
-- **The retail collapse**: Retail share fell from **10.7% (Q4 2025) →
-  7.7% (Q1 2026) → 5.3% (T30d May 2026)**. Halved in 6 months. Far
-  below the ~20% structural floor for healthy uninformed flow.
-- **LP rewards**: Top 10 owners = 30% of all rewards. Top 50 = 50%.
-  Long tail of 111,000+ owners captures the remaining 40%. **32/100
-  of venue-wide top wallets are LP-confirmed at the ≥$1k threshold.**
-- **Overlay tags (T30d, top-100 venue-wide)**: 16/100 are
-  complete-set arbers; 48/100 are large-ticket whales; 0/100 active
-  on Hyperliquid HIP-4.
-- **Cross-venue**: 0 of 100 venue-wide top Polymarket wallets are
-  active on Hyperliquid HIP-4. The migration path that works is
-  HL-perps → HIP-4, not Polymarket → HIP-4.
-
----
-
-## Insights by cohort
-
-Distinct owner counts from Q1 2026 (90d) for stability; trailing-30d
-counts are smaller in the same ratio. Volume share is % of touched
-volume.
-
-| Cohort | Plain English | Owners (Q1 90d) | % vol (T30d) | Avg $/fill (T30d) |
+| Cohort | In plain terms | Owners (Q1, 90d) | % volume (30d) | Avg $ per fill (30d) |
 |---|---|---:|---:|---:|
-| **Pro-MM** (highMkr_fast) | Fast bot, ≥70% maker. The dedicated 24/7 quoter. | 8,095 | **31.0%** | $22 |
-| **Fast-taker** (lowMkr_fast) | Fast bot, <30% maker. News/latency/cross-venue arb. | 40,910 | 20.5% | $19 |
-| **Hybrid-bot** (midMkr_fast) | Fast bot, mixed maker/taker. NegRisk basket arber, inventory-rebalancer. | 11,603 | 17.9% | $27 |
-| **Systematic-taker** (lowMkr_systematic) | 10–100 fills/day, <30% maker. Slow algo, copy-trader, tool-assisted discretionary. | 199,448 | 12.7% | $38 |
-| **Mid-MM** (highMkr_systematic) | 10–100 fills/day, ≥70% maker. Part-time / slower MM. | 21,541 | 7.4% | $91 |
-| **Systematic-mixed** (midMkr_systematic) | 10–100 fills/day, mixed. Slow hybrid bot, advanced discretionary. | 45,833 | 5.2% | $56 |
-| **Retail** (any maker, <10 fills/day) | Discretionary cadence — true retail or low-frequency directional bettor. | **926,087** | **5.3%** | $48 |
+| Pro-MM | Fast, 70%+ maker. The dedicated quoter, on around the clock. | 8,095 | 31.0% | $22 |
+| Fast-taker | Fast, under 30% maker. News, latency and cross-venue trading. | 40,910 | 20.5% | $19 |
+| Hybrid-bot | Fast, mixed maker and taker. NegRisk basket arbitrage, inventory rebalancing. | 11,603 | 17.9% | $27 |
+| Systematic-taker | 10 to 100 fills a day, under 30% maker. Slow algorithms, copy traders, heavy discretionary traders with tools. | 199,448 | 12.7% | $38 |
+| Mid-MM | 10 to 100 fills a day, 70%+ maker. Part-time or slower market making. | 21,541 | 7.4% | $91 |
+| Systematic-mixed | 10 to 100 fills a day, mixed. Slow hybrid strategies, advanced discretionary. | 45,833 | 5.2% | $56 |
+| Retail | Under 10 fills a day, any maker share. Casual bettors and low-frequency directional traders. | 926,087 | 5.3% | $48 |
 
-**Three-persona rollup:**
+Three-persona rollup:
 
-| Persona | Cohorts | % volume (T30d) |
+| Persona | Cohorts | % volume (30d) |
 |---|---|---:|
-| **Depth providers** | Pro-MM + Mid-MM | **38.4%** |
-| **Efficiency / sniper flow** | Hybrid-bot + Fast-taker + Systematic-mixed + Systematic-taker | **56.3%** |
-| **Retail** | Retail | **5.3%** |
+| Market makers | Pro-MM, Mid-MM | 38.4% |
+| Bots and algo | Hybrid-bot, Fast-taker, Systematic-mixed, Systematic-taker | 56.3% |
+| Retail | Retail | 5.3% |
 
-**This is materially sharper than the prior framing.** Under the
-previous (looser) classifier, retail was ~22% of volume. Under the
-strict definition (<10 fills/active_day), retail is **5.3%**. The
-difference is the **Systematic-taker** cohort (12.7% of volume): wallets
-doing 10–100 fills/day with low maker share — they're not retail
-behaviorally, even if they're individually small.
+An earlier, looser version of this classifier put retail at about 22% of volume. The difference is
+the Systematic-taker cohort, 12.7% of volume: wallets doing 10 to 100 fills a day with low maker share.
+They are small individually but they are not retail in behaviour.
 
----
+## Categories
 
-## Insights by category
+Ranked by single-counted notional over 30 days.
 
-Categories ranked by single-counted notional (30d):
-
-| Category | $M / 30d | % platform | $M / day | What's in it |
+| Category | $M per 30d | % of platform | $M per day | Contents |
 |---|---:|---:|---:|---|
-| Other (null-tagged) | 1,100 | **35.8%** | 37 | **Mostly de-tagged crypto** — see caveat below |
-| Sports | 906 | **29.5%** | 30 | NBA + NFL + esports (Dota, CS2, LoL) + soccer |
+| Other (untagged) | 1,100 | 35.8% | 37 | Mostly crypto binaries that lost their tags, see below |
+| Sports | 906 | 29.5% | 30 | NBA, NFL, esports (Dota, CS2, LoL), soccer |
 | Politics | 492 | 16.0% | 16 | Trump, elections, geopolitical politics |
-| Crypto | 290 | 9.4% | 10 | 5m / 15m / 1h Up-or-Down binaries (T30d undercount, see caveat) |
+| Crypto | 290 | 9.4% | 10 | 5m, 15m and 1h up/down binaries; undercounted in May, see below |
 | Geopolitics | 163 | 5.3% | 5.4 | Iran, Ukraine, Russia, Gaza, world affairs |
-| Finance | 41 | 1.3% | 1.4 | Fed, inflation, interest rates, oil |
-| Weather | 40 | 1.3% | 1.3 | (newer category) |
-| Culture | 33 | 1.1% | 1.1 | Awards, MrBeast, movies, music |
-| Tech | 5 | 0.2% | 0.2 | AI, science, tech outcomes |
+| Finance | 41 | 1.3% | 1.4 | Fed, inflation, rates, oil |
+| Weather | 40 | 1.3% | 1.3 | New category |
+| Culture | 33 | 1.1% | 1.1 | Awards, MrBeast, film, music |
+| Tech | 5 | 0.2% | 0.2 | AI, science, technology outcomes |
 
-### Crypto vs Sports side-by-side (cohort breakdown, % notional)
+### Crypto and sports side by side
 
-The two largest fast-resolving categories have nearly identical cohort
-fingerprints — both bot-dominated, neither retail-friendly.
+The two largest fast-resolving categories have nearly the same cohort mix. Both are machine-heavy and
+neither has much retail.
 
-| Cohort | Q1 crypto | Q1 sports | T30d crypto | T30d sports |
+| Cohort | Q1 crypto | Q1 sports | 30d crypto | 30d sports |
 |---|---:|---:|---:|---:|
-| Pro-MM | **30.5%** | **29.8%** | **31.7%** | **32.9%** |
+| Pro-MM | 30.5% | 29.8% | 31.7% | 32.9% |
 | Mid-MM | 3.7% | 3.1% | 5.8% | 5.3% |
-| Hybrid-bot | 24.0% | **26.6%** | 17.4% | 21.6% |
+| Hybrid-bot | 24.0% | 26.6% | 17.4% | 21.6% |
 | Systematic-mixed | 3.3% | 6.6% | 3.6% | 5.0% |
-| Fast-taker | **23.7%** | 17.9% | **26.0%** | 21.1% |
+| Fast-taker | 23.7% | 17.9% | 26.0% | 21.1% |
 | Systematic-taker | 8.1% | 10.7% | 10.5% | 11.5% |
-| **Retail** | 6.8% | 5.4% | 5.0% | 2.7% |
+| Retail | 6.8% | 5.4% | 5.0% | 2.7% |
 
-3-persona collapse:
-
-| Persona | Q1 crypto | Q1 sports | T30d crypto | T30d sports |
+| Persona | Q1 crypto | Q1 sports | 30d crypto | 30d sports |
 |---|---:|---:|---:|---:|
-| MMs (Pro+Mid) | 34% | 33% | 38% | 38% |
-| **Bots + Algo** | **59%** | **62%** | **58%** | **59%** |
-| Retail | **7%** | **5%** | **5%** | **3%** |
+| Market makers | 34% | 33% | 38% | 38% |
+| Bots and algo | 59% | 62% | 58% | 59% |
+| Retail | 7% | 5% | 5% | 3% |
 
 Single-counted notional:
 
-| Period | Crypto $M/day | Sports $M/day |
+| Period | Crypto $M per day | Sports $M per day |
 |---|---:|---:|
-| Q1 2026 | $37.8 | $52.8 |
-| T30d May | $9.7 | $30.2 |
-| Δ | **−74%** | **−43%** |
+| Q1 2026 | 37.8 | 52.8 |
+| 30d to May 27 | 9.7 | 30.2 |
+| Change | -74% | -43% |
 
-The asymmetric drop (crypto −74% vs sports −43%) is the tagging
-migration signal: most of the crypto volume didn't disappear, it
-moved to the null-tagged `Other` bucket. Sports' drop is more real
-(seasonal decline from peak NBA playoffs).
+The crypto drop is a tagging artefact, not a volume loss. Between Q1 and May, Polymarket's recurring
+5m, 15m and 1h crypto binaries moved from the Crypto tag to no tag at all:
 
-**Caveat — Crypto vs Other tagging shifted between Q1 and May 2026.**
-Comparing Q1 2026 to T30d single-counted volumes:
-
-| Category | Q1 2026 ($M/day) | T30d May 2026 ($M/day) | Δ |
+| Category | Q1 2026, $M per day | 30d May 2026, $M per day | Change |
 |---|---:|---:|---|
-| Crypto | $37.8 | $9.7 | **−74%** |
-| Other (null-tagged) | $0.5 | $36.7 | **+73×** |
-| Crypto + Other | $38.3 | $46.4 | +21% |
+| Crypto | 37.8 | 9.7 | -74% |
+| Other (untagged) | 0.5 | 36.7 | 73x |
+| Crypto plus Other | 38.3 | 46.4 | +21% |
 
-The 74% crypto crash is implausible against the −17% platform total
-change. The real cause is **Polymarket re-tagging or untagging the
-recurring 5m/15m/1h crypto binaries** between Q1 and May. Treat
-**"Crypto + Other" as the real crypto share** (~45% of platform in
-May). The Q1 2026 numbers (Crypto 30.7%, Other 0.4%) better reflect
-the underlying market types. Full Q1 breakdown in
-[results/cohort_x_category_q1_2026.csv](results/cohort_x_category_q1_2026.csv).
+A 74% collapse in crypto against a 17% fall in platform volume is not plausible. Treat Crypto plus
+Other as the real crypto share, about 45% of the platform in May. The Q1 numbers (Crypto 30.7%, Other
+0.4%) describe the underlying market types better; the full Q1 table is in
+[results/cohort_x_category_q1_2026.csv](results/cohort_x_category_q1_2026.csv). The sports decline is
+mostly real, a seasonal fall from the NBA playoffs peak.
 
-### Per-category cohort mix — full 7-cohort breakdown
+### Cohort mix within each category
 
-% of category touched volume by cohort (T30d). Bold = top cohort in
-that category.
+Percent of the category's touched volume, 30 days.
 
 | Category | Pro-MM | Mid-MM | Hybrid-bot | Sys-mixed | Fast-taker | Sys-taker | Retail |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **Crypto** | **31.7%** | 5.8% | 17.4% | 3.6% | **26.0%** | 10.5% | 5.0% |
-| **Politics** | 24.7% | 14.4% | 9.8% | 7.9% | 11.9% | **18.4%** | **13.0%** |
-| **Sports** | **32.9%** | 5.3% | 21.6% | 5.0% | 21.1% | 11.5% | 2.7% |
-| **Finance** | 21.1% | 13.3% | 13.4% | 11.8% | 11.6% | **19.1%** | 9.7% |
-| **Geopolitics** | **31.8%** | 13.0% | 5.2% | 5.2% | 17.3% | 14.8% | **12.7%** |
-| **Culture** | 24.2% | 11.3% | 14.6% | 10.8% | 8.6% | **19.7%** | 10.8% |
-| **Weather** | **32.9%** | 9.5% | 10.5% | 6.5% | 17.8% | **18.2%** | 4.6% |
-| **Tech** | 23.8% | 11.0% | 13.7% | 9.6% | 11.3% | **18.0%** | 12.7% |
-| **Other** | **32.5%** | 5.2% | 20.9% | 4.2% | 23.8% | 10.8% | 2.5% |
+| Crypto | 31.7% | 5.8% | 17.4% | 3.6% | 26.0% | 10.5% | 5.0% |
+| Politics | 24.7% | 14.4% | 9.8% | 7.9% | 11.9% | 18.4% | 13.0% |
+| Sports | 32.9% | 5.3% | 21.6% | 5.0% | 21.1% | 11.5% | 2.7% |
+| Finance | 21.1% | 13.3% | 13.4% | 11.8% | 11.6% | 19.1% | 9.7% |
+| Geopolitics | 31.8% | 13.0% | 5.2% | 5.2% | 17.3% | 14.8% | 12.7% |
+| Culture | 24.2% | 11.3% | 14.6% | 10.8% | 8.6% | 19.7% | 10.8% |
+| Weather | 32.9% | 9.5% | 10.5% | 6.5% | 17.8% | 18.2% | 4.6% |
+| Tech | 23.8% | 11.0% | 13.7% | 9.6% | 11.3% | 18.0% | 12.7% |
+| Other | 32.5% | 5.2% | 20.9% | 4.2% | 23.8% | 10.8% | 2.5% |
 
-### Per-category cohort mix — 3-persona collapse
+The same table as three personas:
 
-Same data, collapsed into 3 personas for quick reading:
-
-| Category | MMs (Pro+Mid) | Bots+Algo (Hybrid+Sys-mixed+Fast+Sys-taker) | Retail | Dominant pattern |
+| Category | Market makers | Bots and algo | Retail | Pattern |
 |---|---:|---:|---:|---|
-| **Sports** | 38% | **59%** | 2.7% | Pro-MM + fast bots dominate; almost no retail |
-| **Politics** | 39% | 48% | **13.0%** | Most retail-heavy; Sys-taker is largest single cohort |
-| **Crypto** | 38% | **58%** | 5.0% | Pro-MM + Fast-taker dominant. Almost no retail. |
-| **Finance** | 34% | **56%** | 9.7% | Most balanced mix; Mid-MM tail present |
-| **Geopolitics** | **45%** | 43% | 12.7% | MM-heavy + meaningful retail. Chunky bet sizes. |
-| **Weather** | 42% | **53%** | 4.6% | Bot-leaning |
-| **Culture** | 36% | **54%** | 10.8% | Sys-taker dominant, tiny category |
-| **Tech** | 35% | **53%** | 12.7% | Sys-taker dominant, tiny category |
-| **Other** | 38% | **60%** | 2.5% | Bots dominate the recurring residual |
+| Sports | 38% | 59% | 2.7% | Pro-MM and fast machines; almost no retail |
+| Politics | 39% | 48% | 13.0% | The most retail of the large categories; Systematic-taker is the largest single cohort |
+| Crypto | 38% | 58% | 5.0% | Pro-MM and Fast-taker; almost no retail |
+| Finance | 34% | 56% | 9.7% | The most balanced mix; a Mid-MM tail |
+| Geopolitics | 45% | 43% | 12.7% | Maker-heavy with large human bets |
+| Weather | 42% | 53% | 4.6% | Machine-leaning |
+| Culture | 36% | 54% | 10.8% | Systematic-taker leads; small category |
+| Tech | 35% | 53% | 12.7% | Systematic-taker leads; small category |
+| Other | 38% | 60% | 2.5% | Machines dominate the recurring residual |
 
-### Single-counted notional per (cohort, category), $M
+Single-counted notional by cohort and category, $M over 30 days:
 
-For sizing comparisons. Total per category = sum across cohorts.
-
-| Category | Pro-MM | Mid-MM | Hybrid-bot | Sys-mixed | Fast-taker | Sys-taker | Retail | **Total** |
+| Category | Pro-MM | Mid-MM | Hybrid-bot | Sys-mixed | Fast-taker | Sys-taker | Retail | Total |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Sports | 298 | 48 | 196 | 45 | 191 | 105 | 24 | **906** |
-| Other | 358 | 57 | 230 | 46 | 262 | 119 | 28 | **1,100** |
-| Politics | 122 | 71 | 48 | 39 | 58 | 90 | 64 | **492** |
-| Crypto | 92 | 17 | 50 | 10 | 75 | 30 | 14 | **290** |
-| Geopolitics | 52 | 21 | 9 | 9 | 28 | 24 | 21 | **163** |
-| Finance | 9 | 6 | 6 | 5 | 5 | 8 | 4 | **41** |
-| Weather | 13 | 4 | 4 | 3 | 7 | 7 | 2 | **40** |
-| Culture | 8 | 4 | 5 | 4 | 3 | 7 | 4 | **33** |
-| Tech | 1 | 1 | 1 | 1 | 1 | 1 | 1 | **5** |
+| Sports | 298 | 48 | 196 | 45 | 191 | 105 | 24 | 906 |
+| Other | 358 | 57 | 230 | 46 | 262 | 119 | 28 | 1,100 |
+| Politics | 122 | 71 | 48 | 39 | 58 | 90 | 64 | 492 |
+| Crypto | 92 | 17 | 50 | 10 | 75 | 30 | 14 | 290 |
+| Geopolitics | 52 | 21 | 9 | 9 | 28 | 24 | 21 | 163 |
+| Finance | 9 | 6 | 6 | 5 | 5 | 8 | 4 | 41 |
+| Weather | 13 | 4 | 4 | 3 | 7 | 7 | 2 | 40 |
+| Culture | 8 | 4 | 5 | 4 | 3 | 7 | 4 | 33 |
+| Tech | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 5 |
 
-### Per-category headline reads
+Reading across categories: crypto is the most automated, with 75% of volume from the three fast
+cohorts and 5% retail. Politics has the most retail at 13% and the widest spread across cohorts, and
+its retail trades are real money at about $110 each. Sports is 77% fast cohorts, and Hybrid-bot's
+share is the highest of any category because NegRisk basket arbitrage works there. Finance is the most
+balanced; Mid-MM at 13% is its second-highest share, since smaller makers like slow-resolving markets.
+Geopolitics is maker-heavy with large human tickets, $400 to $550 per fill on average. Culture and
+tech are long-tail categories led by Systematic-taker with 11% to 13% retail. Under the earlier looser
+classifier, retail per category read 19% to 39%; under the strict definition it is 2.5% to 13%, the
+difference again being Systematic-taker.
 
-- **Crypto** — highest automation: 75% from fast cohorts (Pro-MM 32% + Fast-taker 26% + Hybrid-bot 17%). Retail share is 5%.
-- **Politics** — most retail-heavy AND most balanced cohort spread. Retail 13% (highest), but Sys-taker is biggest single cohort (18%). Real money: ~$110 avg retail trade.
-- **Sports** — bot-dominated (Pro-MM 33% + Hybrid-bot 22% + Fast-taker 21% = 77%). Hybrid-bot share highest of any category — NegRisk basket arb works here.
-- **Finance** — most balanced mix. Mid-MM at 13% is second-highest across categories — small MMs like slow-resolving markets.
-- **Geopolitics** — MM-heavy with chunky human bets. Avg $400–550/fill. Retail 13% is real money.
-- **Culture / Tech** — long-tail patterns: Sys-taker dominant (~18-20%), retail 11-13%. Slow-algo + human discretionary, not fast bots.
+## Roles: who provides depth and who consumes it
 
-Note vs prior framing: under the previous (looser) classifier, retail
-shares per category were 19–39%. Under the strict definition (<10
-fills/active_day = retail), retail per category is **2.5–13%**. The
-difference is the Systematic-taker cohort (now properly classified as
-algo/bot), which was previously lumped into retail.
+A single volume share mixes two activities. Splitting the maker side from the taker side shows the
+roles. Rows sum to 100%.
 
-## Insights by role (depth providers vs flow consumers)
-
-The aggregate "% volume" number is misleading because it conflates two
-different activities. Splitting maker side from taker side shows the
-roles cleanly. Columns sum to 100% in each row.
-
-### Who PROVIDES depth in each category (% of maker side)
+Share of the maker side, by category:
 
 | Category | Pro-MM | Mid-MM | Hybrid-bot | Systematic-mixed | Fast-taker | Systematic-taker | Retail |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Sports | **58%** | 9% | 22% | 5% | 4% | 1% | 1% |
-| Politics | **46%** | **26%** | 10% | 8% | 2% | 2% | 7% |
-| Crypto | **59%** | 10% | 19% | 4% | 4% | 1% | 4% |
-| Geopolitics | **59%** | **23%** | 5% | 5% | 1% | 1% | 6% |
-| Finance | 38% | **23%** | 13% | 12% | 3% | 3% | 8% |
-| Other | **59%** | 9% | 21% | 4% | 4% | 1% | 1% |
+| Sports | 58% | 9% | 22% | 5% | 4% | 1% | 1% |
+| Politics | 46% | 26% | 10% | 8% | 2% | 2% | 7% |
+| Crypto | 59% | 10% | 19% | 4% | 4% | 1% | 4% |
+| Geopolitics | 59% | 23% | 5% | 5% | 1% | 1% | 6% |
+| Finance | 38% | 23% | 13% | 12% | 3% | 3% | 8% |
+| Other | 59% | 9% | 21% | 4% | 4% | 1% | 1% |
 
-**Pro-MM provides 38–59% of depth in every category.** MMs combined
-(Pro+Mid) = **65–82% of all standing depth.** Retail provides 1–8%.
+Pro-MM provides 38% to 59% of depth in every category. Market makers combined provide 65% to 82%.
+Retail provides 1% to 8%.
 
-### Who CONSUMES depth in each category (% of taker side)
+Share of the taker side, by category:
 
 | Category | Pro-MM | Mid-MM | Hybrid-bot | Systematic-mixed | Fast-taker | Systematic-taker | Retail |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Sports | 8% | 2% | 21% | 5% | **38%** | 22% | 4% |
-| Politics | 4% | 3% | 10% | 8% | 22% | **35%** | **19%** |
-| Crypto | 5% | 1% | 16% | 4% | **49%** | 20% | 6% |
-| Geopolitics | 5% | 3% | 6% | 6% | 34% | **29%** | **19%** |
-| Finance | 4% | 4% | 14% | 12% | 21% | **35%** | 11% |
-| Other | 6% | 1% | 21% | 4% | **44%** | 20% | 4% |
+| Sports | 8% | 2% | 21% | 5% | 38% | 22% | 4% |
+| Politics | 4% | 3% | 10% | 8% | 22% | 35% | 19% |
+| Crypto | 5% | 1% | 16% | 4% | 49% | 20% | 6% |
+| Geopolitics | 5% | 3% | 6% | 6% | 34% | 29% | 19% |
+| Finance | 4% | 4% | 14% | 12% | 21% | 35% | 11% |
+| Other | 6% | 1% | 21% | 4% | 44% | 20% | 4% |
 
-**Taker side is dominated by automated/systematic cohorts.** Combined
-Fast-taker + Systematic-taker = **57–69% of taker flow per category**.
-Retail consumes only 4–19% as takers. MMs barely consume (4–11%).
+Fast-taker and Systematic-taker together are 57% to 69% of taker flow in every category. Retail
+consumes 4% to 19%. Market makers barely take at all, 4% to 11%.
 
-**Bottom line on roles (3-persona, T30d, %s of total maker side / total taker side):**
+Venue-wide, 30 days:
 
-| Persona | Provides depth (% maker side) | Consumes flow (% taker side) |
+| Persona | Share of maker side | Share of taker side |
 |---|---:|---:|
-| **MMs** (Pro + Mid) | **69%** | 8% |
-| **Bots + Algo** (Hybrid + Fast + Systematic-mixed + Systematic-taker) | 28% | **85%** |
-| **Retail** | 3% | 8% |
+| Market makers | 69% | 8% |
+| Bots and algo | 28% | 85% |
+| Retail | 3% | 8% |
 
-**MMs provide 69% of all standing depth. Bots and algo consume 85% of all flow.**
-Retail provides 3% and consumes 8% — they're a much smaller structural
-piece than the prior framing suggested. The uninformed-flow floor problem
-is real: there's only 8% retail flow against 85% bot/algo flow.
+Market makers provide 69% of depth. Bots and algo consume 85% of flow. Retail provides 3% and
+consumes 8%.
 
----
+## Over time
 
-## Insights by time (the professionalization trend)
-
-| Cohort share | Q4 2025 | Q1 2026 | T30d (May 2026) | 6mo Δ |
+| Cohort share of touched volume | Q4 2025 | Q1 2026 | 30d to May 27 | Change over six months |
 |---|---:|---:|---:|---:|
-| Pro-MM | 23% | 29% | 31% | **+8pp** |
-| Fast-taker | 12% | 17% | 21% | **+9pp** |
-| Hybrid-bot | 23% | 22% | 18% | −5pp |
+| Pro-MM | 23% | 29% | 31% | +8 points |
+| Fast-taker | 12% | 17% | 21% | +9 points |
+| Hybrid-bot | 23% | 22% | 18% | -5 points |
 | Systematic-taker | 13% | 12% | 13% | flat |
-| Systematic-mixed | 12% | 7% | 5% | **−7pp** |
+| Systematic-mixed | 12% | 7% | 5% | -7 points |
 | Mid-MM | 7% | 5% | 7% | flat |
-| **Retail** | **11%** | **8%** | **5%** | **−6pp (halved)** |
+| Retail | 11% | 8% | 5% | -6 points, halved |
 
-Collapsed (3-persona):
-
-| Bucket | Q4 2025 | Q1 2026 | T30d | 6mo Δ |
+| Persona | Q4 2025 | Q1 2026 | 30d to May 27 | Change |
 |---|---:|---:|---:|---:|
-| **MMs** (Pro + Mid) | 31% | 34% | **38%** | **+7pp** |
-| **Bots + Algo** (Hybrid + Fast + Systematic-mixed + Systematic-taker) | 58% | 58% | 56% | flat |
-| **Retail** | **11%** | **8%** | **5%** | **−6pp (halved)** |
+| Market makers | 31% | 34% | 38% | +7 points |
+| Bots and algo | 58% | 58% | 56% | flat |
+| Retail | 11% | 8% | 5% | -6 points, halved |
 
-Volume (single-counted, $/day): Q4 $58M → Q1 **$123M** (spike) →
-T30d $102M (mild reversion).
+Single-counted volume went from $58M a day in Q4 2025 to $123M in Q1 2026 and $102M in the 30 days to
+May 27.
 
-**Three takeaways:**
+Three things follow. Retail's share halved in six months under the strict definition, 10.7% to 7.7%
+to 5.3%; the looser classifier showed 33% to 22%, a decline that understated the size of the move.
+Market makers kept gaining share, Pro-MM by 8 points with Mid-MM flat, so the professionalisation is
+maker capital scaling as well as machines replacing retail. And the question this raised in May, whether
+the systematic cohorts are uninformed enough to serve as the counterparty that market makers need, was
+answered for BTC 5m in September: Systematic-taker loses 2.0% per dollar and supplies two thirds of the
+losses. Counting it, uninformed flow is about 17% of touched volume and 29% of the taker side on that
+product.
 
-1. **The retail collapse is dramatic.** Under the strict definition
-   (<10 fills/active_day), retail share **halved in 6 months**: 10.7%
-   → 7.7% → 5.3%. The prior, looser classifier reported retail as
-   33% → 22% (also declining, but the magnitude understates the
-   actual collapse).
+## Cross-venue: Polymarket and Hyperliquid HIP-4
 
-2. **MMs continue to gain share** — Pro-MM is +8pp, Mid-MM stable.
-   The professionalization isn't just "bots replacing retail" — MM
-   capital is also scaling up faster than the rest of the venue.
-
-3. **Polymarket is materially below the structural retail-flow range.**
-   Healthy markets typically need ~20% uninformed flow for MMs to
-   earn the spread profitably. Polymarket is at 5.3% retail flow.
-   Either the Systematic-taker / Systematic-mixed cohorts are
-   sufficiently uninformed to function as retail substitutes, or MM
-   economics depend on rebates and inventory management more than spread
-   capture alone. September 2026 answer for BTC 5m: the Systematic-taker cohort loses 2.0% per
-   dollar and supplies two thirds of the losses; it is the uninformed flow. Counting
-   it, uninformed flow is about 17% of touched volume and 29% of the taker side.
-
----
-
-## Cross-venue (the migration that isn't happening)
-
-Sister analysis: [hip4_cross_venue/](hip4_cross_venue/). HIP-4 outcome
-markets launched on Hyperliquid 2026-05-02.
+Sister analysis in [hip4_cross_venue/](hip4_cross_venue/). HIP-4 outcome markets went live on
+Hyperliquid on 2026-05-02.
 
 | Check | Result |
 |---|---|
-| 100 venue-wide top Polymarket wallets ∩ HIP-4 top-127 | **0/100** |
-| 25 LP-reward top recipients ∩ HIP-4 top-127 | **0/25** |
-| Top 30 Polymarket wallets with any HL perp activity | 2/30 |
-| Top 30 Polymarket wallets with HIP-4 activity | 0/30 |
-| HIP-4 top-30 with any Polygon activity | 10/30 (casual, not Polymarket-specific) |
+| Top 100 Polymarket wallets by volume that appear in the HIP-4 top 127 | 0 of 100 |
+| Top 25 LP-reward recipients that appear in the HIP-4 top 127 | 0 of 25 |
+| Top 30 Polymarket wallets with any Hyperliquid perp activity | 2 of 30 |
+| Top 30 Polymarket wallets with HIP-4 activity | 0 of 30 |
+| HIP-4 top 30 with any Polygon activity | 10 of 30, casual and not Polymarket-specific |
 
-**The Polymarket MM oligopoly is not migrating to HIP-4.** Friction
-points: Polygon vs HL signing, USDC.e vs USDC, Gnosis-Safe + meta-tx
-vs EOA-direct, UMA vs validator-vote settlement. The friction is
-structural and won't collapse on its own.
+Polymarket's market-making group is not moving to HIP-4. The obstacles are structural: Polygon
+against Hyperliquid signing, USDC.e against USDC, Gnosis Safe with meta-transactions against direct
+EOAs, UMA resolution against validator votes. The traders who do appear on HIP-4 come from Hyperliquid
+perps, not from Polymarket.
 
-**The migration that IS happening:** HL-perps traders →
-HIP-4. The observed overlap is HL-native rather than Polymarket-derived.
+## Open questions
 
----
+Things the repository does not yet measure, in rough order of value.
 
-## Next steps / open questions
+1. PnL by cohort beyond BTC 5m. Done for one product on one day in
+   [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md). Still open: other categories, longer
+   windows, owner level. Solidus measured profit concentration in politics only (0.55% of wallets take
+   50% of profit, December 2025 to February 2026); reproducing that across categories would show
+   whether it generalises and would quantify adverse selection per cohort. Sources: the defioasis PnL
+   dashboard and position-state reconstruction. One to two weeks.
+2. Cross-venue arbitrage between Polymarket and Kalshi. The fall in Systematic-mixed (11.6% to 5.2%)
+   and Retail (10.7% to 5.3%) may reflect migration to Kalshi. Confirming it needs Kalshi trade data
+   and timestamp matching across venues. Three to five days.
+3. Firm attribution. The top 10 LP-reward owners are identifiable by address. Mapping them to firms
+   needs manual labelling against public registries and clustering of sibling EOAs. One to two days.
+4. Wash-trade exclusion. Solidus flagged about 15% of some markets as wash trading consistent with
+   airdrop farming. Filtering paired YES and NO positions by the same owner in the same market within a
+   short window would shrink Systematic-mixed and Retail, probably by 2 to 5 points. Two to three days.
+5. Builder program attribution. Some machine volume routes through Polymarket's builder program, 231
+   registered apps as of late 2025 including Telegram bots and copy-trading wrappers. Joining trades to
+   the builder registry would separate direct API flow from wrapper flow. One day.
+6. The untagged bucket. 35% of platform volume has no tag. Most of it is recurring crypto and sports
+   markets; closing the gap needs Polymarket's internal taxonomy.
+7. A complete-set arbitrage cohort. Dune exposes position split and merge events; adding them to the
+   classifier would carve that cohort out of Hybrid-bot. One day.
+8. A monthly rerun. Pin the `params` CTE to explicit timestamps, schedule the queries, and chart the
+   cohort distribution over time. Two to three days.
 
-Things this repo does NOT yet measure but that would tighten the
-analysis. Roughly ordered by leverage.
+Not attempted, by choice: market-size forecasts (this is a microstructure study, not a TAM estimate),
+comparisons against every other venue (HIP-4 is covered; Kalshi, Manifold, Limitless and Myriad are
+open), and recommendations about which categories another venue should list.
 
-### High-value additions
+## Repository layout
 
-1. **PnL by cohort.** Done for BTC 5m on 2026-09-09 (both legs): see [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md). Remaining: other categories, longer windows, owner level. Solidus measured profit concentration in politics
-   markets only (0.55% of wallets capture 50% of profit, Dec 2025–Feb
-   2026). Reproducing across all categories + longer windows would let
-   us check whether the claim generalizes and quantify adverse
-   selection per cohort. Source: defioasis PnL dashboard +
-   position-state reconstruction. **~1–2 weeks of analyst time.**
-
-2. **Cross-venue arber detection (Polymarket ↔ Kalshi).** The
-   drop in Systematic-mixed cohort (11.6% → 5.2%) and Retail (10.7%
-   → 5.3%) likely reflects migration to Kalshi. Confirming requires
-   Kalshi API data ($200/mo via FinFeedAPI or scraping) + matching
-   wallet timestamps across venues. **~3–5 days.**
-
-3. **Wallet-level firm attribution.** We can identify the LP-reward
-   top 10 by address. Mapping them to firms (Wintermute, GSR, B2C2,
-   Amber, Susquehanna, etc.) requires manual labeling against public
-   registries + on-chain clustering for sibling-EOA grouping. **~1–2
-   days.**
-
-4. **Wash-trade exclusion.** Solidus flagged ~15% of some markets as
-   wash trading consistent with POLY airdrop farming. Filtering paired
-   YES+NO same-owner positions in the same condition_id within a
-   short window would reduce Systematic-mixed and Retail cohort sizes.
-   Likely shifts the headline cohort numbers by 2–5pp.
-   **~2–3 days.**
-
-### Medium-value additions
-
-5. **Builder Program flow attribution.** Some bot volume routes
-   through the Polymarket Builder Program (231+ registered apps as
-   of late 2025: Telegram bots, copy-trading wrappers, Discord apps).
-   Joining trades against the Builder registry would distinguish
-   "direct API bots" from "Telegram bot / copy-trader wrapper" flow.
-   Source: gateresearch Builders dashboard. **~1 day.**
-
-6. **Resolve the "Other" tag bucket.** 35% of platform volume is
-   null-tagged markets. Most are recurring crypto/sports markets that
-   lost their tags. Direct access to Polymarket's internal taxonomy
-   would close this gap. Currently blocked on Polymarket data API.
-
-7. **Complete-set arber cohorting.** Dune exposes
-   `ctf_evt_positionsplit` and `ctf_evt_positionsmerge`. Adding
-   split/merge features to the classifier would carve out a real
-   complete-set arber cohort (currently mixed into Hybrid-bot).
-   **~1 day.**
-
-8. **Monthly automated rerun.** Pin the `params` CTE to explicit
-   timestamps and schedule monthly Dune executions. Build a
-   Streamlit/Observable dashboard that visualizes the cohort
-   distribution over time. **~2–3 days.**
-
-### What we explicitly chose NOT to do
-
-- **Generate prediction-market market size forecasts.** This is a
-  microstructure analysis, not a TAM estimate. Forecasts are easy to
-  fabricate; structural insights are not.
-- **Compare Polymarket against every venue.** Sister analysis covers
-  HIP-4. Kalshi/Manifold/Limitless/Myriad cross-checks are open
-  follow-ups.
-- **Make recommendations on subjective markets (politics, culture,
-  sports).** This repo measures observed Polymarket structure; it does
-  not prescribe which categories another venue should list.
-
----
-
-## Agent loops
-
-Reusable agent runbooks live in [agent_loops/](agent_loops/). Use
-[`agent_loops/research_yolo.md`](agent_loops/research_yolo.md) to have
-an agent find, validate, write, commit, and push one publishable
-market-structure insight from the repo.
-
-The loops enforce source-query/result mapping, methodology caveats, and
-public-facing red-flag scans before commit.
-
----
-
-## Repo structure
-
-| Path | What |
+| Path | Contents |
 |---|---|
-| [agent_loops/](agent_loops/) | Reusable runbooks for recurring research and repo-audit work |
-| [docs/findings.md](docs/findings.md) | Detailed findings and result-source mapping |
-| [docs/methodology.md](docs/methodology.md) | Classifier spec, contract exclusions, schema gotchas |
-| [docs/external_research.md](docs/external_research.md) | Cross-validation vs Paradigm, Solidus, Chainalysis, Dune dashboards |
-| [docs/expiry_volume.md](docs/expiry_volume.md) | Publishable note: trailing-30d volume by time-to-resolution/end bucket |
-| [queries/](queries/) | 12 SQL files — paste any into Dune to reproduce |
-| [results/](results/) | 10 CSV result tables from the audited reruns |
-| [hip4_cross_venue/](hip4_cross_venue/) | Sister analysis: bidirectional HIP-4 ↔ Polymarket overlap |
+| [docs/findings.md](docs/findings.md) | Detailed findings and the mapping from each result to its query |
+| [docs/methodology.md](docs/methodology.md) | Classifier specification, contract exclusions, schema notes |
+| [docs/external_research.md](docs/external_research.md) | Cross-checks against Paradigm, Solidus, Chainalysis and Dune dashboards |
+| [docs/expiry_volume.md](docs/expiry_volume.md) | Trailing-30-day volume by time to resolution |
+| [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md) | BTC 5m in the cohort grid with PnL per cohort, September 2026 |
+| [queries/](queries/) | 12 SQL files; paste any into Dune |
+| [results/](results/) | Result CSVs from the audited reruns and the BTC 5m cohort tables |
+| [scripts/btc5m/](scripts/btc5m/) | Data-api pull and cohort classifier used for the BTC 5m note |
+| [hip4_cross_venue/](hip4_cross_venue/) | Polymarket and HIP-4 overlap, both directions |
 
----
+## Reproducing the numbers
 
-## How to reproduce
+Open [dune.com](https://dune.com), create a query, paste any file from [queries/](queries/), and run
+it. The core queries cost about 350 credits in total, within the free tier's 2,500 a month. Run them
+in order: 01 (action enum probe), 02 (tags probe), 03 (untagged-category probe), 04 (cohort by
+category, the main table), 05 (top 20 per cohort, for validation), 06 (twice, with different quarter
+windows, for the trend), 07 (LP recipients), 08 (LP concentration), 09 (drilldown with wallets, fills
+and average trade), 10 (maker and taker split), 11 (venue-wide top 100 with LP flags, for the
+cross-venue checks), 12 (trailing-30-day volume by time to expiry). Programmatic execution through the
+Dune MCP server is described in [docs/methodology.md](docs/methodology.md).
 
-1. Open [dune.com](https://dune.com), create a new query, paste any
-   file from [queries/](queries/), save, run.
-2. Total cost ~350 credits across the core queries — well within the
-   Dune free tier's 2,500/month allowance.
-3. Recommended order: `01` (action enum probe) → `02` (tags probe) →
-   `03` (Other-category probe) → `04` (main cohort × category) →
-   `05` (per-cohort top-20 validation) → `06` (run twice with
-   different quarter windows for the time trend) → `07` (LP
-   recipients) → `08` (LP concentration) → `09` (drilldown with
-   wallets/fills/avg-trade) → `10` (maker/taker split) → `11`
-   (venue-wide top-100 with LP flags, for cross-venue checks) → `12`
-   (trailing-30d volume attribution by time-to-expiry).
+The BTC 5m note is reproduced from Polymarket's public data-api with the two scripts in
+[scripts/btc5m/](scripts/btc5m/).
 
-For programmatic execution via Dune MCP, see
-[docs/methodology.md](docs/methodology.md).
+## Limitations
 
----
-
-## Caveats
-
-1. **Window is 30 days for the main analysis.** Quarterly comparisons
-   are 90-day windows. Dune's free-tier 2-min SQL timeout blocks
-   180-day windows in one shot.
-
-2. **Snapshot CSVs are dated 2026-05-27.** Most SQL uses rolling
-   `CURRENT_TIMESTAMP` windows, so reruns will drift unless you pin
-   the `params` CTE timestamps.
-
-3. **MM/Fast-taker/Retail labels are imperfect.** The classifier forces
-   discrete buckets via first-match rule order; real wallets near
-   threshold boundaries (60–70% maker share) are arbitrary. Numbers
-   shift ±5pp with threshold changes. Treat as directional.
-
-4. **Owner aggregation does not cluster across firm-owned EOAs.** An
-   MM running 5 independent EOAs counts as 5 entities.
-
-5. **"Other" category is ~35% of platform volume** even after
-   expanded tag matching. Most is null-tagged residual.
-
-6. **Paradigm and Solidus are non-neutral sources.** Paradigm is a
-   Kalshi investor; Solidus sells compliance software. The on-chain
-   methodology of both is verifiable but framing isn't neutral.
-   Citation guidance in
+1. The main window is 30 days; the quarterly comparisons are 90 days. Dune's free tier cannot run
+   180 days in one query.
+2. The CSVs are snapshots from 2026-05-27. Most queries use rolling windows, so reruns drift unless
+   the `params` CTE is pinned.
+3. The cohort labels are approximate. The classifier forces discrete buckets by first-match rule order,
+   wallets near a boundary (60% to 70% maker share) could go either way, and the numbers move about
+   5 points when thresholds move. Treat them as directional.
+4. Owner aggregation does not cluster across firm-owned EOAs. A firm running five EOAs counts as five.
+5. The untagged category is about 35% of platform volume even after expanded tag matching.
+6. Paradigm and Solidus are not neutral sources. Paradigm has invested in Kalshi and Solidus sells
+   compliance software. Their on-chain methods are verifiable; their framing is theirs. See
    [docs/external_research.md](docs/external_research.md).
-
-7. **PnL by cohort is measured only for BTC 5m on one day** (docs/btc5m_cohorts_pnl.md), not venue-wide. "Volume share" ≠ "profit
-   share." Solidus claims 0.55% of wallets capture 50% of profit in
-   politics; our top-10 LP-reward owners capture 30% of rewards.
-   Different metrics, both directionally valid.
+7. PnL by cohort is measured for BTC 5m on one day, not venue-wide. Volume share is not profit share.
+   Solidus finds that 0.55% of wallets take 50% of profit in politics; here the top 10 LP-reward owners
+   take 30% of rewards. Different metrics, both pointing the same way.

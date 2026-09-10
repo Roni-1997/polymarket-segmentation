@@ -1,4 +1,4 @@
-# HIP-4 × Polymarket cross-venue overlap
+# HIP-4 x Polymarket cross-venue overlap
 
 Status: **audited first pass, 2026-05-27**. Bidirectional check between Hyperliquid
 HIP-4 outcome markets (live since 2026-05-02) and the Polymarket cohort
@@ -23,7 +23,7 @@ professional tier:
   transaction, but none appear in the Polymarket cohort data here.
   Distribution suggests casual Polygon use, not pro Polymarket trading.
 
-The cross-venue migration path that **does** exist runs HL-perps →
+The cross-venue migration path that **does** exist runs HL-perps to
 HIP-4. The HIP-4 maker cohort came from the Hyperliquid perps audience,
 not Polymarket.
 
@@ -36,7 +36,7 @@ meta-tx flow.
 
 ## Headline tables
 
-### Polymarket exported-sample top-30 → Hyperliquid
+### Polymarket exported-sample top-30 to Hyperliquid
 
 Queried HL `/info` `clearinghouseState` + `userFillsByTime` 2026-05-27.
 The input is `results/top20_per_cohort_30d.csv` sorted by touched volume,
@@ -54,7 +54,7 @@ infrastructure. The claim should be re-run with
 `queries/11_top_wallets_30d_with_lp.sql` before treating it as
 venue-wide.
 
-### HIP-4 top-30 address sample → Polygon
+### HIP-4 top-30 address sample to Polygon
 
 Queried `eth_getTransactionCount` via `polygon.drpc.org` 2026-05-27.
 
@@ -81,7 +81,7 @@ Polygon activity. A Polymarket-specific Dune query has been added under
 
 The HIP-4 sample was captured by direct subscription to the Hyperliquid
 WebSocket `trades` channel for all 22 currently-live HIP-4 coin sides
-(11 outcomes × 2 sides). 548 unique trades / 127 unique wallets observed
+(11 outcomes x 2 sides). 548 unique trades / 127 unique wallets observed
 over ~11 hours of activity. The top 50 wallets in that WebSocket sample
 were then deepened with 7d `userFillsByTime`. This is a
 sample-selected top 50, not a venue-wide top 50.
@@ -96,7 +96,7 @@ sample-selected top 50, not a venue-wide top 50.
 | Hybrid maker-taker | 7 | $4,562 | 1.4% | 3.0% |
 | MM-unhedged | 2 | $2,002 | 0.6% | 3.2% |
 | Retail-directional | 4 | $1,677 | 0.5% | 0.7% |
-| No visible HIP-4 fills in 7d response | 9 | $0 in 7d HIP-4 | — | — |
+| No visible HIP-4 fills in 7d response | 9 | $0 in 7d HIP-4 | - | - |
 
 The sample-selected top 50 generated $327,530 of visible 7d HIP-4
 notional in `userFillsByTime`, equal to 2.5% of the venue's published 7d
@@ -115,11 +115,11 @@ Venue-level context (huskereth Dune query 7427890, livefetch via HL
 | HIP-4 7d unique markets | 37 |
 | HIP-4 share of (HIP-4 + Polymarket + Kalshi) 1d | 0.68% |
 | Polymarket implied 7d single-counted notional from this repo's T30d average | ~$724M |
-| Polymarket implied 7d / HIP-4 7d ratio | ~55× |
+| Polymarket implied 7d / HIP-4 7d ratio | ~55x |
 
 ## Methodology
 
-### Polymarket pros → HL check
+### Polymarket pros to HL check
 1. For venue-wide address overlap, intersect
    `results/top100_wallets_venue_wide_30d.csv` with
    `data/hip4_ws_wallets.json`.
@@ -132,7 +132,7 @@ Venue-level context (huskereth Dune query 7427890, livefetch via HL
 4. Tag HL fills as HIP-4 (coin starts with `#` and integer ≥ 1000) vs.
    perp/spot otherwise.
 
-### HIP-4 wallets → Polygon check
+### HIP-4 wallets to Polygon check
 1. From `data/hip4_addrs.txt`, check the fixed top-30 address sample.
 2. For each wallet, call `eth_getTransactionCount` on Polygon mainnet
    via `polygon.drpc.org` (free public RPC, no key). Nonce > 0 ⇒ has
@@ -141,7 +141,7 @@ Venue-level context (huskereth Dune query 7427890, livefetch via HL
 ### HIP-4 cohort capture (upstream of this overlap check)
 1. HL `/info` `outcomeMeta` to enumerate all 11 live HIP-4 outcomes.
 2. WebSocket subscribe to `trades` channel for all 22 coin sides
-   (outcome × YES/NO).
+   (outcome x YES/NO).
 3. Aggregate captured trades by wallet (each `trades` message carries
    `users: [addr_a, addr_b]`); rank by appearance count.
 4. For top 50 wallets, query HL `/info` `userFillsByTime` over the last
@@ -153,7 +153,7 @@ true` = taker). This is venue-attested side direction, not inferred.
 
 ## Limitations
 
-1. **Polygon nonce ≠ Polymarket activity.** A Polygon transaction
+1. **Polygon nonce is not Polymarket activity.** A Polygon transaction
    could be USDC bridging, QuickSwap, Aave, etc. A Dune SQL JOIN of
    these HIP-4 addresses against `polymarket_polygon.market_trades` now
    exists at `queries/01_hip4_addresses_polymarket_overlap.sql`, but it
@@ -183,36 +183,36 @@ true` = taker). This is venue-attested side direction, not inferred.
 pip install websockets
 
 # 1. Snapshot all current HIP-4 markets from HL /info
-python3 scripts/harvest_hip4.py            # → data/hip4_wallet_snapshot.json
+python3 scripts/harvest_hip4.py            # to data/hip4_wallet_snapshot.json
 
 # 2. (Optional) Run a longer WebSocket capture
-python3 scripts/ws_capture.py &            # → data/hip4_trades.jsonl
+python3 scripts/ws_capture.py &            # to data/hip4_trades.jsonl
 sleep 300; kill %1
-python3 scripts/aggregate_ws.py            # → data/hip4_ws_wallets.json
+python3 scripts/aggregate_ws.py            # to data/hip4_ws_wallets.json
 
 # 3. Classify the top 50 wallets with 7d userFillsByTime
-python3 scripts/classify_top50.py          # → data/hip4_top50_classified.json
+python3 scripts/classify_top50.py          # to data/hip4_top50_classified.json
 
-# 4. Reverse direction — check Polymarket pros on HL
-python3 scripts/check_poly_on_hl.py        # → data/poly_x_hl_top30.json
+# 4. Reverse direction - check Polymarket pros on HL
+python3 scripts/check_poly_on_hl.py        # to data/poly_x_hl_top30.json
 
-# 5. Forward direction — check HIP-4 wallets on Polygon
-python3 scripts/check_polygon.py           # → data/hip4_polygon_check.json
+# 5. Forward direction - check HIP-4 wallets on Polygon
+python3 scripts/check_polygon.py           # to data/hip4_polygon_check.json
 ```
 
 ## Files
 
-- `data/hip4_ws_wallets.json` — 127-wallet rollup from 548 WS trades.
-- `data/hip4_top50_classified.json` — top 50 with 7d profile + tag.
-- `data/hip4_polygon_check.json` — Polygon nonce per HIP-4 wallet.
-- `data/poly_x_hl_top30.json` — HL activity for the top 30 wallets
+- `data/hip4_ws_wallets.json` - 127-wallet rollup from 548 WS trades.
+- `data/hip4_top50_classified.json` - top 50 with 7d profile + tag.
+- `data/hip4_polygon_check.json` - Polygon nonce per HIP-4 wallet.
+- `data/poly_x_hl_top30.json` - HL activity for the top 30 wallets
   within the exported Polymarket validation sample.
-- `data/hip4_addrs.txt` — comma-separated address list for downstream
+- `data/hip4_addrs.txt` - comma-separated address list for downstream
   SQL.
-- `queries/01_hip4_addresses_polymarket_overlap.sql` — Dune query to
+- `queries/01_hip4_addresses_polymarket_overlap.sql` - Dune query to
   check the HIP-4 address sample against Polymarket-specific trades and
   proxy owners.
-- `scripts/` — Python scripts that produced the above.
+- `scripts/` - Python scripts that produced the above.
 
 ## Interpretation
 

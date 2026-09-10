@@ -10,8 +10,8 @@ re-executed on 2026-06-07.
 |---|---|---|
 | `cohort_x_category_30d_clean.csv` | `04_cohort_x_category_30d.sql` | Trailing 30d; both touched and single-counted columns. |
 | `top20_per_cohort_30d.csv` | `05_top20_per_cohort_with_lp.sql` | Exported top-per-cohort validation sample with LP confirmation flags. The source query can return 140 rows; this CSV is clipped at 100 rows and is missing `Systematic-mixed` and `Systematic-taker`. |
-| `cohort_q1_2026.csv` | `06_cohort_per_quarter.sql` | Jan 1 – Apr 1, 2026. |
-| `cohort_q4_2025.csv` | `06_cohort_per_quarter.sql` (dates swapped) | Oct 1 2025 – Jan 1 2026. |
+| `cohort_q1_2026.csv` | `06_cohort_per_quarter.sql` | Jan 1 - Apr 1, 2026. |
+| `cohort_q4_2025.csv` | `06_cohort_per_quarter.sql` (dates swapped) | Oct 1 2025 - Jan 1 2026. |
 | `lp_rewards_top25.csv` | `07_lp_rewards_top_recipients.sql` | Top 25 owners by deduped LP rewards. |
 | `lp_rewards_concentration.csv` | `08_lp_rewards_concentration.sql` | Top-N concentration (3 / 10 / 20 / 50 / 100). |
 | `other_tags_top30.csv` | `03_other_category_probe.sql` | What's leaking into the "Other" bucket. |
@@ -19,7 +19,7 @@ re-executed on 2026-06-07.
 | `cohort_x_category_drilldown_30d.csv` | `09_cohort_x_category_drilldown.sql` | Long-format: per (cohort, category) wallet count, touched and single-counted volume, fills, avg trade size. |
 | `cohort_x_category_maker_taker_30d.csv` | `10_cohort_x_category_maker_taker.sql` | Long-format: per (cohort, category) maker_vol, taker_vol, touched. Source for the three-view matrices (depth providers vs flow consumers). |
 | `top100_wallets_venue_wide_30d.csv` | `11_top_wallets_30d_with_lp.sql` | True venue-wide top 100 wallets by 30d touched volume, with cohort label and LP-reward flags. Used for cross-venue overlap checks (vs HIP-4). |
-| `cohort_x_category_q1_2026.csv` | `04_cohort_x_category_30d.sql` (window swapped to Jan 1 – Apr 1, 2026) | Same query as the 30d clean, but for the Q1 2026 quarter. Useful for the crypto-vs-other-tagging shift comparison (crypto categorization shifted in May 2026; Q1 numbers reflect the original tagging). |
+| `cohort_x_category_q1_2026.csv` | `04_cohort_x_category_30d.sql` (window swapped to Jan 1 - Apr 1, 2026) | Same query as the 30d clean, but for the Q1 2026 quarter. Useful for the crypto-vs-other-tagging shift comparison (crypto categorization shifted in May 2026; Q1 numbers reflect the original tagging). |
 | `volume_by_time_to_expiry_30d.csv` | `12_volume_by_time_to_expiry.sql` | Trailing 30d single-counted volume by time-to-resolution/end bucket. Source for `docs/expiry_volume.md`. |
 
 ## Conventions

@@ -9,21 +9,21 @@ polymarket_polygon.market_trades (raw fills)
     │
     ├─► exclude routing contracts (NegRisk adapter + 3 others)
     │
-    ├─► JOIN users_address_lookup (proxy → owner)
+    ├─► JOIN users_address_lookup (proxy to owner)
     │
-    ├─► UNION ALL maker + taker rows → wallet_sides
+    ├─► UNION ALL maker + taker rows to wallet_sides
     │
-    ├─► aggregate per (wallet, window) → wallet_features
+    ├─► aggregate per (wallet, window) to wallet_features
     │       │ COUNT(*), SUM(notional), maker_vol, n_active_days,
     │       │ n_unique_markets
     │       │ exclude system wallets again after owner mapping
     │       │ HAVING n_fills ≤ 5,000,000 (safety net for missed contracts)
     │
-    ├─► classify into 9-cell grid (maker_band × cadence_band) → cohorts
+    ├─► classify into 9-cell grid (maker_band x cadence_band) to cohorts
     │
-    ├─► JOIN market_details for category → wallet_cat_vol
+    ├─► JOIN market_details for category to wallet_cat_vol
     │
-    └─► output: cohort × category × touched volume
+    └─► output: cohort x category x touched volume
 ```
 
 ## Volume convention
@@ -55,7 +55,7 @@ owner EOA. Trades happen at the proxy level. We aggregate to **owner
 level** via `users_address_lookup` so one MM running many proxies counts
 as one entity.
 
-EOAs that trade directly (no proxy) keep their own address — correct.
+EOAs that trade directly (no proxy) keep their own address - correct.
 
 This DOES NOT cluster across multiple owner EOAs run by the same firm
 (e.g., one MM with 5 independent EOAs for risk separation). That would
@@ -63,7 +63,7 @@ require manual address clustering, which is out of scope.
 
 ## Cohort classification (9-cell grid)
 
-The current main classifier is a maker-share × cadence grid. It does not
+The current main classifier is a maker-share x cadence grid. It does not
 yet create a separate complete-set-arber cohort. Add split/merge features
 from Conditional Tokens events before making arber-share claims.
 
@@ -78,7 +78,7 @@ maker_band   high   Pro-MM        Mid-MM                ↓
 (30-70%)
              low    Fast-taker    Systematic-taker      ↓
 (<30%)
-             any    —             —                     Retail
+             any    -             -                     Retail
 ```
 
 **The 3 discretionary cells collapse into a single Retail cohort.** Once
@@ -95,14 +95,14 @@ not formally latency-classified. We don't claim identity.
 ## Why these thresholds
 
 - **maker_share ≥ 0.70**: primary role is providing liquidity.
-- **maker_share 0.30–0.70**: hybrid (basket arb / inventory rebalancer / news-reaction MM).
+- **maker_share 0.30-0.70**: hybrid (basket arb / inventory rebalancer / news-reaction MM).
 - **maker_share < 0.30**: primary role is consuming liquidity.
 - **cadence ≥ 100/day**: clearly automated; no human sustains 100+ orders/day.
-- **cadence 10–100/day**: systematic / tool-assisted (slow algo, copy-trading wrapper, sophisticated discretionary human).
+- **cadence 10-100/day**: systematic / tool-assisted (slow algo, copy-trading wrapper, sophisticated discretionary human).
 - **cadence < 10/day**: retail-cadence; humans placing opinionated bets.
 
 **These are reasonable defaults, not gospel.** The 70% maker-share line
-is the most sensitive — sliding it to 60% moves ~5pp from Fast-taker
+is the most sensitive - sliding it to 60% moves ~5pp from Fast-taker
 into Pro-MM. The 10/day cadence boundary was chosen deliberately to
 separate true retail from semi-pro / slow-algo behavior; lowering it to
 5/day would shrink Retail volume share further (already only 5.3% at 10).
@@ -155,9 +155,9 @@ require an external market-to-tag registry.
 Two sources, UNION'd after deduplication:
 
 1. `polymarket_usdc_merkle_distributor_polygon.MerkleDistributor_evt_Claimed`
-   — merkle airdrop claims (the canonical rewards mechanism).
+   - merkle airdrop claims (the canonical rewards mechanism).
 2. `erc20_polygon.evt_Transfer` where `"from" = 0xc28848...` (the rewards
-   distributor wallet) and `contract_address = USDC` — older direct-transfer
+   distributor wallet) and `contract_address = USDC` - older direct-transfer
    path. Transfers in the same transaction as a merkle claim are excluded
    to avoid double-counting claim payouts.
 
@@ -176,7 +176,7 @@ Dust rewards are not enough to call a wallet an MM. Use
 
 ## Schema gotchas encountered
 
-1. **`market_trades.action` only has value `"CLOB trade"`** — despite
+1. **`market_trades.action` only has value `"CLOB trade"`** - despite
    docs claiming three types incl. MINT/MERGE. Use
    `ctf_evt_positionsplit` / `ctf_evt_positionsmerge` for arber
    detection.
@@ -186,7 +186,7 @@ Dust rewards are not enough to call a wallet an MM. Use
 3. **`market_details` has multiple rows per `condition_id`** (one per
    outcome). Always pre-aggregate to one row per condition_id before
    joining trades.
-4. **`market_start_time`, `market_end_time`** stored as VARCHAR — use
+4. **`market_start_time`, `market_end_time`** stored as VARCHAR - use
    `try_cast(... AS timestamp)` if you need them. For time-to-expiry
    analysis, prefer `resolved_on_timestamp` first and fall back to
    parsed `market_end_time`; using `market_end_time` alone creates a
@@ -206,7 +206,7 @@ window before running.
 
 ### Via Dune web UI
 Paste queries from [queries/](../queries/) into the editor at
-[dune.com/queries](https://dune.com/queries). Costs ~10–45 credits each.
+[dune.com/queries](https://dune.com/queries). Costs ~10-45 credits each.
 
 For wallet-level exports, watch Dune result pagination. Query 05 can
 return 140 rows (20 per cohort); Dune API defaults can clip that to 100
