@@ -6,22 +6,24 @@ question the May work left open answered: who makes money and who pays.
 
 ## The claim
 
-**Retail is not the flow, and the retail narrative should be retired.** Strict retail, under 10 fills per
-active day, is 1.2% of BTC 5m touched volume over the 30 days to Sep 9 and was 5.3% venue-wide in May. Nothing about these
-venues' volume, depth or growth is explained by casual clickers.
+**Retail is not the flow.** People placing fewer than 10 trades a day were 1.2% of volume on the Bitcoin
+5-minute markets over the 30 days to September 9, and 5.3% across the whole venue in May. Nothing about
+these venues' volume, depth or growth is explained by casual bettors, and the story that prediction
+markets run on them should be retired.
 
-**Flow needs machines.** Market makers and fast machines (Pro-MM, Fast-taker, Hybrid-bot) are 82% of BTC
-5m touched volume over the 30 days to Sep 9. Market makers provide 75% of the maker side and bots and algo consume 92% of the taker side. They arrive within days of a product launching (the 5m product
-carried 46% machine share on its second day) and they are the book. A venue without them has nothing to
-trade against and no depth to show.
+**Flow needs bots.** Market makers and fast trading bots were 82% of volume over the same 30 days. Market
+makers posted 75% of all resting orders; bots took 92% of all aggressive trades. They show up within days
+of a market launching (Polymarket's 5-minute market was 46% bots on its second day) and they are the
+order book. A venue without them has nothing to trade against and no depth to show.
 
-**Machines need someone to pay them.** Settlement PnL is zero-sum across both legs. Over the 30 days to Sep 9
-about $44k a day moved from Systematic-taker, Systematic-mixed and Retail to Pro-MM, Fast-taker and Hybrid-bot. The payers are not the retail cohort, which is
-too small to matter; they are the Systematic-taker cohort, tool-assisted people trading 10 to 300 fills a
-day who sleep, size in dollars and lose about 2% per dollar. Machine volume tracks that supply: in an
-internal taker-only series from February to September 2026, bot dollars fell 43% when new wallets fell
-80%. The design target for a venue is therefore machines plus a steady supply of session traders, arriving
-through frontends, brokers and partner apps, not a consumer funnel of casual clickers.
+**Bots need someone to pay them.** Every dollar a bot wins at settlement is a dollar someone else lost.
+Over the 30 days about $44,000 a day moved from the people who lose to the market makers and bots who
+win. The losers are not casual bettors, who are too few to matter. They are active traders using tools,
+placing 10 to 300 trades a day, who trade in sessions, size their orders in dollars and lose about 2 cents
+per dollar traded. Bot volume follows that supply: when Polymarket's inflow of new wallets fell 80%
+between spring and autumn, bot volume fell 43%. A venue therefore needs the bots plus a steady supply of
+these active traders, arriving through front ends, brokers and partner apps, not a consumer funnel for
+casual bettors.
 
 ## Data and method
 

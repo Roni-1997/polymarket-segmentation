@@ -15,7 +15,7 @@ note is at [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md).
 
 - [Highlights](#highlights)
 - [What this means for Verdict](#what-this-means-for-verdict)
-- [September 2026: BTC 5-minute markets, PnL by cohort](#september-2026-btc-5-minute-markets-pnl-by-cohort)
+- [September 2026: Bitcoin 5-minute markets, who wins and who pays](#september-2026-bitcoin-5-minute-markets-who-wins-and-who-pays)
 - [Method](#method)
 - [Cohorts](#cohorts)
 - [Categories](#categories)
@@ -30,77 +30,81 @@ note is at [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md).
 
 ## Highlights
 
-- Polymarket's real volume is about $102M a day. The headline figure counts both sides of every fill
-  and is about twice that.
-- Machines make the market. Market makers are 38% of touched volume and provide 69% of all depth.
-  Bots and systematic traders are 56% of volume and consume 85% of taker flow. Strict retail, under
-  10 fills a day, is 5% of volume venue-wide and 1.3% on BTC 5-minute markets.
-- Retail's share halved in six months, 10.7% to 5.3%, while volume doubled from Q4 2025 to Q1 2026.
-  The growth came from machines and maker capital, not from new retail.
-- The paying flow is not casual retail either. On BTC 5-minute markets, settlement PnL moves about
-  $44k a day from the Systematic-taker cohort (people using tools, 10 to 100 fills a day) and Retail
-  to Pro-MM, Fast-taker and Hybrid-bot. About 17% of touched volume, 29% of the taker side, loses by result and
-  funds everyone else.
-- Crypto binaries are the most automated category, with 75% of volume from the three fast cohorts,
-  and their cohort mix is nearly identical to sports.
-- Polymarket's machines do not migrate. None of its top 100 wallets is active on Hyperliquid HIP-4.
-  The HIP-4 flow that exists comes from Hyperliquid perps traders.
-- Liquidity rewards concentrate: the top 10 owners take 30% of all LP rewards, the top 50 take 50%.
-- Over the 30 days to Sep 9 on BTC 5-minute markets, machines were 67.5% of taker dollars, positive
-  on every one of the 30 days, and people negative on every day. 30% of wallets ended the month ahead;
-  the median wallet lost 5.6%. Regulars trading 20 or more days were 5% of wallets and 60% of dollars.
+- Polymarket's real trading volume is about $102 million a day. The figure the site shows is roughly
+  double that, because it counts both sides of every trade.
+- Almost all of that volume is automated. Market-making bots quote the prices and other bots trade
+  against them; together they are about 95 cents of every dollar traded. People placing a few bets a
+  day, the picture most have of a prediction market, are 5 cents of every dollar across the venue and
+  about 1 cent on the Bitcoin 5-minute markets.
+- That small retail share is shrinking. It halved in six months, from 11% to 5%, while total volume
+  doubled. The growth came from bots and market-maker capital, not from new bettors.
+- Bots need someone to win from, and it is not the casual bettor. On the Bitcoin 5-minute markets about
+  $44,000 a day flows from the people who lose to the bots and market makers who win. The losers are
+  mostly active traders using tools, placing 10 to 100 trades a day. Casual bettors are too few to matter.
+- Over the 30 days to September 9, bots came out ahead on every single day and people came out behind
+  on every single day. Only 30% of wallets finished the month with a profit; the typical wallet lost
+  5.6% of what it traded.
+- Crypto is the most automated category on Polymarket, and its mix of participants is almost identical
+  to sports.
+- Polymarket's bots are not moving to Hyperliquid. None of Polymarket's 100 largest wallets trades on
+  HIP-4. The traders showing up there come from Hyperliquid's own perps.
+- Liquidity rewards are concentrated: the 10 largest recipients take 30% of all rewards and the top 50
+  take half.
 
 ## What this means for Verdict
 
-Verdict builds short-dated outcome markets on Hyperliquid HIP-4. Read as go-to-market, the data says:
+Verdict is building short-dated outcome markets on Hyperliquid HIP-4. Read as a go-to-market plan, the
+data says six things.
 
-1. Liquidity is not the scarce input. Machines arrive within days of a launch, the 5-minute product
-   opened at 46% machine share on its second day, and they are the book. Recruit market makers and
-   neutral machines with a reliable settlement feed, fast cancels and clear rules. Do not spend to
-   acquire casual retail; it is 1% to 5% of flow everywhere and shrinking.
-2. Paying flow is the scarce input, and it is the tooled-up session trader, not the clicker. On
-   Hyperliquid that profile is the perps trader who already sits one click from an HIP-4 book.
-   Distribution runs through frontends and builder codes, Polymarket routes about 15% of its volume
-   through 50 third-party frontends, not through a consumer funnel.
-3. A consumer app is not the gate to product-market fit. It is where fees are collected and where the
-   customer relationship is owned. Build it as a trader terminal with a builder program for other
-   frontends and bots, and do not gate the launch on it.
-4. Fee design decides which machines the venue hosts. Zero taker fees invite stale-quote machines
-   that earn off makers and people; a taker fee removes that edge. Until fees exist, settlement design
-   is what protects the makers.
-5. Do not pitch what the venue cannot host. Complete-set arbitrage does not exist on HIP-4's mirror
-   books, and Polymarket's machines are not migrating.
-6. Measure after incentives, not during: repeat fee-paying strategies, depth at size, maker
-   profitability after rewards, venue revenue net of incentives.
+1. Liquidity is not the hard part. Bots and market makers show up within days of a launch; Polymarket's
+   5-minute market was 46% bots on its second day. Give them a reliable price feed, fast cancels and
+   clear rules and they come. Do not spend money acquiring casual bettors; they are 1% to 5% of volume
+   everywhere and shrinking.
+2. The hard part is the flow that pays. That is the active trader with tools, not the casual clicker. On
+   Hyperliquid this person already exists: the perps trader, one click away from an HIP-4 order book.
+   They are reached through trading front ends and partner apps, the way Polymarket gets about 15% of its
+   volume through 50 third-party front ends, not through a consumer marketing funnel.
+3. A consumer app is not what gets Verdict to product-market fit. It is where fees are collected and
+   where the customer relationship lives. Build it as a trading terminal, add a program for other front
+   ends and bots to route through, and do not hold the launch for it.
+4. Fees decide which bots you attract. With zero taker fees, the bots that earn are the ones picking off
+   stale quotes at the expense of market makers and people. A taker fee removes that edge. Until fees are
+   switched on, the settlement design is what protects the market makers.
+5. Do not promise what the venue cannot deliver. Buying both sides of a market for less than a dollar, a
+   common Polymarket bot strategy, is impossible on HIP-4 by construction, and Polymarket's bots are not
+   migrating.
+6. Judge the venue after incentives are turned down, not while they run: repeat fee-paying traders, real
+   depth at real sizes, market makers profitable after rewards, venue revenue net of what it paid out.
 
-## September 2026: BTC 5-minute markets, PnL by cohort
+## September 2026: Bitcoin 5-minute markets, who wins and who pays
 
-Full note: [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md). The seven-cohort grid was
-applied to every fill on Polymarket's BTC 5-minute up/down markets for the 30 days from Aug 11 to
-Sep 9 2026, both legs, $458M touched and 57,300 wallets, with settlement PnL computed per cohort.
+Full note: [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md). The same classification was applied
+to every trade on Polymarket's Bitcoin 5-minute up/down markets for the 30 days from August 11 to
+September 9, 2026: $458 million traded across 57,300 wallets, with each wallet's profit or loss at
+settlement.
 
-Retail is not the flow. Strict retail, under 10 fills per active day, is 1.2% of touched volume on
-this product over the month and was 5.3% venue-wide in May. Casual clickers do not explain the volume, the depth or
-the growth of these venues.
+Retail is not the flow. People placing fewer than 10 trades a day were 1.2% of volume on this market and
+5.3% across the whole venue in May. Casual bettors do not explain the volume, the depth or the growth of
+these venues.
 
-Flow needs machines. Pro-MM, Fast-taker and Hybrid-bot together are 82% of touched volume. Market
-makers provide 75% of the maker side and bots and algo consume 92% of the taker side, and they show
-up within days of a product launching. They are the book.
+Flow needs bots. Market makers and fast trading bots were 82% of volume. Market makers posted 75% of all
+resting orders and bots took 92% of all aggressive trades. They arrive within days of a market launching.
+They are the order book.
 
-Machines need someone to pay them. Over the month about $44k a day moved from Systematic-taker,
-Systematic-mixed and Retail to Pro-MM, Fast-taker and Hybrid-bot. The payers are people using tools at 10 to 300
-fills a day, not casual clickers. A venue therefore needs machines plus a steady supply of those
-session traders, arriving through frontends, brokers and partner apps.
+Bots need someone to pay them. About $44,000 a day moved from the people who lose to the market makers
+and bots who win. The losers are not casual bettors, who are too few to matter, but active traders using
+tools, at 10 to 300 trades a day. A venue therefore needs the bots plus a steady supply of these active
+traders, arriving through front ends, brokers and partner apps.
 
-| Persona | % touched | % maker side | % taker side | PnL $, 30 days | May 2026 venue-wide |
+| Who | Share of volume | Share of resting orders | Share of aggressive trades | Profit or loss, 30 days | Venue-wide share, May 2026 |
 |---|---:|---:|---:|---:|---:|
-| MMs | 41.0% | 74.6% | 6.2% | +277,379 | 38.4% |
-| Bots and algo | 57.8% | 25.1% | 91.7% | +13,055 | 56.3% |
-| Retail | 1.2% | 0.2% | 2.1% | -290,434 | 5.3% |
+| Market makers | 41.0% | 74.6% | 6.2% | +$277k | 38.4% |
+| Bots and active traders | 57.8% | 25.1% | 91.7% | +$13k | 56.3% |
+| Casual bettors | 1.2% | 0.2% | 2.1% | -$290k | 5.3% |
 
-The bots-and-algo persona nets close to zero as a whole because it contains both the payers
-(Systematic-taker) and the earners (Fast-taker, Hybrid-bot). The note proposes a second version of the grid that
-separates operation mode and directionality so that this does not happen.
+The middle row nets close to zero because it contains both the winners (fast bots) and the losers (active
+traders using tools, whom the classification counts as "systematic"). The note proposes a second version
+of the grid that separates the two.
 
 ## Method
 

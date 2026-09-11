@@ -56,35 +56,18 @@ def page(cid,param,extra=''):
         if off>=CAP: return rows, True
         time.sleep(SLEEP)
 def pull_market(cid,param,stats):
-    """Exact, no dedup: newest page first; if full, complete the boundary second with a [lo,lo] slice, then walk
-    backwards in adjacent inclusive time slices sized to ~800 records so offsets stay small. A slice that hits the
-    offset cap is discarded and retried at half width."""
-    first=get(f'https://data-api.polymarket.com/trades?market={cid}&limit=1000&offset=0{param}')
-    if not first: return []
-    if len(first)<1000: return first
-    ts=[int(t['timestamp']) for t in first]; hi=max(ts); lo=min(ts)
-    out=[t for t in first if int(t['timestamp'])>lo]          # keep only complete seconds from the first page
-    edge,cap=page(cid,param,f'&start={lo}&end={lo}')          # the boundary second, complete
-    out.extend(edge); stats['sliced']+=1
-    dens=1000/max(hi-lo,1); width=max(1,int(800/dens)); end=lo-1; empty=0
+    """Exact, no dedup, ~1000 records per request: page newest-first in chunks of up to 10k (the offset cap);
+    after each capped chunk, drop the partial oldest second and restart an inclusive `end=<that second>` chunk."""
+    out=[]; extra=''
     while True:
-        st=end-width+1
-        sl,cap=page(cid,param,f'&start={st}&end={end}')
+        chunk,cap=page(cid,param,extra)
         stats['slices']+=1
-        if cap:
-            if width>1: width=max(1,width//2); continue
-            # a single second over the cap: keep what we have (cannot be split further)
-        out.extend(sl)
-        if sl:
-            empty=0; d=len(sl)/width; width=max(1,min(600,int(800/max(d,0.01))))
-        else:
-            empty+=width; width=min(600,width*2)
-            if empty>=600:
-                tail,cap=page(cid,param,f'&end={st-1}')      # everything older than the quiet stretch (listing-day fills)
-                if not cap: out.extend(tail); break
-                empty=0                                       # dense older history after all: keep slicing
-        end=st-1
-    return out
+        if not cap: out.extend(chunk); return out
+        lo=min(int(t['timestamp']) for t in chunk)
+        kept=[t for t in chunk if int(t['timestamp'])>lo]
+        if not kept:                      # a single second holds 10k+ records: keep the partial second (cannot split further)
+            out.extend(chunk); return out
+        out.extend(kept); extra=f'&end={lo}'; stats['sliced']+=1
 from concurrent.futures import ThreadPoolExecutor
 import threading
 T=int(os.environ.get('THREADS','6'))
