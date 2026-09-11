@@ -12,13 +12,13 @@ numbers agree or diverge.
 | 67-78% of platform flow is automated counterparties | filarm Dune classification (see §3 below) | Fast-market taker volume was 55-62% bots in Feb-Mar 2026 | △ Same direction; our number higher partly because we count maker side too |
 | Pro-MM-fast top-20 have 17/20 any LP rewards and 11/20 material LP rewards (≥$1k threshold) | LP rewards distribution from `MerkleDistributor_evt_Claimed` | n/a - we validate against on-chain rewards | ✓ Directionally validates the classifier; use ≥$1k for strong MM-program evidence |
 | Top 10 LP-reward owners capture 30% of all rewards | [Solidus Labs / Coindesk, Apr 2026](https://www.coindesk.com/markets/2026/04/29/a-tiny-group-is-winning-on-polymarket-as-under-1-of-wallets-take-half-the-profits) | 0.55% of profitable maker wallets capture 50% of PROFIT gains in politics markets | △ Different metric (rewards vs profit), same direction. Profit concentration likely more extreme than reward concentration. We have not measured PnL. |
-| Politics is the most retail-heavy category | Long-standing folklore | Same | ✓ |
+| Politics is the most retail-heavy category | Common assumption | Same | ✓ |
 | Sports is the largest tagged category by volume (30%); null-tagged Other is larger (35%) | filarm Polymarket Activity dashboard, datadashboards Polymarket Overview | Sports surged in 2025-2026, esports especially | ✓ Directionally, but tag coverage remains incomplete |
 | Whale / informed directional share is not separately measured in this repo | [Chainalysis Théo cluster reporting](https://www.chainalysis.com/) | 11 wallets identified as Théo cluster | Open item. The current classifier is maker-share x cadence, not a whale registry. |
 | Retail share collapsed 10.7% to 5.3% in 6 months (strict <10/day def) | n/a - novel finding | n/a | ⊕ Unique to this analysis. Possible cause: capital migrated to Kalshi (per Paradigm's note that Kalshi overtook Polymarket in Q1 2026) |
 | 0/100 venue-wide top Polymarket wallets active on HIP-4; 0/25 LP-reward recipients on HIP-4 | [hip4_cross_venue/](../hip4_cross_venue/) (sister analysis) | n/a | ⊕ Cross-venue finding from `results/top100_wallets_venue_wide_30d.csv` and the HIP-4 127-wallet sample. HIP-4 maker activity appears HL-native in this sample. |
 
-Legend: ✓ matches, △ partial / directional, ✗ contradicts folklore, ⊕ novel claim.
+Legend: ✓ matches, △ partial or directional, ✗ contradicts the common assumption, ⊕ new finding.
 
 ---
 
@@ -134,7 +134,7 @@ Legend: ✓ matches, △ partial / directional, ✗ contradicts folklore, ⊕ no
    API access + matching wallet timestamps across the two venues.
 
 3. **Wallet-level firm attribution.** We can identify the LP-reward
-   oligopoly top 10 by address, but not by firm (Wintermute, GSR,
+   top 10 by address, but not by firm (Wintermute, GSR,
    B2C2, Amber, etc.). Manual labeling against public registries +
    on-chain clustering would close this.
 
@@ -173,5 +173,5 @@ Legend: ✓ matches, △ partial / directional, ✗ contradicts folklore, ⊕ no
   the Dune URL) if you need to cite a stable snapshot.
 - **Twitter / X threads decay fast.** Influencer claims like "3-4
   serious LPs run Polymarket" (defiance_cr) should be treated as
-  hypothesis, not data. The Tier-1 oligopoly is real but the actual
+  hypothesis, not data. Concentration at the top is real but the actual
   count is more like top-10 owners controlling ~30% of rewards.

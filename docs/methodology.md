@@ -90,18 +90,18 @@ These are observed trading behaviors over the
 measurement window, not user identities. A wallet labeled `Retail` may
 be a casual bettor, a wealth-tier directional trader, or a hedger.
 A wallet labeled `Fast-taker` may be automated or tool-assisted, but is
-not formally latency-classified. We don't claim identity.
+not formally latency-classified. The labels do not claim identity.
 
 ## Why these thresholds
 
 - **maker_share ≥ 0.70**: primary role is providing liquidity.
 - **maker_share 0.30-0.70**: hybrid (basket arb / inventory rebalancer / news-reaction MM).
 - **maker_share < 0.30**: primary role is consuming liquidity.
-- **cadence ≥ 100/day**: clearly automated; no human sustains 100+ orders/day.
+- **cadence ≥ 100/day**: treated as automated. The September 2026 BTC 5-minute work found tool-assisted people in this band too, so it is a working threshold, not a proof of automation.
 - **cadence 10-100/day**: systematic / tool-assisted (slow algo, copy-trading wrapper, sophisticated discretionary human).
 - **cadence < 10/day**: retail-cadence; humans placing opinionated bets.
 
-**These are reasonable defaults, not gospel.** The 70% maker-share line
+**These thresholds are working defaults.** The 70% maker-share line
 is the most sensitive - sliding it to 60% moves ~5pp from Fast-taker
 into Pro-MM. The 10/day cadence boundary was chosen deliberately to
 separate true retail from semi-pro / slow-algo behavior; lowering it to

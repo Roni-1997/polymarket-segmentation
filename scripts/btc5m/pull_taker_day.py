@@ -8,6 +8,9 @@ def get(url, tries=10):
         except Exception as e:
             err=str(e)[:80]; time.sleep(2*(i+1))
     print('GIVEUP',url[:120],err,flush=True); return None
+import re as _re
+if len(sys.argv)<2 or not all(_re.fullmatch(r'\d{4}-\d{2}-\d{2}',a) for a in sys.argv[1:]):
+    print('usage: python3 '+sys.argv[0].split('/')[-1]+' YYYY-MM-DD [YYYY-MM-DD ...]   (env: PM_DATA_DIR, RATE, THREADS)'); sys.exit(1)
 for day in sys.argv[1:]:
     t0=time.time(); nxt=(datetime.date.fromisoformat(day)+datetime.timedelta(days=1)).isoformat()
     cids=[]; off=0

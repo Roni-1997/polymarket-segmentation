@@ -20,7 +20,7 @@ The same data is cut several ways below. The short version:
   Polymarket is retail by *headcount*, professional by *dollars*.
 - **Where the dollars are by category:** Other/null-tagged is 36%;
   among tagged categories, Sports 30% > Politics 16% > Crypto 9%.
-  (The "Polymarket = politics" narrative is wrong.)
+  (Polymarket is no longer a politics venue by volume.)
 - **Who plays where:** Politics is the most retail-heavy major
   category at 13% retail. Crypto is the most bot-dominated (96%
   MMs+Bots+Algo). Sports is bot-dominated and mature.
@@ -114,7 +114,7 @@ of dollars. Retail owners: ~926,087. They generate ~7.7%.
 
 ## Category breakdown - where the dollars actually go
 
-The "Polymarket is a politics venue" narrative is outdated. Politics is
+The description of Polymarket as a politics venue is out of date. Politics is
 only 16% of platform volume. Among tagged categories, sports is nearly
 2x larger. The largest bucket overall is still "other" / null-tagged.
 
@@ -327,7 +327,7 @@ aggregating to owner level, the actual picture is:
 top 100 = 100%; audited says 59.4%, with a 40% long tail across
 ~111,000 reward-earning wallets.
 
-The Tier-1 oligopoly is real - top 3 captured $4.24M (20%) - but
+Concentration at the top is real - the top 3 captured $4.24M (20%) - but
 much more diluted by a long tail than the original analysis suggested.
 
 Top 3 owners by all-time LP rewards (deduped):

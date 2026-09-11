@@ -73,6 +73,9 @@ def pull_market(cid,param,stats):
 from concurrent.futures import ThreadPoolExecutor
 import threading
 T=int(os.environ.get('THREADS','6'))
+import re as _re
+if len(sys.argv)<2 or not all(_re.fullmatch(r'\d{4}-\d{2}-\d{2}',a) for a in sys.argv[1:]):
+    print('usage: python3 '+sys.argv[0].split('/')[-1]+' YYYY-MM-DD [YYYY-MM-DD ...]   (env: PM_DATA_DIR, RATE, THREADS)'); sys.exit(1)
 for day in sys.argv[1:]:
     t0=time.time(); cids=list(outcomes(day))
     for mode,param in (('taker','&takerOnly=true'),('both','&takerOnly=false')):
