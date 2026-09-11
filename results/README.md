@@ -48,3 +48,7 @@ re-executed on 2026-06-07.
 Seven-cohort grid (v1) and proposed six-cohort v2 on Polymarket BTC 5m up/down, 2026-09-09, both legs,
 proxy-wallet level, with settlement PnL per cohort. Built by `scripts/btc5m/`. See docs/btc5m_cohorts_pnl.md.
 
+## btc5m_cohorts30_2026-08-11_09-09.json
+Seven-cohort grid and v2 over the full 30-day both-legs window (one cohort per wallet), per-month and per-day
+tables, PnL per cohort. Built by `scripts/btc5m/cohorts_window.py`.
+

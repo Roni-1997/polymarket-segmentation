@@ -38,8 +38,8 @@ note is at [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md).
 - Retail's share halved in six months, 10.7% to 5.3%, while volume doubled from Q4 2025 to Q1 2026.
   The growth came from machines and maker capital, not from new retail.
 - The paying flow is not casual retail either. On BTC 5-minute markets, settlement PnL moves about
-  $41k a day from the Systematic-taker cohort (people using tools, 10 to 300 fills a day) and Retail
-  to Pro-MM and Fast-taker. About 17% of touched volume, 29% of the taker side, loses by result and
+  $44k a day from the Systematic-taker cohort (people using tools, 10 to 100 fills a day) and Retail
+  to Pro-MM, Fast-taker and Hybrid-bot. About 17% of touched volume, 29% of the taker side, loses by result and
   funds everyone else.
 - Crypto binaries are the most automated category, with 75% of volume from the three fast cohorts,
   and their cohort mix is nearly identical to sports.
@@ -47,8 +47,8 @@ note is at [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md).
   The HIP-4 flow that exists comes from Hyperliquid perps traders.
 - Liquidity rewards concentrate: the top 10 owners take 30% of all LP rewards, the top 50 take 50%.
 - Over the 30 days to Sep 9 on BTC 5-minute markets, machines were 67.5% of taker dollars, positive
-  on every one of the 30 days, and people negative on every day. 32% of wallets ended the month ahead;
-  the median wallet lost 5.7%. Regulars trading 20 or more days were 5% of wallets and 60% of dollars.
+  on every one of the 30 days, and people negative on every day. 30% of wallets ended the month ahead;
+  the median wallet lost 5.6%. Regulars trading 20 or more days were 5% of wallets and 60% of dollars.
 
 ## What this means for Verdict
 
@@ -76,30 +76,30 @@ Verdict builds short-dated outcome markets on Hyperliquid HIP-4. Read as go-to-m
 ## September 2026: BTC 5-minute markets, PnL by cohort
 
 Full note: [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md). The seven-cohort grid was
-applied to every fill on Polymarket's BTC 5-minute up/down markets on Aug 30, Sep 8 and Sep 9 2026,
-both legs, 4.28M records and $42.0M touched, with settlement PnL computed per cohort.
+applied to every fill on Polymarket's BTC 5-minute up/down markets for the 30 days from Aug 11 to
+Sep 9 2026, both legs, $458M touched and 57,300 wallets, with settlement PnL computed per cohort.
 
-Retail is not the flow. Strict retail, under 10 fills per active day, is 1.3% of touched volume on
-this product and was 5.3% venue-wide in May. Casual clickers do not explain the volume, the depth or
+Retail is not the flow. Strict retail, under 10 fills per active day, is 1.2% of touched volume on
+this product over the month and was 5.3% venue-wide in May. Casual clickers do not explain the volume, the depth or
 the growth of these venues.
 
-Flow needs machines. Pro-MM, Fast-taker and Hybrid-bot together are 85% of touched volume. Market
-makers provide 73% of the maker side and bots and algo consume 94% of the taker side, and they show
+Flow needs machines. Pro-MM, Fast-taker and Hybrid-bot together are 82% of touched volume. Market
+makers provide 75% of the maker side and bots and algo consume 92% of the taker side, and they show
 up within days of a product launching. They are the book.
 
-Machines need someone to pay them. Over the three days about $41k a day moved from Systematic-taker
-and Retail to Pro-MM and Fast-taker ($49k on Sep 9 alone). The payers are people using tools at 10 to 300
+Machines need someone to pay them. Over the month about $44k a day moved from Systematic-taker,
+Systematic-mixed and Retail to Pro-MM, Fast-taker and Hybrid-bot. The payers are people using tools at 10 to 300
 fills a day, not casual clickers. A venue therefore needs machines plus a steady supply of those
 session traders, arriving through frontends, brokers and partner apps.
 
-| Persona | % touched | % maker side | % taker side | PnL $, three days | May 2026 venue-wide |
+| Persona | % touched | % maker side | % taker side | PnL $, 30 days | May 2026 venue-wide |
 |---|---:|---:|---:|---:|---:|
-| MMs | 37.5% | 73.2% | 3.4% | +72,029 | 38.4% |
-| Bots and algo | 61.3% | 26.5% | 94.4% | -43,046 | 56.3% |
-| Retail | 1.3% | 0.3% | 2.2% | -29,025 | 5.3% |
+| MMs | 41.0% | 74.6% | 6.2% | +277,379 | 38.4% |
+| Bots and algo | 57.8% | 25.1% | 91.7% | +13,055 | 56.3% |
+| Retail | 1.2% | 0.2% | 2.1% | -290,434 | 5.3% |
 
-The bots-and-algo persona nets negative as a whole because it contains both the payers
-(Systematic-taker) and the earners (Fast-taker). The note proposes a second version of the grid that
+The bots-and-algo persona nets close to zero as a whole because it contains both the payers
+(Systematic-taker) and the earners (Fast-taker, Hybrid-bot). The note proposes a second version of the grid that
 separates operation mode and directionality so that this does not happen.
 
 ## Method

@@ -7,16 +7,16 @@ question the May work left open answered: who makes money and who pays.
 ## The claim
 
 **Retail is not the flow, and the retail narrative should be retired.** Strict retail, under 10 fills per
-active day, is 1.3% of BTC 5m touched volume here and was 5.3% venue-wide in May. Nothing about these
+active day, is 1.2% of BTC 5m touched volume over the 30 days to Sep 9 and was 5.3% venue-wide in May. Nothing about these
 venues' volume, depth or growth is explained by casual clickers.
 
-**Flow needs machines.** Market makers and fast machines (Pro-MM, Fast-taker, Hybrid-bot) are 85% of BTC
-5m touched volume. Market makers provide 73% of the maker side and bots and algo consume 94% of the taker side. They arrive within days of a product launching (the 5m product
+**Flow needs machines.** Market makers and fast machines (Pro-MM, Fast-taker, Hybrid-bot) are 82% of BTC
+5m touched volume over the 30 days to Sep 9. Market makers provide 75% of the maker side and bots and algo consume 92% of the taker side. They arrive within days of a product launching (the 5m product
 carried 46% machine share on its second day) and they are the book. A venue without them has nothing to
 trade against and no depth to show.
 
-**Machines need someone to pay them.** Settlement PnL is zero-sum across both legs. Over three measured
-days about $41k a day moved from Systematic-taker and Retail to Pro-MM and Fast-taker ($49k on Sep 9). The payers are not the retail cohort, which is
+**Machines need someone to pay them.** Settlement PnL is zero-sum across both legs. Over the 30 days to Sep 9
+about $44k a day moved from Systematic-taker, Systematic-mixed and Retail to Pro-MM, Fast-taker and Hybrid-bot. The payers are not the retail cohort, which is
 too small to matter; they are the Systematic-taker cohort, tool-assisted people trading 10 to 300 fills a
 day who sleep, size in dollars and lose about 2% per dollar. Machine volume tracks that supply: in an
 internal taker-only series from February to September 2026, bot dollars fell 43% when new wallets fell
@@ -42,7 +42,7 @@ through frontends, brokers and partner apps, not a consumer funnel of casual cli
 - Scripts: `scripts/btc5m/pull_both_legs.py`, `scripts/btc5m/cohorts_v1_v2.py`. Results:
   `results/btc5m_cohorts_v1_2026-09-09.csv`, `results/btc5m_cohorts_v2_2026-09-09.csv`.
 
-## The grid on 2026-09-09
+## The grid on 2026-09-09 (superseded by the 30-day window below)
 
 | Cohort | Wallets | % touched | % maker side | % taker side | $ per fill | PnL per $ | PnL $ |
 |---|---:|---:|---:|---:|---:|---:|---:|
@@ -89,7 +89,7 @@ bot 57%, Directional bot 34%, Session trader 10%; Systematic-taker into Session 
 24%. Exact-dollar sizing (the web app takes dollar amounts, the API takes share counts) and early exits
 separate the people from the machines in every cell.
 
-## Three days: Aug 30, Sep 8 and Sep 9, 2026
+## Three days: Aug 30, Sep 8 and Sep 9, 2026 (superseded by the 30-day window below)
 
 Same method on three days, 4,283,811 records and $42.0M touched ($14.0M a day). Shares are the
 mean of the daily shares; PnL dollars are summed. Two markets a day hit the pagination limit and are truncated.
@@ -163,6 +163,54 @@ Regulars on 20 or more days are 5% of wallets and 60% of dollars and break even 
 that traded over $1M each are 27% of dollars and 21 of them ended ahead. The top 1% of wallets took 81% of
 gross gains. The seven-cohort grid over the same window is being computed from the maker legs and will
 replace the three-day tables above.
+
+## Trailing 30 days, both legs: the grid over the full window (2026-08-11 to 2026-09-09)
+
+Every fill, both legs, for 30 consecutive UTC days: 57,300 proxy wallets, $458.4M touched
+($15.28M a day, $7.64M single-counted). One cohort per wallet for the whole window, as the
+segmentation repo defines it: cadence is fills per active day across the window and maker share is the wallet's
+maker touched volume over its total. Settlement PnL is gross of fees (none charged) and LP rewards. Over the
+month 30.3% of wallets ended ahead, the median wallet lost 5.6% of what it traded, and the top 1%
+of wallets took 82% of gross gains. This section supersedes the one-day and three-day tables above.
+
+| Cohort | Wallets | % touched | % maker side | % taker side | PnL per $ | PnL $, 30 days | Wallets profitable | Median PnL per $ |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Pro-MM | 1,418 | 38.4% | 69.9% | 5.8% | +0.16% | +282,587 | 28.8% | -1.7% |
+| Fast-taker | 2,379 | 21.9% | 3.1% | 41.5% | +0.38% | +377,546 | 37.2% | -0.7% |
+| Hybrid-bot | 763 | 21.9% | 19.8% | 24.2% | +0.66% | +663,317 | 29.5% | -1.4% |
+| Systematic-taker | 18,301 | 12.4% | 0.8% | 24.4% | -1.58% | -895,313 | 29.1% | -3.2% |
+| Mid-MM | 1,478 | 2.6% | 4.7% | 0.3% | -0.04% | -5,208 | 32.5% | -3.1% |
+| Systematic-mixed | 2,002 | 1.6% | 1.5% | 1.7% | -1.79% | -132,496 | 31.8% | -2.4% |
+| Retail | 30,959 | 1.2% | 0.2% | 2.1% | -5.37% | -290,434 | 30.4% | -20.5% |
+
+| Persona | Wallets | % touched | % maker side | % taker side | PnL $, 30 days | May 2026 venue-wide |
+|---|---:|---:|---:|---:|---:|---:|
+| MMs (Pro-MM, Mid-MM) | 2,896 | 41.0% | 74.6% | 6.2% | +277,379 | 38.4% |
+| Bots and algo | 23,445 | 57.8% | 25.1% | 91.7% | +13,055 | 56.3% |
+| Retail | 30,959 | 1.2% | 0.2% | 2.1% | -290,434 | 5.3% |
+
+Pro-MM, Fast-taker and Hybrid-bot together are 82.3% of touched volume (daily range 82% to 88%). Market makers
+provide 74.6% of the maker side; bots and algo consume 91.7% of the taker side. Retail is 1.2% of touched volume.
+Over the month $1.32M, about $44k a day, moved from Systematic-taker, Systematic-mixed and Retail to Pro-MM,
+Fast-taker and Hybrid-bot. Note that Pro-MM wallets are only 29% profitable before LP rewards, with a median
+of -1.7% per dollar: a few large makers earn, the rest live on rewards.
+
+The proposed v2 split over the same window (modal daily cohort per wallet):
+
+| v2 cohort | Wallets | % touched | % maker side | % taker side | PnL per $ | PnL $, 30 days | Wallets profitable |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Pro-MM | 1,693 | 37.5% | 68.2% | 5.6% | +0.18% | +305,421 | 28.4% |
+| Part-time MM | 835 | 2.8% | 4.6% | 1.0% | -0.38% | -49,337 | 34.5% |
+| Neutral bot | 2,035 | 22.7% | 12.8% | 33.0% | +1.50% | +1,557,025 | 29.4% |
+| Directional bot | 2,327 | 15.6% | 8.1% | 23.3% | +0.12% | +88,002 | 39.8% |
+| Session trader | 15,384 | 17.8% | 4.8% | 31.2% | -1.74% | -1,420,280 | 28.1% |
+| Retail | 35,026 | 3.7% | 1.5% | 5.9% | -2.86% | -480,830 | 30.7% |
+
+Rollup: MMs 40.3% of touched (+256,084), Machines 38.3% (+1,645,027), People 21.4% (-1,901,110). Neutral machines
+earn +1.50% per dollar and took $1.56M; session traders lost $1.42M, three times what Retail lost.
+The v2 ordering (Neutral bot and Pro-MM positive, Directional bot near zero, Session trader negative, Retail most
+negative) holds over the full window. Result file: `results/btc5m_cohorts30_2026-08-11_09-09.json` (per-month and
+per-day tables included).
 
 ## What this changes in the May reading
 
