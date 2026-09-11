@@ -137,6 +137,33 @@ negative, Retail most negative) holds on Sep 8 and Sep 9. On Aug 30 the directio
 3.0% per dollar on every day and are the largest single source of the money that the machines and the
 makers earn: $182k over three days against $44k from Retail.
 
+## Trailing 30 days, taker side (2026-08-11 to 2026-09-09)
+
+Every taker fill for 30 consecutive days: 54,746 wallets, $225.0M, $7.50M a day. Machines (300+ fills a day,
+or 30+ with no 6-hour gap, or both outcomes bought in 40%+ of windows, or a dense share-typed run of 4h+) were
+67.5% of taker dollars, between 58% and 73% on every day with no trend, and had positive settlement PnL on
+all 30 days; people had negative PnL on all 30. Over the month 31.9% of wallets ended ahead and the median
+wallet lost 5.7% of what it traded. Daily series in `results/btc5m_trailing30_daily.csv`.
+
+| Cadence, fills per active day | Wallets | Share of taker $ | Profitable over the month | PnL per $ |
+|---|---:|---:|---:|---:|
+| Under 10 (Retail) | 31,734 | 3.3% | 31.9% | -4.27% |
+| 10 to 100 (systematic) | 20,484 | 34.3% | 30.8% | -1.33% |
+| 100 and up (fast) | 2,528 | 62.4% | 41.4% | +1.19% |
+
+| Active days | Wallets | Profitable | Median PnL per $ | Share of $ |
+|---|---:|---:|---:|---:|
+| 1 | 23,351 | 28.7% | -22.2% | 1.5% |
+| 2 to 4 | 17,063 | 30.6% | -6.2% | 6.5% |
+| 5 to 9 | 7,046 | 35.1% | -2.0% | 11.0% |
+| 10 to 19 | 4,733 | 39.3% | -0.9% | 21.5% |
+| 20 or more | 2,553 | 47.9% | -0.1% | 59.5% |
+
+Regulars on 20 or more days are 5% of wallets and 60% of dollars and break even as a group. The 26 wallets
+that traded over $1M each are 27% of dollars and 21 of them ended ahead. The top 1% of wallets took 81% of
+gross gains. The seven-cohort grid over the same window is being computed from the maker legs and will
+replace the three-day tables above.
+
 ## What this changes in the May reading
 
 - The "structural retail-flow floor" worry is answered for this product: the uninformed flow is the

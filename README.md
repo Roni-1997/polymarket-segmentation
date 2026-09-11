@@ -46,6 +46,9 @@ note is at [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md).
 - Polymarket's machines do not migrate. None of its top 100 wallets is active on Hyperliquid HIP-4.
   The HIP-4 flow that exists comes from Hyperliquid perps traders.
 - Liquidity rewards concentrate: the top 10 owners take 30% of all LP rewards, the top 50 take 50%.
+- Over the 30 days to Sep 9 on BTC 5-minute markets, machines were 67.5% of taker dollars, positive
+  on every one of the 30 days, and people negative on every day. 32% of wallets ended the month ahead;
+  the median wallet lost 5.7%. Regulars trading 20 or more days were 5% of wallets and 60% of dollars.
 
 ## What this means for Verdict
 
