@@ -4,14 +4,28 @@ data-api's `start`/`end` timestamp filters (inclusive) and pages each slice, hal
 Writes /tmp/pm5m_taker_tx_<day>.json, /tmp/pm5m_both_tx_<day>.json, /tmp/pm5m_outcomes_<day>.json."""
 import json, urllib.request, time, sys, os, datetime
 UA={'user-agent':'curl/8'}; SLEEP=0.12; CAP=10000
-def get(url, tries=12):
+import threading, random
+RATE=float(os.environ.get('RATE','4'))          # requests per second for this process, all threads together
+_lock=threading.Lock(); _next=[time.time()]
+def _acquire():
+    with _lock:
+        now=time.time(); t=max(_next[0], now); _next[0]=t+1.0/RATE
+    wait=t-time.time()
+    if wait>0: time.sleep(wait)
+STATS={'429':0}
+def get(url, tries=15):
     err=''
     for i in range(tries):
-        try: return json.load(urllib.request.urlopen(urllib.request.Request(url,headers=UA),timeout=60))
+        _acquire()
+        try: return json.load(urllib.request.urlopen(urllib.request.Request(url,headers=UA),timeout=90))
+        except urllib.error.HTTPError as e:
+            if e.code==400: return None
+            if e.code==429:
+                STATS['429']+=1; ra=e.headers.get('Retry-After'); base=float(ra) if ra and ra.replace('.','',1).isdigit() else 0
+                time.sleep(max(base,1.0)*min(8,1+i)+random.random()); continue
+            err=f'HTTP {e.code}'; time.sleep(min(60,3*(i+1)))
         except Exception as e:
-            err=str(e)[:80]
-            if 'HTTP Error 400' in err: return None
-            time.sleep(min(60,3*(i+1)))
+            err=str(e)[:80]; time.sleep(min(60,3*(i+1)))
     print('GIVEUP',url[:140],err,flush=True); return None
 def outcomes(day):
     p=f'/tmp/pm5m_outcomes_{day}.json'
@@ -85,4 +99,4 @@ for day in sys.argv[1:]:
             with lock: rows.extend(r)
         with ThreadPoolExecutor(max_workers=T) as ex: list(ex.map(work,cids))
         json.dump(rows,open(outp,'w'))
-        print(day,mode,'records',len(rows),'markets sliced',stats['sliced'],'slices',stats['slices'],'secs',int(time.time()-t0),'threads',T,flush=True)
+        print(day,mode,'records',len(rows),'markets sliced',stats['sliced'],'slices',stats['slices'],'secs',int(time.time()-t0),'threads',T,'rate',RATE,'429s',STATS['429'],flush=True); STATS['429']=0
