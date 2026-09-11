@@ -21,6 +21,11 @@ re-executed on 2026-06-07.
 | `top100_wallets_venue_wide_30d.csv` | `11_top_wallets_30d_with_lp.sql` | True venue-wide top 100 wallets by 30d touched volume, with cohort label and LP-reward flags. Used for cross-venue overlap checks (vs HIP-4). |
 | `cohort_x_category_q1_2026.csv` | `04_cohort_x_category_30d.sql` (window swapped to Jan 1 - Apr 1, 2026) | Same query as the 30d clean, but for the Q1 2026 quarter. Useful for the crypto-vs-other-tagging shift comparison (crypto categorization shifted in May 2026; Q1 numbers reflect the original tagging). |
 | `volume_by_time_to_expiry_30d.csv` | `12_volume_by_time_to_expiry.sql` | Trailing 30d single-counted volume by time-to-resolution/end bucket. Source for `docs/expiry_volume.md`. |
+| `btc5m_cohorts30_2026-08-11_09-09.json` | `scripts/btc5m/cohorts_window.py` | Seven-cohort grid and the proposed v2 over the 30-day both-legs window on BTC 5-minute markets, one cohort per wallet, with per-month and per-day tables and settlement PnL per cohort. Proxy-wallet level. Source for the 30-day section of `docs/btc5m_cohorts_pnl.md`. |
+| `btc5m_trailing30_daily.csv` | `scripts/btc5m/trailing30_taker_stats.py` | Daily taker-side series for the same window: taker volume, wallets, machine share, machine and people PnL, share of wallets profitable. |
+| `btc5m_cohorts_v1_2026-08-30.csv`, `btc5m_cohorts_v2_2026-08-30.csv` | `scripts/btc5m/cohorts_v1_v2.py` | Single-day grids (v1 and v2) for 2026-08-30, both legs, proxy-wallet level. Superseded by the 30-day file; kept to show how the picture held as the window grew. |
+| `btc5m_cohorts_v1_2026-09-08.csv`, `btc5m_cohorts_v2_2026-09-08.csv` | `scripts/btc5m/cohorts_v1_v2.py` | Single-day grids (v1 and v2) for 2026-09-08, both legs, proxy-wallet level. Superseded by the 30-day file; kept to show how the picture held as the window grew. |
+| `btc5m_cohorts_v1_2026-09-09.csv`, `btc5m_cohorts_v2_2026-09-09.csv` | `scripts/btc5m/cohorts_v1_v2.py` | Single-day grids (v1 and v2) for 2026-09-09, both legs, proxy-wallet level. Superseded by the 30-day file; kept to show how the picture held as the window grew. |
 
 ## Conventions
 
@@ -30,8 +35,8 @@ re-executed on 2026-06-07.
   ($/day) and comparisons to public Polymarket numbers.
 - **lp_rewards_confirmed_1k** = TRUE if owner received ≥$1,000 in LP
   rewards (material participation). Dust rewards are weak evidence.
-- All wallet addresses are aggregated to **owner** level via
-  `polymarket_polygon.users_address_lookup`.
+- Dune-derived files aggregate wallets to **owner** level via
+  `polymarket_polygon.users_address_lookup`. The BTC 5-minute files from the data-api are at proxy-wallet level.
 - System/router contracts are excluded both pre- and post-mapping.
   Hardcoded list in the core cohort queries.
 - Most queries use rolling `CURRENT_TIMESTAMP` windows. The CSVs here
@@ -40,15 +45,6 @@ re-executed on 2026-06-07.
 
 ## What's not here
 
-- PnL by cohort (would require position-state reconstruction).
+- PnL by cohort outside the BTC 5-minute markets (would require position-state reconstruction across open positions).
 - Cross-venue arber detection (needs Kalshi data).
 - Wallet-level identity labels (Wintermute, GSR, etc.).
-
-## btc5m_cohorts_v1_2026-09-09.csv, btc5m_cohorts_v2_2026-09-09.csv
-Seven-cohort grid (v1) and proposed six-cohort v2 on Polymarket BTC 5m up/down, 2026-09-09, both legs,
-proxy-wallet level, with settlement PnL per cohort. Built by `scripts/btc5m/`. See docs/btc5m_cohorts_pnl.md.
-
-## btc5m_cohorts30_2026-08-11_09-09.json
-Seven-cohort grid and v2 over the full 30-day both-legs window (one cohort per wallet), per-month and per-day
-tables, PnL per cohort. Built by `scripts/btc5m/cohorts_window.py`.
-

@@ -2,10 +2,12 @@
 Grid: maker share (>=70% high, 30-70% mid, <30% low) x cadence (fills per active day: >=100 fast, 10-100 systematic, <10 retail).
 Retail = any maker share at <10 fills/day. Touched volume = maker side + taker side. Single day => cadence = fills that day.
 Proxy-wallet level (no owner aggregation). PnL to settlement per leg: BUY pays 1 if outcome wins; SELL the reverse."""
+import os
+DATA=os.environ.get('PM_DATA_DIR','/tmp')   # where the day files live
 import json, sys, collections
 def load(day):
-    tk=json.load(open(f'/tmp/pm5m_taker_tx_{day}.json')); both=json.load(open(f'/tmp/pm5m_both_tx_{day}.json'))
-    outc={k.lower():v for k,v in json.load(open(f'/tmp/pm5m_outcomes_{day}.json')).items() if v is not None}
+    tk=json.load(open(f'{DATA}/pm5m_taker_tx_{day}.json')); both=json.load(open(f'{DATA}/pm5m_both_tx_{day}.json'))
+    outc={k.lower():v for k,v in json.load(open(f'{DATA}/pm5m_outcomes_{day}.json')).items() if v is not None}
     key=lambda r:(r[7],r[0],r[2],round(r[3],6),round(r[4],6),r[6])
     tset=set(key(r) for r in tk)
     legs=[]  # (wallet, role, usd, pnl, cid, side, oi, ts)
@@ -49,7 +51,7 @@ def run(day):
     for p in ('MMs','Bots+Algo','Retail'):
         cs=[c for c in ORDER if PERSONA[c]==p and c in rows]
         print(f"  {p:17s} {sum(rows[c]['wallets'] for c in cs):7d} {sum(rows[c]['touched'] for c in cs):7.1f}% {sum(rows[c]['maker'] for c in cs):10.1f}% {sum(rows[c]['taker'] for c in cs):10.1f}% {sum(rows[c]['pnl_usd'] for c in cs):+9,.0f}")
-    json.dump({'day':day,'rows':rows,'touched':touched,'maker':mk,'taker':tk,'wallets':len(W)},open(f'/tmp/pm_cohorts_{day}.json','w'))
+    json.dump({'day':day,'rows':rows,'touched':touched,'maker':mk,'taker':tk,'wallets':len(W)},open(f'{DATA}/pm_cohorts_{day}.json','w'))
     return W
 if __name__=='__main__':
     for d in sys.argv[1:]: run(d)
@@ -117,5 +119,5 @@ def run_v2(day):
         t=sum(f['mk']+f['tk'] for f in fs); parts=collections.defaultdict(float)
         for f in fs: parts[f['c2']]+=f['mk']+f['tk']
         print(f"    {c1:17s} {100*t/touched:5.1f}%  -> "+', '.join(f"{c2} {100*v/t:.0f}%" for c2,v in sorted(parts.items(),key=lambda x:-x[1])))
-    json.dump({'day':day,'rows':rows},open(f'/tmp/pm_cohorts_v2_{day}.json','w'))
+    json.dump({'day':day,'rows':rows},open(f'{DATA}/pm_cohorts_v2_{day}.json','w'))
     return F

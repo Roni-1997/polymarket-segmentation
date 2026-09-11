@@ -1,7 +1,9 @@
 """Resumable puller for Polymarket BTC 5m markets: taker legs and both legs, with transaction hashes.
 Pages by offset up to 10,000 records per query; if a market has more, splits its time range with the
 data-api's `start`/`end` timestamp filters (inclusive) and pages each slice, halving slices that still hit the cap.
-Writes /tmp/pm5m_taker_tx_<day>.json, /tmp/pm5m_both_tx_<day>.json, /tmp/pm5m_outcomes_<day>.json."""
+Writes <PM_DATA_DIR>/pm5m_taker_tx_<day>.json, /tmp/pm5m_both_tx_<day>.json, /tmp/pm5m_outcomes_<day>.json."""
+import os
+DATA=os.environ.get('PM_DATA_DIR','/tmp')   # where the day files live
 import json, urllib.request, time, sys, os, datetime
 UA={'user-agent':'curl/8'}; SLEEP=0.12; CAP=10000
 import threading, random
@@ -28,7 +30,7 @@ def get(url, tries=15):
             err=str(e)[:80]; time.sleep(min(60,3*(i+1)))
     print('GIVEUP',url[:140],err,flush=True); return None
 def outcomes(day):
-    p=f'/tmp/pm5m_outcomes_{day}.json'
+    p=f'{DATA}/pm5m_outcomes_{day}.json'
     if os.path.exists(p): return json.load(open(p))
     nxt=(datetime.date.fromisoformat(day)+datetime.timedelta(days=1)).isoformat(); out={}; off=0
     while True:
@@ -74,7 +76,7 @@ T=int(os.environ.get('THREADS','6'))
 for day in sys.argv[1:]:
     t0=time.time(); cids=list(outcomes(day))
     for mode,param in (('taker','&takerOnly=true'),('both','&takerOnly=false')):
-        outp=f'/tmp/pm5m_{mode}_tx_{day}.json'
+        outp=f'{DATA}/pm5m_{mode}_tx_{day}.json'
         if os.path.exists(outp): print(day,mode,'exists',flush=True); continue
         stats={'sliced':0,'slices':0}; lock=threading.Lock(); rows=[]
         def work(cid):

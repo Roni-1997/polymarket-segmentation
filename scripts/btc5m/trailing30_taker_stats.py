@@ -1,9 +1,11 @@
 """Trailing-30-day aggregation of Polymarket BTC 5m taker fills: per-wallet cumulative PnL, cadence per active day,
 profitability by persistence and size, and the combined-rule machine share day by day and pooled."""
+import os
+DATA=os.environ.get('PM_DATA_DIR','/tmp')   # where the day files live
 import json, os, sys, collections, statistics as st
-sys.path.insert(0,'/tmp'); from pm_features_day import features, RULES
-days=json.load(open('/tmp/pm_trailing30_days.json'))
-have=[d for d in days if os.path.exists(f'/tmp/pm5m_fills_{d}.json') and os.path.exists(f'/tmp/pm5m_outcomes_{d}.json')]
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from features_and_rules import features, RULES
+days=json.load(open(f'{DATA}/pm_trailing30_days.json'))
+have=[d for d in days if os.path.exists(f'{DATA}/pm5m_fills_{d}.json') and os.path.exists(f'{DATA}/pm5m_outcomes_{d}.json')]
 print(f'days available {len(have)}/{len(days)}: {have[0]} .. {have[-1]}')
 comb=RULES['combined']
 P=collections.defaultdict(lambda:{'pnl':0.0,'cov':0.0,'usd':0.0,'fills':0,'days':0,'bot_days':0,'first':None,'last':None})
@@ -41,4 +43,4 @@ mach=[a for a in P.values() if a['modal_bot']]; ppl=[a for a in P.values() if no
 print(f"\nModal class over the window: machines {len(mach):,} wallets, {100*sum(a['usd'] for a in mach)/tot:.1f}% of $, PnL {100*sum(a['pnl'] for a in mach)/sum(a['cov'] for a in mach):+.2f}%, {100*sum(1 for a in mach if a['pnl']>0.01)/len(mach):.1f}% profitable; people {len(ppl):,} wallets, {100*sum(a['usd'] for a in ppl)/tot:.1f}% of $, PnL {100*sum(a['pnl'] for a in ppl)/sum(a['cov'] for a in ppl):+.2f}%, {100*sum(1 for a in ppl if a['pnl']>0.01)/len(ppl):.1f}% profitable")
 gains=sorted((a['pnl'] for a in P.values() if a['pnl']>0), reverse=True); k=max(1,len(P)//100)
 print(f"Top 1% of wallets ({k}) take {100*sum(gains[:k])/sum(gains):.0f}% of gross gains; top 0.1% take {100*sum(gains[:max(1,len(P)//1000)])/sum(gains):.0f}%")
-json.dump({'days':have,'daily':daily,'wallets':len(P),'taker_usd':tot},open('/tmp/pm_trailing30_summary.json','w'),indent=1)
+json.dump({'days':have,'daily':daily,'wallets':len(P),'taker_usd':tot},open(f'{DATA}/pm_trailing30_summary.json','w'),indent=1)

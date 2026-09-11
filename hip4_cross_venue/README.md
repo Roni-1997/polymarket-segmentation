@@ -1,13 +1,13 @@
 # HIP-4 x Polymarket cross-venue overlap
 
-Status: **audited first pass, 2026-05-27**. Bidirectional check between Hyperliquid
+First pass, 2026-05-27. Bidirectional check between Hyperliquid
 HIP-4 outcome markets (live since 2026-05-02) and the Polymarket cohort
 data in the rest of this repo. Answers the question *"do the same
 operators trade both venues?"*
 
-## TL;DR
+## Summary
 
-Direct address overlap between the venues is **essentially zero** at the
+Direct address overlap between the venues is essentially zero at the
 professional tier:
 
 - 0 of the 100 wallets in
@@ -27,7 +27,7 @@ The cross-venue migration path that **does** exist runs HL-perps to
 HIP-4. The HIP-4 maker cohort came from the Hyperliquid perps audience,
 not Polymarket.
 
-## What It Shows
+## What it shows
 
 The professional wallet sets are distinct in this sample. Structural
 friction is material: Polygon vs HL signing, USDC.e vs USDC,

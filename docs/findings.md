@@ -1,29 +1,15 @@
-# Findings - Polymarket participant segmentation
+# Findings: Polymarket participant segmentation
 
-Status: **audit-adjusted methodology AND rerun completed**.
-Data window: trailing 30 days (April 27 - May 27, 2026).
-Quarterly comparison: Q4 2025 and Q1 2026.
-
-The original exported CSVs had two audit issues that have now been fixed
-in the SQL and the queries re-executed against Dune:
-
-1. The cohort queries counted **touched volume** (each fill once on the
-   maker side + once on the taker side). Correct for participant-share
-   analysis, but 2x single-counted venue notional. Output now carries
-   both columns explicitly.
-2. Known router/system contracts were filtered as raw maker/taker
-   addresses, but not after `users_address_lookup` mapped proxy wallets
-   to owners. Now filtered at both stages.
-3. LP rewards UNIONed merkle claims with direct USDC transfers, which
-   double-counted: merkle claims trigger a USDC transfer in the same tx.
-   Direct transfers are now deduped against merkle claims by `evt_tx_hash`.
+Data window: trailing 30 days (April 27 to May 27, 2026), with Q4 2025 and Q1 2026 for the trend. The
+queries were re-executed against Dune on 2026-05-27 after three corrections to the first export; the
+corrections are listed under Revision notes at the end. The BTC 5-minute follow-up (September 2026, both
+legs, PnL per cohort) is in [btc5m_cohorts_pnl.md](btc5m_cohorts_pnl.md).
 
 ---
 
 ## Headline numbers
 
-Everything below is sliced six different ways. If you only have a minute,
-read this:
+The same data is cut several ways below. The short version:
 
 - **Real volume:** ~$102M/day single-counted notional (half the headline
   $200M/day figure - Paradigm OrderFilled double-counting).
@@ -411,3 +397,19 @@ Each cited number above maps to a specific CSV under `results/`:
 7. True venue-wide top-wallet sample -
    `results/top100_wallets_venue_wide_30d.csv` from
    `queries/11_top_wallets_30d_with_lp.sql`.
+
+---
+
+## Revision notes
+
+The first export had three problems, fixed in the SQL before the 2026-05-27 rerun:
+
+1. The cohort queries reported touched volume (each fill counted once on the maker side and once on the
+   taker side), which is right for participant shares but twice the single-counted venue notional. The
+   output now carries both columns.
+2. Router and system contracts were excluded as raw maker or taker addresses but not after the
+   proxy-to-owner mapping, through which some re-entered. They are now excluded at both stages.
+3. LP rewards combined merkle claims with direct USDC transfers, which double-counted claims that also
+   emit a transfer in the same transaction. Direct transfers are now deduplicated against claims by
+   transaction hash.
+

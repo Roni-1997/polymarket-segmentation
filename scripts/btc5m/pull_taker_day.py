@@ -1,3 +1,5 @@
+import os
+DATA=os.environ.get('PM_DATA_DIR','/tmp')   # where the day files live
 import json, urllib.request, time, sys, datetime
 UA={'user-agent':'curl/8'}
 def get(url, tries=10):
@@ -35,6 +37,6 @@ for day in sys.argv[1:]:
             if off>=10000: trunc+=1; break
             time.sleep(0.12)
         time.sleep(0.12)
-    json.dump(rows,open(f'/tmp/pm5m_fills_{day}.json','w'))
-    json.dump({c:r for c,r in cids},open(f'/tmp/pm5m_outcomes_{day}.json','w'))
+    json.dump(rows,open(f'{DATA}/pm5m_fills_{day}.json','w'))
+    json.dump({c:r for c,r in cids},open(f'{DATA}/pm5m_outcomes_{day}.json','w'))
     print(day,'fills',len(rows),'truncated markets',trunc,'secs',int(time.time()-t0),flush=True)

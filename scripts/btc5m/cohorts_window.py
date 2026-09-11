@@ -3,11 +3,13 @@ per calendar month and for the whole period, the way Roni-1997/polymarket-segmen
 cadence = fills per ACTIVE day within the window, maker share = maker touched / total touched within the window,
 one cohort per wallet per window. Also: PnL per cohort, share of wallets profitable, daily cohort shares.
 Usage: python3 pm_cohorts6m.py START END OUT.json  (dates inclusive; skips days without both-legs files)."""
+import os
+DATA=os.environ.get('PM_DATA_DIR','/tmp')   # where the day files live
 import json, os, sys, collections, statistics as st, datetime as dt
-sys.path.insert(0,'/tmp'); import pm_cohorts as pc
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import cohorts_v1_v2 as pc
 start,end,outp=sys.argv[1],sys.argv[2],sys.argv[3]
 d0=dt.date.fromisoformat(start); days=[(d0+dt.timedelta(i)).isoformat() for i in range((dt.date.fromisoformat(end)-d0).days+1)]
-have=[d for d in days if os.path.exists(f'/tmp/pm5m_both_tx_{d}.json') and os.path.exists(f'/tmp/pm5m_taker_tx_{d}.json')]
+have=[d for d in days if os.path.exists(f'{DATA}/pm5m_both_tx_{d}.json') and os.path.exists(f'{DATA}/pm5m_taker_tx_{d}.json')]
 missing=[d for d in days if d not in have]
 print(f'days {len(have)}/{len(days)} available; missing: {missing[:10]}{"..." if len(missing)>10 else ""}', flush=True)
 def fresh(): return {'fills':0,'mk':0.0,'tk':0.0,'pnl':0.0,'cov':0.0,'days':0,'v2':collections.Counter()}
