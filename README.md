@@ -44,6 +44,10 @@ note is at [docs/btc5m_cohorts_pnl.md](docs/btc5m_cohorts_pnl.md).
 - Over the 30 days to September 9, bots came out ahead on every single day and people came out behind
   on every single day. Only 30% of wallets finished the month with a profit; the typical wallet lost
   5.6% of what it traded.
+- Over six months (March 2026 to September 2026), the mix never moved: bots and market makers were between 77% and 83% of volume
+  in every month (79% overall) and casual bettors between 1.1% and 1.8%. What did change is size: volume fell from $21M a day in March 2026
+  to $7M in September 2026, and the daily flow from the people who lose to the bots and market makers who win fell with it, from $190k to $69k ($104k a day on average).
+  Only 29% of the 427,091 wallets that traded ended the period ahead; the top 0.1% of wallets took 52% of all gains.
 - Crypto is the most automated category on Polymarket, and its mix of participants is almost identical
   to sports.
 - Polymarket's bots are not moving to Hyperliquid. None of Polymarket's 100 largest wallets trades on

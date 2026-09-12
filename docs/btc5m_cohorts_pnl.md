@@ -214,6 +214,84 @@ The v2 ordering (Neutral bot and Pro-MM positive, Directional bot near zero, Ses
 negative) holds over the full window. Result file: `results/btc5m_cohorts30_2026-08-11_09-09.json` (per-month and
 per-day tables included).
 
+## Six months, 2026-03-10 to 2026-09-09: the grid over the whole period and month by month
+
+Every trade, both legs, for 184 days: 427,091 wallets, $4,651M traded (both sides counted; $2,325M
+single-counted, $12.6M a day). One cohort per wallet for the whole period, following the segmentation
+repo's definitions: cadence is fills per active day across the period and maker share is the wallet's maker volume
+over its total. Profit and loss is at settlement, before liquidity rewards; no fees were charged on these markets.
+
+Over the period 29% of wallets ended ahead, the typical wallet lost 6.3% of what it traded, the top 1% of
+wallets took 86% of all gains and the top 0.1% took 52%. About $104k a day moved from the
+cohorts that lose to the cohorts that win.
+
+### Month by month
+
+| Month | Days | Volume per day, $M single-counted | Wallets | Market makers | Bots and active traders | Casual bettors | Bots (v2) | People (v2) | $k per day from people to bots and makers | Wallets profitable in the month |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| March 2026 | 22 | 21.3 | 123,671 | 41% | 57% | 1.3% | 36% | 23% | 190 | 30% |
+| April 2026 | 30 | 15.8 | 145,270 | 44% | 54% | 1.8% | 31% | 25% | 136 | 31% |
+| May 2026 | 31 | 11.3 | 114,946 | 40% | 59% | 1.5% | 34% | 27% | 47 | 32% |
+| June 2026 | 30 | 12.3 | 100,994 | 43% | 56% | 1.4% | 32% | 25% | 104 | 33% |
+| July 2026 | 31 | 11.4 | 83,807 | 42% | 57% | 1.1% | 34% | 25% | 79 | 33% |
+| August 2026 | 31 | 7.8 | 61,970 | 41% | 58% | 1.2% | 34% | 24% | 57 | 32% |
+| September 2026 | 9 | 7.4 | 24,604 | 38% | 60% | 1.4% | 42% | 20% | 69 | 34% |
+
+Bots and market makers (the three fast cohorts) held between 77% and 83% of volume. Casual bettors held between 1.1% and 1.8%.
+Volume per day went from 21.3M in March 2026 to 7.4M in September 2026 (range 7.4M to 21.3M). The daily transfer from people to bots and market makers went from 190k in March 2026 to 69k in September 2026 (range 47k to 190k).
+
+### The grid over the whole period
+
+| Who | Wallets | Share of volume | Share of resting orders | Share of aggressive trades | PnL per $ | PnL $, 184 days | Wallets profitable | Median PnL per $ |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Market makers, full time (Pro-MM) | 6,166 | 38.8% | 68.8% | 7.3% | +0.39% | +7,027,551 | 33.2% | -1.2% |
+| Fast bots taking liquidity (Fast-taker) | 16,518 | 20.5% | 3.5% | 38.3% | +0.46% | +4,406,113 | 34.0% | -1.1% |
+| Fast bots on both sides (Hybrid-bot) | 6,155 | 19.5% | 19.0% | 20.0% | +0.79% | +7,132,119 | 35.1% | -1.0% |
+| Active traders using tools (Systematic-taker) | 146,823 | 14.5% | 1.2% | 28.5% | -2.18% | -14,748,178 | 25.4% | -4.0% |
+| Market makers, part time (Mid-MM) | 8,572 | 2.7% | 4.8% | 0.5% | +0.40% | +507,533 | 36.2% | -2.4% |
+| Active traders, mixed (Systematic-mixed) | 16,070 | 2.7% | 2.4% | 3.0% | -0.75% | -942,943 | 31.3% | -2.4% |
+| Casual bettors (Retail) | 226,787 | 1.2% | 0.2% | 2.3% | -5.84% | -3,364,951 | 29.6% | -19.9% |
+
+| Persona | Wallets | Share of volume | Share of resting orders | Share of aggressive trades | PnL $ | Venue-wide share, May 2026 |
+|---|---:|---:|---:|---:|---:|---:|
+| Market makers | 14,738 | 41.5% | 73.6% | 7.9% | +7,535,084 | 38.4% |
+| Bots and active traders | 185,566 | 57.2% | 26.1% | 89.8% | -4,152,890 | 56.3% |
+| Casual bettors | 226,787 | 1.2% | 0.2% | 2.3% | -3,364,951 | 5.3% |
+
+Market makers and fast bots together are 79% of volume. Market makers post 74% of resting orders; bots and
+active traders take 90% of aggressive trades. Casual bettors are 1.2% of volume and 53% of wallets.
+
+### The proposed v2 split over the whole period
+
+| Who (v2) | Wallets | Share of volume | Share of resting orders | Share of aggressive trades | PnL per $ | PnL $ | Wallets profitable |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Market makers, full time | 6,909 | 37.4% | 65.5% | 8.0% | +0.41% | +7,086,794 | 30.8% |
+| Market makers, part time | 4,871 | 4.1% | 6.8% | 1.3% | +0.49% | +944,817 | 37.1% |
+| Bots trading both sides | 13,323 | 18.1% | 10.4% | 26.2% | +1.13% | +9,472,900 | 26.4% |
+| Bots betting a direction | 14,514 | 13.9% | 7.1% | 21.1% | +0.02% | +153,583 | 35.4% |
+| Active traders using tools | 120,886 | 19.7% | 6.3% | 33.8% | -1.20% | -10,978,920 | 25.2% |
+| Casual bettors | 266,588 | 6.7% | 4.0% | 9.6% | -2.13% | -6,661,932 | 29.8% |
+
+Rollup: market makers 41.6% of volume (+8,031,611), bots 32.0% (+9,626,484), people 26.4% (-17,640,853).
+
+The v2 label over a long window is the wallet's most common daily class, so a wallet that ran as a bot on its busy
+days but traded by hand on most days is counted as a person for the whole period, and its bot-day volume goes with
+it. That is why bots read lower and people higher here than in any single month; the month-by-month table above is
+the better read for the v2 split, and the v1 grid (cadence per active day, maker share over the window) does not
+have this problem.
+
+### Who is still standing after six months
+
+| Active days in the period | Wallets | Share of volume | Wallets profitable | Median PnL per $ |
+|---|---:|---:|---:|---:|
+| 1 day | 167,025 | 1.0% | 28.5% | -23.0% |
+| 2 to 4 days | 137,247 | 3.4% | 25.6% | -8.1% |
+| 5 to 9 days | 56,673 | 5.3% | 29.7% | -3.2% |
+| 10 to 19 days | 33,423 | 10.5% | 32.5% | -1.8% |
+| 20 or more days | 32,723 | 79.7% | 36.9% | -0.8% |
+
+Result file with per-month, per-day and persistence tables: `results/btc5m_cohorts_6m_2026-03-10_09-09.json`.
+
 ## What this changes in the May reading
 
 - The "structural retail-flow floor" worry is answered for this product: the uninformed flow is the
